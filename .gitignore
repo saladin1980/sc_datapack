@@ -25,7 +25,14 @@ check_*.ps1
 explore_*.ps1
 find_*.ps1
 peek_*.ps1
-test_cryxml.xml
+run_*.ps1
+poll_*.ps1
+test_*.ps1
+test_*.py
+*.xml
+
+# ── Generated report HTML (belongs on gh-pages branch, not main) ──────────────
+*_preview.html
 
 # ── IDE / OS ──────────────────────────────────────────────────────────────────
 .vscode/
