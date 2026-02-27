@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SC DataPack — Community Reports</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', sans-serif;
+       min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+       padding: 60px 24px; }
+.logo { font-size: 48px; margin-bottom: 16px; }
+h1 { color: #58a6ff; font-size: 28px; margin-bottom: 6px; }
+.sub { color: #8b949e; font-size: 14px; margin-bottom: 48px; text-align: center; }
+.sub a { color: #58a6ff; text-decoration: none; }
+.sub a:hover { text-decoration: underline; }
+.cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+        padding: 28px 32px; width: 380px; text-decoration: none; color: inherit;
+        transition: border-color 0.15s, transform 0.15s; }
+.card:hover { border-color: #58a6ff; transform: translateY(-2px); }
+.card-icon { font-size: 32px; margin-bottom: 12px; }
+.card-title { color: #e6edf3; font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.card-desc { color: #8b949e; font-size: 13px; line-height: 1.6; }
+.card-meta { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.tag { background: #21262d; border: 1px solid #30363d; border-radius: 12px;
+       padding: 2px 10px; font-size: 11px; color: #8b949e; }
+.footer { margin-top: 60px; color: #484f58; font-size: 12px; text-align: center; }
+.footer a { color: #6e7681; text-decoration: none; }
+.footer a:hover { color: #8b949e; }
+</style>
+</head>
+<body>
+
+<div class="logo">🚀</div>
+<h1>SC DataPack — Community Reports</h1>
+<p class="sub">
+  Datamined from <code>Data.p4k</code> for community research ·
+  <a href="https://github.com/saladin1980/sc_datapack">Source on GitHub</a>
+</p>
+
+<div class="cards">
+
+  <a class="card" href="ships_preview.html">
+    <div class="card-icon">🛸</div>
+    <div class="card-title">Ship Preview</div>
+    <div class="card-desc">
+      Full loadout breakdown for a sample of ships. Every port resolved to its
+      installed component with real stats — shields, power output, cooling rate,
+      quantum drive speed, thruster thrust, IFCS speeds, weapons, cargo SCU.
+    </div>
+    <div class="card-meta">
+      <span class="tag">12 ships</span>
+      <span class="tag">All ports resolved</span>
+      <span class="tag">Base loadout</span>
+    </div>
+  </a>
+
+  <a class="card" href="components_preview.html">
+    <div class="card-icon">📦</div>
+    <div class="card-title">Component Reference</div>
+    <div class="card-desc">
+      4,000+ equippable components indexed from game files. Searchable and
+      filterable by type — shields, power plants, coolers, quantum drives,
+      thrusters, weapons, missiles, and more. Key stats per item.
+    </div>
+    <div class="card-meta">
+      <span class="tag">4,083 components</span>
+      <span class="tag">28 categories</span>
+      <span class="tag">Searchable</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer">
+  Generated from Star Citizen game data for community research purposes ·
+  <a href="https://github.com/saladin1980/sc_datapack">github.com/saladin1980/sc_datapack</a>
+</div>
+
+</body>
+</html>

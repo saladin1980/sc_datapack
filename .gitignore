@@ -1,0 +1,35 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── SC Data (large / copyrighted — never commit) ─────────────────────────────
+# These paths are siblings of sc-pipeline, but just in case:
+*.p4k
+*.pak
+output/
+logs/
+
+# ── Scratch / one-off diagnostic scripts ─────────────────────────────────────
+check_*.ps1
+explore_*.ps1
+find_*.ps1
+peek_*.ps1
+test_cryxml.xml
+
+# ── IDE / OS ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
