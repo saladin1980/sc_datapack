@@ -14,31 +14,43 @@ from config.settings import OUTPUT_DIR, REPORTS_DIR
 RECORDS_DIR = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SHIPS_DIR   = RECORDS_DIR / "entities" / "spaceships"
 
-PREVIEW_SHIPS = [
-    "aegs_avenger_titan.xml",
-    "aegs_gladius.xml",
-    "aegs_vanguard.xml",
-    "anvl_arrow.xml",
-    "anvl_hornet_f7c.xml",
-    "crus_spirit_c1.xml",
-    "misc_prospector.xml",
-    "anvl_hawk.xml",
-    "drak_cutlass_black.xml",
-    "misc_freelancer.xml",
-    "orig_100i.xml",
-    "rsi_constellation_andromeda.xml",
-]
-
 MFR_NAMES = {
-    "AEGS": "Aegis Dynamics",   "ANVL": "Anvil Aerospace",
-    "BANU": "Banu",             "CNOU": "Consolidated Outland",
-    "CRUS": "Crusader",         "DRAK": "Drake Interplanetary",
-    "ESPRIA": "Esperia",        "GRIN": "Greycat Industrial",
-    "KRIG": "Kruger Intergalactic", "MISC": "MISC",
-    "ORIG": "Origin Jumpworks", "RSI": "Roberts Space Industries",
-    "TMBL": "Tumbril",          "ARGO": "Argo Astronautics",
-    "XNAA": "Xenotech",
+    "AEGS": "Aegis Dynamics",       "ANVL": "Anvil Aerospace",
+    "BANU": "Banu",                 "CNOU": "Consolidated Outland",
+    "CRUS": "Crusader Industries",  "DRAK": "Drake Interplanetary",
+    "ESPR": "Esperia",              "ESPRIA": "Esperia",
+    "GRIN": "Greycat Industrial",   "KRIG": "Kruger Intergalactic",
+    "MISC": "MISC",                 "MRAI": "Mirai",
+    "ORIG": "Origin Jumpworks",     "RSI": "Roberts Space Industries",
+    "TMBL": "Tumbril",              "ARGO": "Argo Astronautics",
+    "XIAN": "Aopoa",                "XNAA": "Xenotech",
 }
+
+# ── Ship discovery ─────────────────────────────────────────────────────────────
+
+# Prefixes that are not player-manufacturer ships
+_SKIP_PREFIXES = frozenset({
+    "eaobjectivedestructable", "orbital", "probe", "glsn",
+    "spaceship", "gama", "vncl",
+})
+# Stem substrings that indicate NPC/mission/test variants
+_SKIP_PATTERNS = (
+    "_pu_ai_", "_ai_", "_unmanned_", "_tutorial", "_teach",
+    "_tier_1", "_tier_2", "_tier_3", "_pu_hijacked", "_pu_civilian",
+    "_pu_npc", "_ea_",
+)
+
+def scan_all_ships():
+    """Return sorted list of ship XML paths, filtered to player-relevant ships."""
+    result = []
+    for f in sorted(SHIPS_DIR.glob("*.xml")):
+        s = f.stem.lower()
+        if s.split("_")[0] in _SKIP_PREFIXES:
+            continue
+        if any(p in s for p in _SKIP_PATTERNS):
+            continue
+        result.append(f)
+    return result
 
 # ── Port categorisation ────────────────────────────────────────────────────────
 
@@ -931,7 +943,7 @@ def ship_to_html(ship):
     n_wp   = len(ship.get("hardpoints",[]))
     n_sys  = len(ship.get("systems",[]))
     return f"""
-    <div class="ship-card" id="{ship['file'].replace('.xml','')}">
+    <div class="ship-card" id="{ship['file'].replace('.xml','')}" data-mfr="{mfr}">
       <div class="ship-header" style="border-left:4px solid {color};" onclick="toggle(this)">
         <span class="ship-name">{name}</span>
         <span class="ship-meta">{mfr} &nbsp;·&nbsp; crew: {ship.get('crew','?')} &nbsp;·&nbsp; {n_wp} weapon ports &nbsp;·&nbsp; {n_sys} system components</span>
@@ -947,19 +959,44 @@ def ship_to_html(ship):
 
 
 def generate_html(ships):
-    cards = "\n".join(ship_to_html(s) for s in ships if s)
-    count = len([s for s in ships if s])
+    from collections import Counter
+    valid = [s for s in ships if s]
+    count = len(valid)
+    cards = "\n".join(ship_to_html(s) for s in valid)
+
+    # Manufacturer tabs
+    mfr_counts = Counter(s.get("mfr_name","Unknown") for s in valid)
+    mfr_list   = sorted(mfr_counts.keys())
+    tabs_html  = f'<button class="tab active" data-mfr="all" onclick="setTab(this)">All <span class="tc">{count}</span></button>'
+    for mfr in mfr_list:
+        safe = mfr.replace("'", "&#39;")
+        tabs_html += f'<button class="tab" data-mfr="{safe}" onclick="setTab(this)">{safe} <span class="tc">{mfr_counts[mfr]}</span></button>'
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SC DataPack - Ship Preview (Full)</title>
+<title>SC DataPack - Ships</title>
 <style>
 * {{ box-sizing:border-box; margin:0; padding:0; }}
 body {{ background:#0d1117; color:#c9d1d9; font-family:'Segoe UI',sans-serif; font-size:13px; line-height:1.5; padding:24px; }}
 h1  {{ color:#58a6ff; margin-bottom:4px; font-size:22px; }}
-.subtitle {{ color:#8b949e; margin-bottom:24px; font-size:12px; }}
-.ship-card {{ background:#161b22; border:1px solid #30363d; border-radius:8px; margin-bottom:10px; overflow:hidden; }}
+.subtitle {{ color:#8b949e; margin-bottom:14px; font-size:12px; }}
+/* ── Manufacturer tabs ── */
+.mfr-bar {{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }}
+.tab {{ background:#161b22; border:1px solid #30363d; border-radius:20px; padding:3px 10px;
+        color:#8b949e; font-size:11px; cursor:pointer; transition:all 0.15s; }}
+.tab:hover {{ border-color:#8b949e; color:#c9d1d9; }}
+.tab.active {{ background:#1f6feb; border-color:#388bfd; color:#fff; }}
+.tc {{ opacity:0.7; font-size:10px; }}
+/* ── Search ── */
+.search-row {{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }}
+#ship-search {{ background:#161b22; border:1px solid #30363d; border-radius:6px;
+                padding:5px 10px; color:#c9d1d9; font-size:12px; width:280px; }}
+#ship-search:focus {{ outline:none; border-color:#388bfd; }}
+.result-count {{ color:#8b949e; font-size:11px; }}
+/* ── Ship cards ── */
+.ship-card {{ background:#161b22; border:1px solid #30363d; border-radius:8px; margin-bottom:8px; overflow:hidden; }}
 .ship-header {{ padding:12px 18px; cursor:pointer; display:flex; align-items:center; gap:16px; user-select:none; transition:background 0.15s; }}
 .ship-header:hover {{ background:#1c2128; }}
 .ship-name {{ font-size:15px; font-weight:600; color:#e6edf3; flex:0 0 auto; min-width:240px; }}
@@ -988,9 +1025,6 @@ code.sec-power   {{ color:#e3b341; }}
 code.sec-cooler  {{ color:#79c0ff; }}
 code.sec-quantum {{ color:#bc8cff; }}
 code.sec-fuel    {{ color:#7ee787; }}
-code.sec-thruster {{ color:#ffa198; }}
-code.sec-radar   {{ color:#a5d6ff; }}
-code.sec-ctrl    {{ color:#8b949e; }}
 code.sec-other   {{ color:#8b949e; }}
 .port {{ color:#6e7681; font-size:11px; font-family:Consolas,monospace; }}
 .item-name {{ display:block; color:#e6edf3; font-weight:600; font-size:12px; line-height:1.3; }}
@@ -1005,23 +1039,39 @@ code.sec-other   {{ color:#8b949e; }}
 .cat-badge {{ display:inline-block; border-radius:3px; padding:1px 6px; font-size:11px; font-weight:600; }}
 .cat-missile {{ background:#332500; color:#ffa657; border:1px solid #5a3a00; }}
 .cat-turret  {{ background:#2d1f52; color:#d2a8ff; border:1px solid #4a3080; }}
-.toc {{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }}
-.toc a {{ background:#161b22; border:1px solid #30363d; border-radius:20px; padding:3px 10px;
-          color:#58a6ff; text-decoration:none; font-size:11px; }}
-.toc a:hover {{ background:#1c2128; }}
 </style>
 </head>
 <body>
-<h1>&#x1F680; SC DataPack - Ship Preview (Full Linkage)</h1>
-<p class="subtitle">Complete entity resolution - {count} ships - all loadout ports resolved - base loadouts only</p>
-<div class="toc">
-{"".join(f'<a href="#{s["file"].replace(".xml","")}">{s.get("display_name",s["class_name"])}</a>' for s in ships if s)}
+<h1>&#x1F680; SC DataPack — Ships</h1>
+<p class="subtitle">All loadout ports resolved &nbsp;·&nbsp; base loadouts only &nbsp;·&nbsp; {count} ships</p>
+<div class="mfr-bar">{tabs_html}</div>
+<div class="search-row">
+  <input id="ship-search" type="text" placeholder="Search ship name..." oninput="applyFilters()">
+  <span class="result-count" id="vis-count">{count} shown</span>
 </div>
 {cards}
 <script>
 function toggle(h) {{
   h.nextElementSibling.classList.toggle('hidden');
   h.querySelector('.arrow').classList.toggle('open');
+}}
+function setTab(btn) {{
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}}
+function applyFilters() {{
+  const mfr = document.querySelector('.tab.active').dataset.mfr;
+  const q   = document.getElementById('ship-search').value.toLowerCase().trim();
+  let vis = 0;
+  document.querySelectorAll('.ship-card').forEach(c => {{
+    const mok = mfr === 'all' || c.dataset.mfr === mfr;
+    const nok = !q || c.querySelector('.ship-name').textContent.toLowerCase().includes(q);
+    const show = mok && nok;
+    c.style.display = show ? '' : 'none';
+    if (show) vis++;
+  }});
+  document.getElementById('vis-count').textContent = vis + ' shown';
 }}
 </script>
 </body>
@@ -1030,19 +1080,21 @@ function toggle(h) {{
 
 def run():
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    uuid_idx = build_uuid_index()
-    cls_idx  = build_classname_index()
-    mfr_idx  = build_manufacturer_index(uuid_idx)
-    loc_idx  = build_localization_index()
+    uuid_idx  = build_uuid_index()
+    cls_idx   = build_classname_index()
+    mfr_idx   = build_manufacturer_index(uuid_idx)
+    loc_idx   = build_localization_index()
 
-    print(f"\nParsing {len(PREVIEW_SHIPS)} ships...")
+    ship_paths = scan_all_ships()
+    print(f"\nParsing {len(ship_paths)} ships (all manufacturers, no AI variants)...")
     ships = []
-    for fname in PREVIEW_SHIPS:
-        path = SHIPS_DIR / fname
-        print(f"  {fname}...", end=" ", flush=True)
+    for i, path in enumerate(ship_paths, 1):
+        print(f"  [{i}/{len(ship_paths)}] {path.name}...", end=" ", flush=True)
         ship = parse_ship(path, uuid_idx, cls_idx, mfr_idx, loc_idx)
         if ship:
-            print(f"ok ({len(ship['hardpoints'])} weapons, {len(ship['systems'])} systems)")
+            print(f"ok ({len(ship['hardpoints'])} wp, {len(ship['systems'])} sys)")
+        else:
+            print("SKIP")
         ships.append(ship)
 
     html = generate_html(ships)
@@ -1050,7 +1102,7 @@ def run():
     out.write_text(html, encoding="utf-8")
 
     good = len([s for s in ships if s])
-    print(f"\nDone. {good}/{len(PREVIEW_SHIPS)} ships.")
+    print(f"\nDone. {good}/{len(ship_paths)} ships.")
     print(f"Report -> {out}")
     return out
 
