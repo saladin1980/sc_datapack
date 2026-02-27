@@ -529,16 +529,18 @@ def parse_component_stats(xml_path, uuid_idx, loc_idx=None):
             r = elem.get("resource","")
             if r in ("Fuel","QuantumFuel"):
                 res_type = r; break
+        # Use SStandardCargoUnit (ResourceContainer child) — 1 SCU = 1,000,000 fuel units
+        # Confirmed: Avenger H 4.5 SCU x2 = 9.0M, Q 1.1 SCU = 1.1M ✓
         for elem in root.iter():
             pt = elem.get("__polymorphicType","")
-            if "SStandardResourceUnit" in pt or elem.get("standardResourceUnits") is not None:
-                cap = elem.get("standardResourceUnits","")
-                if cap:
+            if "SStandardCargoUnit" in pt or "SStandardCargoUnit" in elem.tag:
+                v = elem.get("standardCargoUnits","")
+                if v:
                     try:
-                        capv  = float(cap)
+                        cap_m = float(v)
                         lbl   = "Q-Fuel" if "Quantum" in res_type else "Fuel"
-                        cap_s = f"{capv:g}"   # "10" not "10.00", "0.25" not "0.2500"
-                        info["stats"] = [(lbl, cap_s+" u")]; return info
+                        cap_s = f"{cap_m:g}M"   # "4.5M", "1.1M", "6.75M"
+                        info["stats"] = [(lbl, cap_s)]; return info
                     except (ValueError, TypeError):
                         pass
 
