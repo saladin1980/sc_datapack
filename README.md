@@ -18,82 +18,67 @@ Produces human-readable HTML reference reports from raw game data — no AI, pur
 
 ---
 
+## Quick start
+
+```
+1. git clone https://github.com/saladin1980/sc_datapack.git
+2. Place Data.p4k in the repo root folder
+3. python runner.py
+```
+
+That's it. unp4k is downloaded automatically on first run. Reports land in `HTML\` when done.
+
+**Only requirement:** Python 3.12+ — [python.org](https://www.python.org/downloads/)
+
+---
+
 ## Folder structure
 
 ```
 sc_datapack\
-  runner.py          <- START HERE — runs the full pipeline
-  .env               <- your config (copy from .env.example, not committed)
-  .env.example       <- config template
+  Data.p4k           <- put your game data file here
+  runner.py          <- run this to start everything
 
   DOCS\              <- documentation and reference files
-  SCRIPTS\           <- pipeline source code (settings + individual scripts)
-  Tools\             <- unp4k tool + Python venv (you install these)
+  SCRIPTS\           <- pipeline source code
+  Tools\             <- unp4k + venv (auto-created on first run)
   Data_Extraction\   <- extracted game files (created on first run)
   HTML\              <- generated HTML reports (created on first run)
 ```
 
 ---
 
-## Quick start
+## Runner flags
 
-### 1. Prerequisites
-- **Python 3.12+** — [python.org](https://www.python.org/downloads/)
-- **Git** — [git-scm.com](https://git-scm.com/)
-- **unp4k** — [github.com/dolkensp/unp4k](https://github.com/dolkensp/unp4k/releases) — download latest release, extract to `Tools\unp4k-suite\`
-
-### 2. Clone
 ```bash
-git clone https://github.com/saladin1980/sc_datapack.git
-cd sc_datapack
+python runner.py                    # full run: extract + all reports
+python runner.py --skip-extract     # reports only (already extracted)
+python runner.py --only ships       # one report: ships / components / armor / weapons
 ```
-
-### 3. Set up Python environment
-```bash
-python -m venv Tools\venv
-Tools\venv\Scripts\activate
-```
-
-### 4. Configure paths
-```bash
-copy .env.example .env
-```
-Open `.env` and set your two required paths:
-- `SC_P4K_PATH` — full path to your `Data.p4k` file
-- `SC_UNP4K_EXE` — full path to `unp4k.exe`
-
-### 5. Run
-```bash
-python runner.py
-```
-
-That's it. Reports land in `HTML\` when complete.
-
----
 
 ## Individual scripts
 
-Run just one step at a time if needed:
-
 ```bash
-python SCRIPTS\pipeline\extractor.py          # extract game files only
-python SCRIPTS\pipeline\ships_preview.py      # ships report only
-python SCRIPTS\pipeline\components_preview.py # components report only
-python SCRIPTS\pipeline\armor_preview.py      # armor report only
-python SCRIPTS\pipeline\weapons_preview.py    # weapons report only
+python SCRIPTS\pipeline\extractor.py
+python SCRIPTS\pipeline\ships_preview.py
+python SCRIPTS\pipeline\components_preview.py
+python SCRIPTS\pipeline\armor_preview.py
+python SCRIPTS\pipeline\weapons_preview.py
 ```
 
-Runner flags:
-```bash
-python runner.py --skip-extract       # re-run reports only (data already extracted)
-python runner.py --only ships         # run just one report
-```
+---
+
+## Custom paths (optional)
+
+By default everything is relative to the repo root. To override (e.g. Data.p4k
+is on a different drive), copy `.env.example` to `.env` and uncomment the lines
+you need. No code editing required.
 
 ---
 
 ## What gets extracted
 
-Only ~2.4 GB out of the full archive is needed:
+Only ~2.4 GB of the archive is needed for report generation:
 
 ```
 Data/Libs/Foundry/    2.3 GB  — all entity/item XML records
@@ -106,9 +91,9 @@ See [`DOCS/EXTRACTION_PLAN.md`](DOCS/EXTRACTION_PLAN.md) for the full breakdown.
 
 ## Stack
 
-- **[unp4k](https://github.com/dolkensp/unp4k)** — P4K extraction (C# native)
-- **Python 3.12 stdlib only** — `xml.etree`, `pathlib`, `zipfile`
-- No runtime pip dependencies, no AI
+- **[unp4k](https://github.com/dolkensp/unp4k)** — P4K extraction (C# native, auto-downloaded)
+- **Python 3.12 stdlib only** — `xml.etree`, `pathlib`, `urllib`, `zipfile`
+- No pip dependencies, no AI
 
 ---
 
