@@ -59,14 +59,6 @@ TYPE_META = {
     # ── Fuel ──────────────────────────────────────────────────────────────────
     "FuelTank":             ("⛽",  "Hydrogen Fuel Tanks",        "fuel"),
     "QuantumFuelTank":      ("⚗",   "Quantum Fuel Tanks",        "qfuel"),
-    "FuelIntake":           ("⚙",   "Fuel Intakes",              "intake"),
-    # ── Propulsion ────────────────────────────────────────────────────────────
-    "MainThruster":         ("🔥",  "Main Thrusters",             "thruster"),
-    "ManneuverThruster":    ("🔥",  "Maneuvering Thrusters",      "thruster"),  # game spelling
-    "VtolThruster":         ("🔥",  "VTOL Thrusters",             "thruster"),
-    # ── Sensors ───────────────────────────────────────────────────────────────
-    "Radar":                ("📡",  "Radars & Sensors",           "radar"),
-    "Scanner":              ("📡",  "Scanners",                   "radar"),
     # ── Weapons (ship) ────────────────────────────────────────────────────────
     "WeaponGun":            ("⚔",   "Weapons (Ballistic / Energy)", "weapon"),
     "WeaponMining":         ("⛏",   "Mining Lasers",              "mining"),
@@ -76,19 +68,13 @@ TYPE_META = {
     "Missile":              ("🚀",  "Missiles",                   "missile"),
     "Turret":               ("⚔",   "Turrets",                   "turret"),
     "TurretBase":           ("⚔",   "Turret Bases",              "turret"),
-    # ── Flight systems ────────────────────────────────────────────────────────
-    "FlightController":     ("🎮",  "Flight Controllers",         "ctrl"),
     # ── Salvage ───────────────────────────────────────────────────────────────
     "SalvageField":         ("🔧",  "Salvage (Field)",            "salvage"),
     # ── Cargo / Storage ───────────────────────────────────────────────────────
     "CargoGrid":            ("📦",  "Cargo Grids",                "cargo"),
     "Cargo":                ("📦",  "Cargo / Storage",            "cargo"),
     # ── Ship internals ────────────────────────────────────────────────────────
-    "LifeSupportGenerator": ("💨",  "Life Support",               "misc"),
-    "GravityGenerator":     ("🌀",  "Gravity Generators",         "misc"),
     "DockingCollar":        ("🔗",  "Docking Collars",            "misc"),
-    "SelfDestruct":         ("💣",  "Self Destruct",              "misc"),
-    "Relay":                ("📡",  "Relays",                     "misc"),
     "Emp":                  ("⚡",  "EMP",                        "emp"),
     "Misc":                 ("⚙",   "Misc Ship Systems",         "misc"),
     # ── Catch-all ─────────────────────────────────────────────────────────────
@@ -99,16 +85,12 @@ SECTION_ORDER = [
     "Shield", "ShieldController",
     "PowerPlant", "Cooler",
     "QuantumDrive", "Quantum Interdiction Generator", "QuantumCalibrationComputer",
-    "FuelTank", "QuantumFuelTank", "FuelIntake",
-    "MainThruster", "ManneuverThruster", "VtolThruster",
-    "Radar", "Scanner",
+    "FuelTank", "QuantumFuelTank",
     "WeaponGun", "WeaponMining", "WeaponTractorBeam",
     "WeaponDefensive", "MissileLauncher", "Missile", "Turret", "TurretBase",
-    "FlightController",
     "SalvageField",
     "CargoGrid", "Cargo",
-    "LifeSupportGenerator", "GravityGenerator", "DockingCollar",
-    "SelfDestruct", "Relay", "Emp", "Misc",
+    "DockingCollar", "Emp", "Misc",
     "Other",
 ]
 
@@ -122,7 +104,17 @@ SKIP_TYPES  = {"", "Paint", "Parachute", "UNDEFINED", "FoodDrink",
                "Armor", "WeaponPersonal", "WeaponAttachment",
                "Usable", "Commodity", "Gadget", "Medical",
                "GrapplingHook", "Flashlight", "AttachedPart",
-               "PersonalStorage"}
+               "PersonalStorage",
+               # Ship systems excluded from listing (unnamed / no useful stats)
+               "MainThruster", "ManneuverThruster", "VtolThruster",
+               "FuelIntake",
+               "Radar", "Scanner",
+               "LifeSupportGenerator", "GravityGenerator",
+               "SelfDestruct",
+               "Relay",
+               }
+# All *Controller types are also skipped, except ShieldController
+# (checked dynamically in scan_all_components)
 
 # ── Scanner ────────────────────────────────────────────────────────────────────
 
@@ -166,7 +158,8 @@ def scan_all_components(uuid_idx, cls_idx, loc_idx, mfr_idx):
             class_name = root.tag.split(".", 1)[1]
             typ, sub_typ, size, grade = _get_attach_def(root)
 
-            if typ in SKIP_TYPES:
+            # Skip unwanted types; all *Controller except ShieldController also skipped
+            if typ in SKIP_TYPES or (typ.endswith("Controller") and typ != "ShieldController"):
                 processed += 1
                 continue
 
