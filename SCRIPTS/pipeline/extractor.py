@@ -1,9 +1,8 @@
 """
-Phase 1: Selective extraction from Data.p4k into Data_Extraction/.
+Phase 1: Full extraction from Data.p4k into Data_Extraction/.
 
-Extracts only the paths needed for report generation (~2.4 GB):
-  Data/Libs/Foundry/**   - all XML item/ship/component records
-  Data/Localization/**   - global.ini display name strings
+Extracts all files from the archive (~3.5 hours, ~223 GB on disk).
+unp4k does not support path filtering so the full archive is extracted.
 
 Uses unp4k.exe as a subprocess (C# native tool).
 Configure paths in .env at the repo root before running.
@@ -78,13 +77,13 @@ def run():
     print(f"Version  : {version}")
     print(f"P4K      : {P4K_PATH}")
     print(f"Output   : {OUTPUT_DIR}")
-    print(f"Paths    : {', '.join(EXTRACT_PATHS)}")
+    print(f"Note     : Full extraction (~3.5 hrs). Go get a coffee.")
     sys.stdout.flush()
 
     start = time.time()
 
-    # unp4k accepts path filters as extra arguments after the p4k path
-    cmd = [str(UNP4K_EXE), str(P4K_PATH)] + EXTRACT_PATHS
+    # unp4k does not support path filtering — extracts full archive
+    cmd = [str(UNP4K_EXE), str(P4K_PATH)]
 
     with open(str(unp4k_log), "w", encoding="utf-8", errors="replace") as log_out:
         proc = subprocess.Popen(
