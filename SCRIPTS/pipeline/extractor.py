@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR, UNP4K_EXE
+from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR, UNP4K_EXE, UNFORGE_EXE
 
 # Selective extraction — only what the pipeline actually needs
 EXTRACT_PATHS = [
@@ -132,8 +132,28 @@ def run():
 
     if proc.returncode != 0:
         print(f"WARNING: unp4k exited {proc.returncode} — check {error_log}")
+        print(f"\n--- Extraction failed ---")
+        print(f"  Exit code : {proc.returncode}")
+        print(f"  Elapsed   : {elapsed/60:.1f} min")
+        sys.stdout.flush()
+        return
+
+    # ── Convert any CryXML binary files to plain XML ─────────────────────────
+    print(f"\nConverting CryXML files...")
+    sys.stdout.flush()
+    forge_result = subprocess.run(
+        [str(UNFORGE_EXE), str(OUTPUT_DIR)],
+        capture_output=True, text=True, encoding="utf-8", errors="replace"
+    )
+    if forge_result.returncode != 0:
+        print(f"WARNING: unforge exited {forge_result.returncode}")
+        with open(str(error_log), "a", encoding="utf-8") as f:
+            f.write(f"--- unforge stderr ---\n{forge_result.stderr}\n")
     else:
-        version_file.write_text(version)
+        print(f"CryXML conversion done.")
+    sys.stdout.flush()
+
+    version_file.write_text(version)
 
     print(f"\n--- Extraction complete ---")
     print(f"  Version   : {version}")
