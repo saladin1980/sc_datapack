@@ -285,8 +285,15 @@ def parse_weapon(xml_path, uuid_idx, cls_idx, loc_idx=None):
             info["ammo_uuid"]  = elem.get("ammoParamsRecord","")
             break
     for elem in root.iter():
-        if elem.get("fireRate"):
-            info["fire_rate"] = elem.get("fireRate",""); break
+        pt = elem.get("__polymorphicType","")
+        if any(k in pt for k in ("SWeaponActionFireSingle", "SWeaponActionFireRapid",
+                                  "SWeaponActionFireBurst", "SWeaponActionFireCharged")):
+            fr = elem.get("fireRate","")
+            try:
+                if float(fr) > 0:
+                    info["fire_rate"] = fr; break
+            except (ValueError, TypeError):
+                pass
     for elem in root.iter():
         pt = elem.get("__polymorphicType","")
         if pt == "SWeaponAIDataParams" or "WeaponAIData" in pt:
@@ -452,6 +459,62 @@ def parse_component_stats(xml_path, uuid_idx, loc_idx=None):
                 except (ValueError, TypeError):
                     pass
             info["stats"] = s; return info
+
+    # ── Weapon Gun (must come BEFORE fuel check — weapons also have SStandardResourceUnit) ──
+    # Identified by SWeaponActionFire* polymorphicType (the actual fire-mode params).
+    # noPowerStats / underpowerStats also carry fireRate=0; skip those via > 0 guard.
+    for elem in root.iter():
+        pt = elem.get("__polymorphicType","")
+        if any(k in pt for k in ("SWeaponActionFireSingle", "SWeaponActionFireRapid",
+                                  "SWeaponActionFireBurst", "SWeaponActionFireCharged")):
+            fr = elem.get("fireRate","")
+            try:
+                fr_val = float(fr)
+                if fr_val > 0:
+                    s = [("Fire Rate", f"{fr_val:.0f}/min")]
+                    # Ammo → damage + count
+                    for aelem in root.iter():
+                        apt = aelem.get("__polymorphicType","")
+                        if "SAmmoContainerComponentParams" in apt or (
+                                "AmmoContainer" in aelem.tag and aelem.get("ammoParamsRecord")):
+                            ammo_uuid = aelem.get("ammoParamsRecord","")
+                            ammo_cnt  = aelem.get("initialAmmoCount","")
+                            if ammo_cnt and ammo_cnt != "0":
+                                s.append(("Ammo", ammo_cnt))
+                            if ammo_uuid and ammo_uuid != "00000000-0000-0000-0000-000000000000":
+                                ammo = parse_ammo(ammo_uuid, uuid_idx)
+                                spd = ammo.get("speed","")
+                                spd and s.append(("Spd", _fmt(spd)+"m/s"))
+                                dmg_parts = []
+                                for dk, dl in [("dmg_physical","P"),("dmg_energy","E"),
+                                               ("dmg_distortion","D"),("dmg_thermal","T")]:
+                                    try:
+                                        v = float(ammo.get(dk,"0") or "0")
+                                        if v > 0: dmg_parts.append(f"{dl}:{v:.1f}")
+                                    except (ValueError, TypeError):
+                                        pass
+                                try:
+                                    total = sum(float(ammo.get(k,"0") or "0")
+                                                for k in ("dmg_physical","dmg_energy",
+                                                          "dmg_distortion","dmg_thermal"))
+                                    if total > 0:
+                                        s.append(("Dmg/shot", f"{total:.1f}"))
+                                        if len(dmg_parts) > 1:
+                                            s.append(("Type", " ".join(dmg_parts)))
+                                except (ValueError, TypeError):
+                                    pass
+                            break
+                    # Range from weaponAIData
+                    for aelem in root.iter():
+                        if aelem.tag == "weaponAIData" or "weaponAIData" in aelem.tag.lower():
+                            ir = aelem.get("idealCombatRange","")
+                            mr = aelem.get("maxFiringRange","")
+                            ir and s.append(("Ideal", _fmt(ir)+"m"))
+                            mr and s.append(("Max",   _fmt(mr)+"m"))
+                            break
+                    info["stats"] = s; return info
+            except (ValueError, TypeError):
+                pass
 
     # ── Fuel Tank ─────────────────────────────────────────────────────────────
     for elem in root.iter():
