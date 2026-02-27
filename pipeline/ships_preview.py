@@ -45,9 +45,9 @@ MFR_NAMES = {
 SECTION_ORDER = [
     "weapon", "turret", "missile",
     "shield", "power", "cooler", "quantum",
-    "fuel_h", "fuel_q", "thruster",
-    "radar", "lifesupport", "landing",
-    "controller", "other",
+    "fuel_h", "fuel_q",
+    "lifesupport", "landing",
+    "other",
 ]
 
 SECTION_META = {          # (emoji, label, css-class)
@@ -516,13 +516,31 @@ def parse_component_stats(xml_path, uuid_idx, loc_idx=None):
             except (ValueError, TypeError):
                 pass
 
-    # ── Fuel Tank ─────────────────────────────────────────────────────────────
-    for elem in root.iter():
-        pt = elem.get("__polymorphicType","")
-        if "SStandardResourceUnit" in pt or elem.get("standardResourceUnits") is not None:
-            cap = elem.get("standardResourceUnits","")
-            if cap:
-                info["stats"] = [("Capacity", _fmt(cap,2)+" u")]; return info
+    # ── Fuel Tank (guard: only fires if SCItemFuelTankParams is present) ──────
+    # This prevents SStandardResourceUnit from firing on thrusters / coolers / etc.
+    has_ftank = any(
+        "SCItemFuelTankParams" in elem.get("__polymorphicType","") or
+        "SCItemFuelTankParams" in elem.tag
+        for elem in root.iter()
+    )
+    if has_ftank:
+        res_type = ""
+        for elem in root.iter():
+            r = elem.get("resource","")
+            if r in ("Fuel","QuantumFuel"):
+                res_type = r; break
+        for elem in root.iter():
+            pt = elem.get("__polymorphicType","")
+            if "SStandardResourceUnit" in pt or elem.get("standardResourceUnits") is not None:
+                cap = elem.get("standardResourceUnits","")
+                if cap:
+                    try:
+                        capv  = float(cap)
+                        lbl   = "Q-Fuel" if "Quantum" in res_type else "Fuel"
+                        cap_s = f"{capv:g}"   # "10" not "10.00", "0.25" not "0.2500"
+                        info["stats"] = [(lbl, cap_s+" u")]; return info
+                    except (ValueError, TypeError):
+                        pass
 
     # ── Thruster ──────────────────────────────────────────────────────────────
     for elem in root.iter():
@@ -670,7 +688,7 @@ def parse_ship(xml_path, uuid_idx, cls_idx, mfr_idx, loc_idx=None):
         port_lc  = port.lower()
         category = get_port_category(port_lc)
 
-        if category == "relay":
+        if category in ("relay", "thruster", "radar"):
             continue
 
         resolved_cls, resolved_path = resolve_entity(cls_name, cls_ref, uuid_idx, cls_idx)
