@@ -223,10 +223,10 @@ def _get_display_name(root, loc_idx):
         tag = elem.tag
         if "Localization" in tag:
             n = elem.get("Name", "")
-            if n and n.startswith("@"):
+            if n and n.startswith("@") and n != "@LOC_UNINITIALIZED":
                 loc_key = n[1:]; break
         dn = elem.get("displayName", "")
-        if dn and dn.startswith("@"):
+        if dn and dn.startswith("@") and dn != "@LOC_UNINITIALIZED":
             loc_key = dn[1:]; break
     if not loc_key:
         return ""
