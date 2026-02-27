@@ -14,6 +14,7 @@ Produces human-readable HTML reference reports from raw game data.
 | [Ships](https://saladin1980.github.io/sc_datapack/ships_preview.html) | 276 ships | Full loadout breakdown — every port resolved to its component with stats (shields, power, cooling, QD, thrusters, weapons, cargo SCU, IFCS speeds) |
 | [Components](https://saladin1980.github.io/sc_datapack/components_preview.html) | 2,516 components | All equippable ship components by type — searchable with key stats per item |
 | [Armor](https://saladin1980.github.io/sc_datapack/armor_preview.html) | 2,200+ items | All player armor by slot (Helmet/Torso/Arms/Legs/Undersuit/Backpack) and tier — damage resistances, temperature range, radiation, signatures, storage |
+| [Weapons](https://saladin1980.github.io/sc_datapack/weapons_preview.html) | 601 items | Ship weapons, FPS personal weapons, and attachments — damage per type, fire rate, bullet speed, mag capacity, combat range, attachment slots |
 
 ---
 
@@ -67,7 +68,7 @@ See [`EXTRACTION_PLAN.md`](EXTRACTION_PLAN.md) for the full breakdown and select
 | Ship report | `pipeline/ships_preview.py` | ✅ Done |
 | Component report | `pipeline/components_preview.py` | ✅ Done |
 | Armor report | `pipeline/armor_preview.py` | ✅ Done |
-| Weapons report | `pipeline/weapons_preview.py` | 🔜 Next |
+| Weapons report | `pipeline/weapons_preview.py` | ✅ Done |
 
 ---
 
