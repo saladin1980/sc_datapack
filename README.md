@@ -19,7 +19,7 @@ Produces human-readable HTML reference reports from raw game data.
 
 ## Stack
 
-- **unp4k.exe** — bulk P4K extraction (~97 files/sec, C# native)
+- **[unp4k](https://github.com/dolkensp/unp4k)** — bulk P4K extraction (~97 files/sec, C# native). Download the latest release and place `unp4k.exe` at the path set in `config/settings.py`.
 - **Python 3.12** + stdlib only (`xml.etree`, `pathlib`) — XML parsing and HTML generation
 - No runtime dependencies for the HTML reports (fully self-contained)
 
