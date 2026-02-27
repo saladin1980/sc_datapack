@@ -1,7 +1,7 @@
 # SC DataPack Pipeline
 
-Extraction and parsing pipeline for Star Citizen's `Data.p4k` (~150 GB, 1.28 M files).
-Produces human-readable HTML reference reports from raw game data.
+Extraction and parsing pipeline for Star Citizen's `Data.p4k`.
+Produces human-readable HTML reference reports from raw game data — no AI, pure Python stdlib.
 
 > **Live reports →** <https://saladin1980.github.io/sc_datapack/>
 
@@ -11,65 +11,105 @@ Produces human-readable HTML reference reports from raw game data.
 
 | Report | Items | Description |
 |---|---|---|
-| [Ships](https://saladin1980.github.io/sc_datapack/ships_preview.html) | 276 ships | Full loadout breakdown — every port resolved to its component with stats (shields, power, cooling, QD, thrusters, weapons, cargo SCU, IFCS speeds) |
-| [Components](https://saladin1980.github.io/sc_datapack/components_preview.html) | 2,516 components | All equippable ship components by type — searchable with key stats per item |
-| [Armor](https://saladin1980.github.io/sc_datapack/armor_preview.html) | 2,200+ items | All player armor by slot (Helmet/Torso/Arms/Legs/Undersuit/Backpack) and tier — damage resistances, temperature range, radiation, signatures, storage |
-| [Weapons](https://saladin1980.github.io/sc_datapack/weapons_preview.html) | 601 items | Ship weapons, FPS personal weapons, and attachments — damage per type, fire rate, bullet speed, mag capacity, combat range, attachment slots |
+| [Ships](https://saladin1980.github.io/sc_datapack/ships_preview.html) | 276 | Full loadout — every port resolved to its component with stats (shields, power, cooling, QD, thrusters, weapons, cargo, IFCS speeds) |
+| [Components](https://saladin1980.github.io/sc_datapack/components_preview.html) | 2,516 | All equippable ship components by type — searchable, key stats per item |
+| [Armor](https://saladin1980.github.io/sc_datapack/armor_preview.html) | 2,200+ | All player armor by slot and tier — damage resistances, temperature, radiation, signatures, storage |
+| [Weapons](https://saladin1980.github.io/sc_datapack/weapons_preview.html) | 601 | Ship weapons, FPS personal weapons, and attachments — damage, fire rate, bullet speed, mag capacity, range, attachment slots |
+
+---
+
+## Folder structure
+
+```
+sc_datapack\
+  runner.py          <- START HERE — runs the full pipeline
+  .env               <- your config (copy from .env.example, not committed)
+  .env.example       <- config template
+
+  DOCS\              <- documentation and reference files
+  SCRIPTS\           <- pipeline source code (settings + individual scripts)
+  Tools\             <- unp4k tool + Python venv (you install these)
+  Data_Extraction\   <- extracted game files (created on first run)
+  HTML\              <- generated HTML reports (created on first run)
+```
+
+---
+
+## Quick start
+
+### 1. Prerequisites
+- **Python 3.12+** — [python.org](https://www.python.org/downloads/)
+- **Git** — [git-scm.com](https://git-scm.com/)
+- **unp4k** — [github.com/dolkensp/unp4k](https://github.com/dolkensp/unp4k/releases) — download latest release, extract to `Tools\unp4k-suite\`
+
+### 2. Clone
+```bash
+git clone https://github.com/saladin1980/sc_datapack.git
+cd sc_datapack
+```
+
+### 3. Set up Python environment
+```bash
+python -m venv Tools\venv
+Tools\venv\Scripts\activate
+```
+
+### 4. Configure paths
+```bash
+copy .env.example .env
+```
+Open `.env` and set your two required paths:
+- `SC_P4K_PATH` — full path to your `Data.p4k` file
+- `SC_UNP4K_EXE` — full path to `unp4k.exe`
+
+### 5. Run
+```bash
+python runner.py
+```
+
+That's it. Reports land in `HTML\` when complete.
+
+---
+
+## Individual scripts
+
+Run just one step at a time if needed:
+
+```bash
+python SCRIPTS\pipeline\extractor.py          # extract game files only
+python SCRIPTS\pipeline\ships_preview.py      # ships report only
+python SCRIPTS\pipeline\components_preview.py # components report only
+python SCRIPTS\pipeline\armor_preview.py      # armor report only
+python SCRIPTS\pipeline\weapons_preview.py    # weapons report only
+```
+
+Runner flags:
+```bash
+python runner.py --skip-extract       # re-run reports only (data already extracted)
+python runner.py --only ships         # run just one report
+```
+
+---
+
+## What gets extracted
+
+Only ~2.4 GB out of the full archive is needed:
+
+```
+Data/Libs/Foundry/    2.3 GB  — all entity/item XML records
+Data/Localization/     79 MB  — display name strings
+```
+
+See [`DOCS/EXTRACTION_PLAN.md`](DOCS/EXTRACTION_PLAN.md) for the full breakdown.
 
 ---
 
 ## Stack
 
-- **[unp4k](https://github.com/dolkensp/unp4k)** — bulk P4K extraction (~97 files/sec, C# native). Download the latest release and place `unp4k.exe` at the path set in `config/settings.py`.
-- **Python 3.12** + stdlib only (`xml.etree`, `pathlib`) — XML parsing and HTML generation
-- No runtime dependencies for the HTML reports (fully self-contained)
-
-> `scdatatools` is installed in the venv for optional DCB exploration but is **not used** by any pipeline script.
-
-## Setup
-
-```bash
-# 1. Clone
-git clone https://github.com/saladin1980/sc_datapack.git
-cd sc_datapack
-
-# 2. Edit paths
-#    config/settings.py  →  BASE_DIR = Path("X:/SC_DataPack")
-
-# 3. Create venv (stdlib only — no extra packages needed for the pipeline)
-python -m venv venv
-venv\Scripts\activate
-
-# 4. Extract (requires unp4k.exe — see EXTRACTION_PLAN.md for selective extraction)
-python pipeline/extractor.py
-
-# 5. Generate reports
-python pipeline/ships_preview.py
-python pipeline/components_preview.py
-python pipeline/armor_preview.py
-```
-
-## What gets extracted
-
-The pipeline only needs ~2.5 GB out of the full ~223 GB archive:
-
-```
-Data/Libs/Foundry/       2.3 GB  — all entity/item XML records
-Data/Localization/        79 MB  — display name strings (global.ini)
-```
-
-See [`EXTRACTION_PLAN.md`](EXTRACTION_PLAN.md) for the full breakdown and selective extraction approach for future version updates.
-
-## Pipeline phases
-
-| Phase | Script | Status |
-|---|---|---|
-| Extract P4K | `pipeline/extractor.py` | ✅ Done |
-| Ship report | `pipeline/ships_preview.py` | ✅ Done |
-| Component report | `pipeline/components_preview.py` | ✅ Done |
-| Armor report | `pipeline/armor_preview.py` | ✅ Done |
-| Weapons report | `pipeline/weapons_preview.py` | ✅ Done |
+- **[unp4k](https://github.com/dolkensp/unp4k)** — P4K extraction (C# native)
+- **Python 3.12 stdlib only** — `xml.etree`, `pathlib`, `zipfile`
+- No runtime pip dependencies, no AI
 
 ---
 
-*Reports are generated from game data files and shared for community research purposes.*
+*Data extracted from Star Citizen game files for community research purposes.*

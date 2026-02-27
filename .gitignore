@@ -1,9 +1,11 @@
+# ── User config (never commit — contains local paths) ────────────────────────
+.env
+
 # ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-.Python
 *.egg-info/
 dist/
 build/
@@ -12,13 +14,25 @@ build/
 venv/
 .venv/
 env/
+Tools/venv/
 
-# ── SC Data (large / copyrighted — never commit) ─────────────────────────────
-# These paths are siblings of sc-pipeline, but just in case:
+# ── SC Data (large / copyrighted — never commit) ──────────────────────────────
 *.p4k
 *.pak
+
+# ── Generated output (created on run, not tracked) ───────────────────────────
+Data_Extraction/*
+!Data_Extraction/.gitkeep
+HTML/*
+!HTML/.gitkeep
 output/
 logs/
+
+# ── Tools (user-installed binaries — not tracked) ────────────────────────────
+Tools/unp4k-suite/
+
+# ── Generated report HTML (belongs on gh-pages branch, not main) ──────────────
+*_preview.html
 
 # ── Scratch / one-off diagnostic scripts ─────────────────────────────────────
 check_*.ps1
@@ -30,9 +44,6 @@ poll_*.ps1
 test_*.ps1
 test_*.py
 *.xml
-
-# ── Generated report HTML (belongs on gh-pages branch, not main) ──────────────
-*_preview.html
 
 # ── IDE / OS ──────────────────────────────────────────────────────────────────
 .vscode/
