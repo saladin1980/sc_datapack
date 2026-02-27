@@ -242,7 +242,11 @@ def _get_display_name(root, loc_idx):
             loc_key = dn[1:]; break
     if not loc_key:
         return ""
-    return loc_idx.get(loc_key.lower(), "")
+    resolved = loc_idx.get(loc_key.lower(), "")
+    # Filter out dev placeholder values — treat as unnamed
+    if "PLACEHOLDER" in resolved.upper():
+        return ""
+    return resolved
 
 # ── Component parsers ──────────────────────────────────────────────────────────
 
@@ -752,11 +756,14 @@ def parse_ship(xml_path, uuid_idx, cls_idx, mfr_idx, loc_idx=None):
 
         # ── Everything else → systems ──────────────────────────────────────────
         cstats = parse_component_stats(resolved_path, uuid_idx, loc_idx) if resolved_path else {}
+        dname = cstats.get("display_name","")
+        if not dname:  # skip unnamed/placeholder components
+            continue
         ship["systems"].append({
             "port":         port,
             "category":     category,
             "class":        resolved_cls or "—",
-            "display_name": cstats.get("display_name",""),
+            "display_name": dname,
             "type":         cstats.get("type",""),
             "size":         cstats.get("size",""),
             "grade":        cstats.get("grade",""),

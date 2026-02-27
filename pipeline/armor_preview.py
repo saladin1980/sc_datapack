@@ -225,16 +225,29 @@ def parse_armor_item(path, uuid_idx, mfr_idx, loc_idx, dmg_idx):
     if not info["name"]:
         for el in root.iter():
             dn = el.get("displayName", "")
-            if dn and dn.startswith("@") and dn != "@LOC_UNINITIALIZED":
+            if dn and dn.startswith("@") and dn not in ("@LOC_UNINITIALIZED", "@LOC_EMPTY"):
                 key = dn[1:].lower()
                 name = loc_idx.get(key, "")
-                if name:
+                if name and "PLACEHOLDER" not in name.upper():
                     info["name"] = name
                     break
 
-    # Skip items without a usable display name (inventory/NPC variants)
+    # If still no name, check whether the XML's loc key explicitly resolves to PLACEHOLDER
+    # (now returns "" from _get_display_name). Those are dev-only items — skip entirely.
+    # Items with genuinely missing translations get filename fallback instead.
     if not info["name"]:
-        info["name"] = path.stem  # use filename as last resort
+        is_placeholder = False
+        for el in root.iter():
+            if "Localization" in el.tag:
+                k = el.get("Name", "")
+                if k and k.startswith("@") and k not in ("@LOC_UNINITIALIZED", "@LOC_EMPTY"):
+                    raw = loc_idx.get(k[1:].lower(), "")
+                    if "PLACEHOLDER" in raw.upper():
+                        is_placeholder = True
+                    break
+        if is_placeholder:
+            return None  # filter dev-only items
+        info["name"] = path.stem  # real item, just missing translation
 
     # ── SCItemSuitArmorParams ──────────────────────────────────────────────────
     for el in root.iter():

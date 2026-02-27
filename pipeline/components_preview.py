@@ -174,6 +174,9 @@ def scan_all_components(uuid_idx, cls_idx, loc_idx, mfr_idx):
             mfr_display = MFR_NAMES.get(mfr_code, mfr_code) if mfr_code else ""
 
             display_name = _get_display_name(root, loc_idx)
+            if not display_name:
+                processed += 1
+                continue
 
             # Get stats using the shared parser
             cstats = parse_component_stats(xml_file, uuid_idx, loc_idx)
