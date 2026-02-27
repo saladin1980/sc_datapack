@@ -66,9 +66,9 @@ def _ensure_unp4k():
         with urllib.request.urlopen(req, timeout=30) as resp:
             release = json.loads(resp.read())
 
-        # Find the zip asset
+        # Find the unp4k-suite zip (contains both unp4k.exe and unforge.exe)
         zip_asset = next(
-            (a for a in release["assets"] if a["name"].endswith(".zip")),
+            (a for a in release["assets"] if "unp4k-suite" in a["name"] and a["name"].endswith(".zip")),
             None
         )
         if not zip_asset:
