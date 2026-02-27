@@ -14,9 +14,10 @@ h1 { color: #58a6ff; font-size: 28px; margin-bottom: 6px; }
 .sub { color: #8b949e; font-size: 14px; margin-bottom: 48px; text-align: center; }
 .sub a { color: #58a6ff; text-decoration: none; }
 .sub a:hover { text-decoration: underline; }
-.cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+         gap: 20px; max-width: 960px; width: 100%; }
 .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px;
-        padding: 28px 32px; width: 380px; text-decoration: none; color: inherit;
+        padding: 28px 32px; text-decoration: none; color: inherit;
         transition: border-color 0.15s, transform 0.15s; }
 .card:hover { border-color: #58a6ff; transform: translateY(-2px); }
 .card-icon { font-size: 32px; margin-bottom: 12px; }
@@ -25,7 +26,7 @@ h1 { color: #58a6ff; font-size: 28px; margin-bottom: 6px; }
 .card-meta { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
 .tag { background: #21262d; border: 1px solid #30363d; border-radius: 12px;
        padding: 2px 10px; font-size: 11px; color: #8b949e; }
-.footer { margin-top: 60px; color: #484f58; font-size: 12px; text-align: center; }
+.footer { margin-top: 60px; color: #484f58; font-size: 12px; text-align: center; line-height: 1.8; }
 .footer a { color: #6e7681; text-decoration: none; }
 .footer a:hover { color: #8b949e; }
 </style>
@@ -43,31 +44,61 @@ h1 { color: #58a6ff; font-size: 28px; margin-bottom: 6px; }
 
   <a class="card" href="ships_preview.html">
     <div class="card-icon">🛸</div>
-    <div class="card-title">Ship Preview</div>
+    <div class="card-title">Ships</div>
     <div class="card-desc">
-      Full loadout breakdown for a sample of ships. Every port resolved to its
-      installed component with real stats — shields, power output, cooling rate,
-      quantum drive speed, thruster thrust, IFCS speeds, weapons, cargo SCU.
+      Full loadout breakdown for all flyable ships. Every port resolved to its
+      installed component with real stats — shields, power, cooling, quantum drive,
+      thrusters, IFCS speeds, weapons, and cargo SCU.
     </div>
     <div class="card-meta">
-      <span class="tag">12 ships</span>
+      <span class="tag">276 ships</span>
       <span class="tag">All ports resolved</span>
-      <span class="tag">Base loadout</span>
+      <span class="tag">Manufacturer filter</span>
     </div>
   </a>
 
   <a class="card" href="components_preview.html">
     <div class="card-icon">📦</div>
-    <div class="card-title">Component Reference</div>
+    <div class="card-title">Ship Components</div>
     <div class="card-desc">
-      4,000+ equippable components indexed from game files. Searchable and
+      All equippable ship components indexed from game files. Searchable and
       filterable by type — shields, power plants, coolers, quantum drives,
-      thrusters, weapons, missiles, and more. Key stats per item.
+      thrusters, weapons, missiles, and more.
     </div>
     <div class="card-meta">
-      <span class="tag">4,083 components</span>
+      <span class="tag">2,516 components</span>
       <span class="tag">28 categories</span>
       <span class="tag">Searchable</span>
+    </div>
+  </a>
+
+  <a class="card" href="armor_preview.html">
+    <div class="card-icon">🛡️</div>
+    <div class="card-title">Armor</div>
+    <div class="card-desc">
+      All player armor indexed by slot and tier. Stats include damage resistances
+      (physical, energy, distortion, thermal, biochemical), temperature range,
+      radiation capacity, EM/IR signatures, and backpack storage.
+    </div>
+    <div class="card-meta">
+      <span class="tag">2,200+ items</span>
+      <span class="tag">Slot filter</span>
+      <span class="tag">Light / Medium / Heavy</span>
+    </div>
+  </a>
+
+  <a class="card" href="weapons_preview.html">
+    <div class="card-icon">🔫</div>
+    <div class="card-title">Weapons</div>
+    <div class="card-desc">
+      Ship weapons and FPS personal weapons with damage per shot, fire rate,
+      bullet speed, magazine capacity, and attachment slots. Attachments
+      (barrels, optics, underbarrels) listed separately.
+    </div>
+    <div class="card-meta">
+      <span class="tag">166 ship weapons</span>
+      <span class="tag">333 FPS weapons</span>
+      <span class="tag">102 attachments</span>
     </div>
   </a>
 
@@ -75,7 +106,9 @@ h1 { color: #58a6ff; font-size: 28px; margin-bottom: 6px; }
 
 <div class="footer">
   Generated from Star Citizen game data for community research purposes ·
-  <a href="https://github.com/saladin1980/sc_datapack">github.com/saladin1980/sc_datapack</a>
+  <a href="https://github.com/saladin1980/sc_datapack">github.com/saladin1980/sc_datapack</a><br>
+  Extraction via <a href="https://github.com/dolkensp/unp4k">unp4k</a> ·
+  Parsing: Python 3.12 stdlib only · No AI used in report generation
 </div>
 
 </body>
