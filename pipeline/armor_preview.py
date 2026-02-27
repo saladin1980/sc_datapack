@@ -55,6 +55,18 @@ TIER_COLORS = {
     "Personal": "#27ae60",   # green (backpacks)
 }
 
+# Normalize raw SubType values to filterable tier keys
+def _normalize_tier(subtype):
+    """Return 'heavy'/'medium'/'light' or '' for unknown/generic subtypes."""
+    s = subtype.strip().lower()
+    if s in ("heavy",):
+        return "heavy"
+    if s in ("medium",):
+        return "medium"
+    if s in ("light", "lightarmor"):
+        return "light"
+    return ""  # Helmet, Personal, UNDEFINED, etc.
+
 # Known armor manufacturer codes -> display names
 MFR_NAMES = {
     "CDS":    "Crusader Defense",
@@ -156,6 +168,7 @@ def parse_armor_item(path, uuid_idx, mfr_idx, loc_idx, dmg_idx):
         "name":          "",
         "slot":          "Other",
         "subtype":       "",
+        "tier":          "",   # "heavy" / "medium" / "light" / ""
         "mfr":           "",
         "micro_scu":     0,
         "dmg":           {},
@@ -177,6 +190,7 @@ def parse_armor_item(path, uuid_idx, mfr_idx, loc_idx, dmg_idx):
 
             info["slot"]    = SLOT_FROM_TYPE.get(typ, "Other")
             info["subtype"] = subtype if subtype not in ("UNDEFINED", "") else ""
+            info["tier"]    = _normalize_tier(subtype)
 
             # Manufacturer
             mfr_code = mfr_idx.get(mfr_ref, "")
@@ -416,7 +430,7 @@ def item_to_html(item):
         stats_body = '<div class="no-stats">No detailed stats found</div>'
 
     return f"""
-<div class="item-card" data-slot="{slot}" data-name="{name.lower()}">
+<div class="item-card" data-slot="{slot}" data-tier="{item['tier']}" data-name="{name.lower()}">
   <div class="card-header">
     <div class="card-title-row">
       <span class="item-name">{name}</span>
@@ -436,9 +450,10 @@ def generate_html(items):
     count  = len(valid)
     cards  = "\n".join(item_to_html(i) for i in valid)
 
+    # Slot tabs
     slot_counts = Counter(i["slot"] for i in valid)
-    tabs_html = (
-        f'<button class="tab active" data-slot="all" onclick="setTab(this)">'
+    slot_tabs = (
+        f'<button class="tab slot-tab active" data-slot="all" onclick="setSlotTab(this)">'
         f'All <span class="tc">{count}</span></button>'
     )
     for slot in SLOT_ORDER:
@@ -446,9 +461,26 @@ def generate_html(items):
             continue
         c = slot_counts.get(slot, 0)
         if c:
-            tabs_html += (
-                f'<button class="tab" data-slot="{slot}" onclick="setTab(this)">'
+            slot_tabs += (
+                f'<button class="tab slot-tab" data-slot="{slot}" onclick="setSlotTab(this)">'
                 f'{slot} <span class="tc">{c}</span></button>'
+            )
+
+    # Tier tabs
+    tier_counts = Counter(i["tier"] for i in valid if i["tier"])
+    tier_total  = sum(tier_counts.values())
+    tier_tabs = (
+        f'<button class="tab tier-tab active" data-tier="all" onclick="setTierTab(this)">'
+        f'All Tiers <span class="tc">{tier_total}</span></button>'
+    )
+    for tier, label in [("light", "Light"), ("medium", "Medium"), ("heavy", "Heavy")]:
+        c = tier_counts.get(tier, 0)
+        if c:
+            color = {"light": "#3498db", "medium": "#e67e22", "heavy": "#c0392b"}[tier]
+            tier_tabs += (
+                f'<button class="tab tier-tab" data-tier="{tier}" '
+                f'style="--tier-color:{color}" onclick="setTierTab(this)">'
+                f'{label} <span class="tc">{c}</span></button>'
             )
 
     return f"""<!DOCTYPE html>
@@ -475,14 +507,20 @@ def generate_html(items):
   h1 {{ font-size:1.6rem; font-weight:700; letter-spacing:-.02em; }}
   header {{ padding:20px 24px 12px; border-bottom:1px solid var(--border); }}
   header .sub {{ color:var(--muted); font-size:.85rem; margin-top:4px; }}
-  .controls {{ display:flex; flex-wrap:wrap; align-items:center; gap:10px;
-               padding:12px 24px; border-bottom:1px solid var(--border); }}
+  .controls {{ display:flex; flex-direction:column; gap:0; border-bottom:1px solid var(--border); }}
+  .filter-row {{ display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+                 padding:10px 24px; border-bottom:1px solid var(--border); }}
+  .filter-row:last-child {{ border-bottom:none; }}
+  .filter-label {{ font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+                   color:var(--muted); min-width:40px; }}
   .tabs {{ display:flex; flex-wrap:wrap; gap:6px; flex:1; }}
   .tab {{ background:var(--card); border:1px solid var(--border); border-radius:6px;
           color:var(--muted); cursor:pointer; font-size:.8rem; padding:5px 12px;
           transition:all .15s; }}
   .tab:hover {{ border-color:var(--accent); color:var(--text); }}
   .tab.active {{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }}
+  .tier-tab.active {{ background:var(--tier-color,var(--accent));
+                      border-color:var(--tier-color,var(--accent)); }}
   .tc {{ opacity:.7; font-weight:400; }}
   #search-box {{ background:var(--card); border:1px solid var(--border); border-radius:6px;
                  color:var(--text); font-size:.85rem; padding:6px 12px; width:220px; }}
@@ -527,28 +565,43 @@ def generate_html(items):
   <div class="sub">All player-usable armor &mdash; {count} items</div>
 </header>
 <div class="controls">
-  <div class="tabs">{tabs_html}</div>
-  <input id="search-box" type="search" placeholder="Search by name..." oninput="applyFilters()">
-  <span id="vis-count">{count} shown</span>
+  <div class="filter-row">
+    <span class="filter-label">Slot</span>
+    <div class="tabs">{slot_tabs}</div>
+    <input id="search-box" type="search" placeholder="Search by name..." oninput="applyFilters()">
+    <span id="vis-count">{count} shown</span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Tier</span>
+    <div class="tabs">{tier_tabs}</div>
+  </div>
 </div>
 <div class="grid" id="item-grid">
 {cards}
 </div>
 <footer>Data extracted from Star Citizen Data.p4k &mdash; For reference only</footer>
 <script>
-function setTab(btn) {{
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+function setSlotTab(btn) {{
+  document.querySelectorAll('.slot-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}}
+function setTierTab(btn) {{
+  document.querySelectorAll('.tier-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   applyFilters();
 }}
 function applyFilters() {{
-  const slot = document.querySelector('.tab.active').dataset.slot;
+  const slot = document.querySelector('.slot-tab.active').dataset.slot;
+  const tier = document.querySelector('.tier-tab.active').dataset.tier;
   const q    = document.getElementById('search-box').value.toLowerCase().trim();
   let vis = 0;
   document.querySelectorAll('.item-card').forEach(c => {{
     const sok = slot === 'all' || c.dataset.slot === slot;
+    // tier filter: 'all' shows everything; specific tier matches exact OR items with no tier
+    const tok = tier === 'all' || c.dataset.tier === tier;
     const nok = !q || c.dataset.name.includes(q);
-    const show = sok && nok;
+    const show = sok && tok && nok;
     c.style.display = show ? '' : 'none';
     if (show) vis++;
   }});
