@@ -192,6 +192,17 @@ def parse_armor_item(path, uuid_idx, mfr_idx, loc_idx, dmg_idx):
             info["subtype"] = subtype if subtype not in ("UNDEFINED", "") else ""
             info["tier"]    = _normalize_tier(subtype)
 
+            # Backpacks in heavy/light/medium subdirs are tagged "Personal" by the
+            # game regardless of set — infer tier from parent directory path instead
+            if info["slot"] == "Backpack" and not info["tier"]:
+                parts = [p.lower() for p in path.parts]
+                if "heavy" in parts:
+                    info["tier"] = "heavy"
+                elif "medium" in parts:
+                    info["tier"] = "medium"
+                elif "light" in parts:
+                    info["tier"] = "light"
+
             # Manufacturer
             mfr_code = mfr_idx.get(mfr_ref, "")
             info["mfr"] = MFR_NAMES.get(mfr_code, mfr_code) if mfr_code else ""
