@@ -75,11 +75,11 @@ def _ensure_scdatatools():
     sys.stdout.flush()
 
     subprocess.run(
-        [sys.executable, "-m", "pip", "install", "numpy>=1.24.3", "--quiet"],
+        [sys.executable, "-m", "pip", "install", "numpy>=1.24.3", "--prefer-binary", "--quiet"],
         capture_output=True,
     )
     result = subprocess.run(
-        [sys.executable, "-m", "pip", "install", "scdatatools", "--quiet"],
+        [sys.executable, "-m", "pip", "install", "scdatatools", "--prefer-binary", "--quiet"],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
