@@ -74,12 +74,14 @@ def _ensure_scdatatools():
     print("scdatatools not found - installing...")
     sys.stdout.flush()
 
-    subprocess.run(
-        [sys.executable, "-m", "pip", "install", "numpy>=1.24.3", "--prefer-binary", "--quiet"],
-        capture_output=True,
-    )
+    # Pre-install C-extension deps as binary wheels to avoid MSVC requirement
+    for pkg in ["numpy>=1.24.3", "pycryptodome"]:
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", pkg, "--only-binary", ":all:", "--quiet"],
+            capture_output=True,
+        )
     result = subprocess.run(
-        [sys.executable, "-m", "pip", "install", "scdatatools", "--prefer-binary", "--quiet"],
+        [sys.executable, "-m", "pip", "install", "scdatatools", "--quiet"],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
