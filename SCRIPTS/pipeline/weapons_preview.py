@@ -54,7 +54,7 @@ def build_uuid_index():
     for xml_file in RECORDS_DIR.rglob("*.xml"):
         try:
             root = ET.parse(xml_file).getroot()
-            ref = root.get("__ref", "")
+            ref = root.get("__id", "")
             if ref and ref != NULL_UUID:
                 idx[ref] = xml_file
         except Exception:
@@ -68,7 +68,7 @@ def build_ammo_index():
     for xml_file in AMMO_DIR.rglob("*.xml"):
         try:
             root = ET.parse(xml_file).getroot()
-            ref = root.get("__ref", "")
+            ref = root.get("__id", "")
             if ref and ref != NULL_UUID:
                 idx[ref] = xml_file
         except Exception:
@@ -84,7 +84,7 @@ def build_manufacturer_index(uuid_idx, loc_idx):
     for xml_file in mfr_dir.rglob("*.xml"):
         try:
             root = ET.parse(xml_file).getroot()
-            ref = root.get("__ref", "")
+            ref = root.get("__id", "")
             if not ref:
                 continue
             for el in root.iter():

@@ -123,7 +123,7 @@ def build_uuid_index():
     for xml_file in RECORDS_DIR.rglob("*.xml"):
         try:
             root = ET.parse(xml_file).getroot()
-            ref  = root.get("__ref")
+            ref  = root.get("__id")
             if ref:
                 tag = root.tag
                 cls = tag.split(".", 1)[1] if "." in tag else tag
@@ -157,7 +157,7 @@ def build_manufacturer_index(uuid_index):
         for xml_file in mfr_dir.rglob("*.xml"):
             try:
                 root = ET.parse(xml_file).getroot()
-                ref  = root.get("__ref")
+                ref  = root.get("__id")
                 code = root.get("Code") or root.get("code") or xml_file.stem.upper()
                 if ref:
                     index[ref] = code

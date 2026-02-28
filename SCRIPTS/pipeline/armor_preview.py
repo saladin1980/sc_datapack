@@ -108,7 +108,7 @@ def build_dmg_res_index():
     for f in DAMAGE_DIR.glob("*.xml"):
         try:
             root = ET.parse(f).getroot()
-            ref  = root.get("__ref")
+            ref  = root.get("__id")
             if not ref:
                 continue
             res = {}
