@@ -125,7 +125,7 @@ def _run_step(name, script):
 
 
 def _write_index():
-    """Generate HTML\index.html linking to all reports."""
+    """Generate HTML/index.html linking to all reports."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     reports = [
         ("ships_preview.html",      "Ships",      "276 ships — full loadout, every port resolved with stats"),
