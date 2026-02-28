@@ -51,24 +51,32 @@ def _ensure_venv():
         import venv as _venv
         _venv.create(str(VENV_DIR), with_pip=True)
 
-        print("Installing dependencies (first run only) ...")
+        print("Installing dependencies (first run only, ~1-2 min) ...")
         sys.stdout.flush()
 
-        # Install C-extension deps as binary wheels first to avoid MSVC requirement
-        for pkg in ["numpy>=1.24.3", "pycryptodome"]:
-            subprocess.run(
-                [str(VENV_PYTHON), "-m", "pip", "install", pkg,
-                 "--only-binary", ":all:", "--quiet"],
-                check=True,
-            )
-
+        # PyPI scdatatools 1.0.4 is broken on Python 3.12 (distutils removed,
+        # old numpy pin). Install from GitLab HEAD with --ignore-requires-python,
+        # then install all deps separately with no version pins so binary wheels
+        # are used (avoids MSVC requirement for pycryptodome etc.)
         result = subprocess.run(
-            [str(VENV_PYTHON), "-m", "pip", "install", "scdatatools", "--quiet"],
+            [str(VENV_PYTHON), "-m", "pip", "install",
+             "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
+             "--no-deps", "--ignore-requires-python", "--quiet"],
         )
         if result.returncode != 0:
-            print("ERROR: Failed to install scdatatools.")
+            print("ERROR: Failed to install scdatatools from GitLab.")
             print("Check your internet connection and try again.")
             sys.exit(1)
+
+        subprocess.run(
+            [str(VENV_PYTHON), "-m", "pip", "install",
+             "fnvhash", "hexdump", "humanize", "numpy", "packaging",
+             "pycryptodome", "pyquaternion", "pyrsi", "rich", "tqdm",
+             "xxhash", "zstandard", "line_profiler", "Pillow",
+             "python-nubia", "sentry-sdk",
+             "--quiet"],
+            check=True,
+        )
 
         print("Setup complete.")
         sys.stdout.flush()
