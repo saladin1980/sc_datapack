@@ -26,20 +26,21 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR
 
 # ── XML sanitization ──────────────────────────────────────────────────────────
-# DataCore XML can contain invalid constructs that ET cannot parse:
-#   1. UUID-as-attribute-names  (e.g. 6bd01ea7-...="value") — attr names must start with letter
-#   2. Empty element names      (e.g. < />)                  — from null list entries
-# Strip both so standard xml.etree.ElementTree can parse the output files.
-_UUID_ATTR = re.compile(
-    r'\s+[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}="[^"]*"',
-    re.IGNORECASE,
-)
-_EMPTY_ELEM = re.compile(r'[ \t]*< +/>[ \t]*\n?')
+# DataCore XML dump contains several constructs that xml.etree.ElementTree rejects:
+#   1. Invalid attribute names (names that start with a digit, e.g. UUID keys, "300iC_Kit")
+#      OR attributes with empty names (=" value")
+#   2. Self-closing empty element:  < />
+#   3. Open/close element with empty name:  <>text</>
+# Strip all three so the output files parse cleanly with standard ElementTree.
+_INVALID_ATTR = re.compile(r'\s+(?:[0-9][^\s=]*)?\s*=\s*"[^"]*"')
+_EMPTY_ELEM   = re.compile(r"[ \t]*< +/>[ \t]*\n?")
+_EMPTY_TAG    = re.compile(r"[ \t]*<>[^<]*</>[ \t]*\n?")
 
 
 def _sanitize_xml(xml_str: str) -> str:
-    xml_str = _UUID_ATTR.sub("", xml_str)
+    xml_str = _INVALID_ATTR.sub("", xml_str)
     xml_str = _EMPTY_ELEM.sub("", xml_str)
+    xml_str = _EMPTY_TAG.sub("", xml_str)
     return xml_str
 
 # DataCore record prefixes to dump (DataCore internal paths, lowercase, no "Data/" prefix)
