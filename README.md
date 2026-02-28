@@ -1,7 +1,7 @@
 # SC DataPack Pipeline
 
 Extraction and parsing pipeline for Star Citizen's `Data.p4k`.
-Produces human-readable HTML reference reports from raw game data — no AI, pure Python stdlib.
+Produces human-readable HTML reference reports from raw game data — no AI, pure Python.
 
 > **Live reports →** <https://saladin1980.github.io/sc_datapack/>
 
@@ -26,7 +26,7 @@ Produces human-readable HTML reference reports from raw game data — no AI, pur
 3. python runner.py
 ```
 
-That's it. unp4k is downloaded automatically on first run. Reports land in `HTML\` when done.
+That's it. `scdatatools` is installed automatically on first run. Reports land in `HTML\` when done.
 
 **Only requirement:** Python 3.12+ — [python.org](https://www.python.org/downloads/)
 
@@ -41,7 +41,7 @@ sc_datapack\
 
   DOCS\              <- documentation and reference files
   SCRIPTS\           <- pipeline source code
-  Tools\             <- unp4k + venv (auto-created on first run)
+  Tools\             <- venv (auto-created on first run)
   Data_Extraction\   <- extracted game files (created on first run)
   HTML\              <- generated HTML reports (created on first run)
 ```
@@ -78,12 +78,15 @@ you need. No code editing required.
 
 ## What gets extracted
 
-Only ~2.4 GB of the archive is needed for report generation:
+Only ~400 MB of the archive is needed for report generation:
 
 ```
-Data/Libs/Foundry/    2.3 GB  — all entity/item XML records
+Data/Game2.dcb        285 MB  — DataCore binary (ships, items, weapons, armor)
 Data/Localization/     79 MB  — display name strings
 ```
+
+The extractor parses Game2.dcb in-memory via scdatatools and dumps ~25,000 XML
+records to disk. No full archive extraction required.
 
 See [`DOCS/EXTRACTION_PLAN.md`](DOCS/EXTRACTION_PLAN.md) for the full breakdown.
 
@@ -91,9 +94,9 @@ See [`DOCS/EXTRACTION_PLAN.md`](DOCS/EXTRACTION_PLAN.md) for the full breakdown.
 
 ## Stack
 
-- **[unp4k](https://github.com/dolkensp/unp4k)** — P4K extraction (C# native, auto-downloaded)
-- **Python 3.12 stdlib only** — `xml.etree`, `pathlib`, `urllib`, `zipfile`
-- No pip dependencies, no AI
+- **[scdatatools](https://gitlab.com/scmodding/frameworks/scdatatools)** — DataCore binary parsing (auto-installed on first run)
+- **Python 3.12 stdlib** — `xml.etree`, `pathlib`, `urllib`, `zipfile`
+- No AI
 
 ---
 

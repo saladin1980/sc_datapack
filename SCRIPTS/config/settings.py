@@ -32,7 +32,6 @@ _load_env()
 
 # ── Paths — all default to repo-relative locations ───────────────────────────
 P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    str(REPO_ROOT / "Data.p4k")))
-UNP4K_EXE   = Path(os.environ.get("SC_UNP4K_EXE",   str(REPO_ROOT / "Tools" / "unp4k-suite" / "unp4k.exe")))
 OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  str(REPO_ROOT / "Data_Extraction")))
 REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", str(REPO_ROOT / "HTML")))
 LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    str(REPO_ROOT / "Data_Extraction" / "logs")))
