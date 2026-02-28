@@ -153,7 +153,7 @@ def _parse_ammo(ammo_uuid, ammo_idx):
         # First DamageInfo = primary impact damage
         # DataCore XML: tag is "damage", type is in __polymorphicType="DamageInfo"
         for el in root.iter():
-            if "DamageInfo" in el.get("__polymorphicType", "") or "DamageInfo" in el.tag:
+            if el.tag == "damage" or "DamageInfo" in el.get("__polymorphicType", "") or "DamageInfo" in el.tag:
                 result["dmg_physical"]   = float(el.get("DamagePhysical", 0) or 0)
                 result["dmg_energy"]     = float(el.get("DamageEnergy", 0) or 0)
                 result["dmg_distortion"] = float(el.get("DamageDistortion", 0) or 0)
