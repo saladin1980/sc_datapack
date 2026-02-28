@@ -18,7 +18,6 @@ Skips extraction if Data_Extraction/.version already matches current version.
 import re
 import sys
 import time
-import subprocess
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -64,33 +63,15 @@ def _detect_version():
 
 
 def _ensure_scdatatools():
-    """Install scdatatools if not present."""
+    """Verify scdatatools is available (installed by runner.py venv bootstrap)."""
     try:
         import scdatatools  # noqa: F401
         return True
     except ImportError:
-        pass
-
-    print("scdatatools not found - installing...")
-    sys.stdout.flush()
-
-    # Pre-install C-extension deps as binary wheels to avoid MSVC requirement
-    for pkg in ["numpy>=1.24.3", "pycryptodome"]:
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", pkg, "--only-binary", ":all:", "--quiet"],
-            capture_output=True,
-        )
-    result = subprocess.run(
-        [sys.executable, "-m", "pip", "install", "scdatatools", "--quiet"],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        print(f"ERROR: Failed to install scdatatools:\n{result.stderr}")
+        print("ERROR: scdatatools not found.")
+        print("Run 'python runner.py' to set up the environment automatically,")
+        print("or activate the Tools/venv/ virtual environment first.")
         sys.exit(1)
-
-    print("scdatatools installed.")
-    sys.stdout.flush()
-    return True
 
 
 def _extract_localization(sc, error_log):

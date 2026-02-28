@@ -5,14 +5,14 @@ Zero configuration needed. Just place Data.p4k in this folder and run:
 
   python runner.py
 
-scdatatools is installed automatically on first run.
+A virtual environment with all dependencies is created automatically on
+first run (~1-2 min). Subsequent runs are instant.
 
 Optional flags:
   python runner.py --skip-extract      # re-run reports only (already extracted)
   python runner.py --only ships        # run just one report
                                        # (ships / components / armor / weapons)
 """
-import os
 import sys
 import time
 import subprocess
@@ -24,6 +24,9 @@ SCRIPTS = ROOT / "SCRIPTS"
 sys.path.insert(0, str(SCRIPTS))
 from config.settings import P4K_PATH, REPORTS_DIR
 
+VENV_DIR    = ROOT / "Tools" / "venv"
+VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
+
 # Pipeline steps in order
 STEPS = [
     ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",         True),
@@ -32,6 +35,47 @@ STEPS = [
     ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",      False),
     ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",    False),
 ]
+
+
+# ── Venv bootstrap ────────────────────────────────────────────────────────────
+
+def _ensure_venv():
+    """Create Tools/venv with scdatatools if needed, then restart inside it."""
+    if sys.prefix != sys.base_prefix:
+        return  # already running inside a venv
+
+    if not VENV_PYTHON.exists():
+        print("First run: creating virtual environment in Tools/venv/ ...")
+        sys.stdout.flush()
+        VENV_DIR.parent.mkdir(parents=True, exist_ok=True)
+        import venv as _venv
+        _venv.create(str(VENV_DIR), with_pip=True)
+
+        print("Installing dependencies (first run only) ...")
+        sys.stdout.flush()
+
+        # Install C-extension deps as binary wheels first to avoid MSVC requirement
+        for pkg in ["numpy>=1.24.3", "pycryptodome"]:
+            subprocess.run(
+                [str(VENV_PYTHON), "-m", "pip", "install", pkg,
+                 "--only-binary", ":all:", "--quiet"],
+                check=True,
+            )
+
+        result = subprocess.run(
+            [str(VENV_PYTHON), "-m", "pip", "install", "scdatatools", "--quiet"],
+        )
+        if result.returncode != 0:
+            print("ERROR: Failed to install scdatatools.")
+            print("Check your internet connection and try again.")
+            sys.exit(1)
+
+        print("Setup complete.")
+        sys.stdout.flush()
+
+    # Restart this process with the venv Python
+    result = subprocess.run([str(VENV_PYTHON)] + sys.argv)
+    sys.exit(result.returncode)
 
 
 # ── Setup checks ─────────────────────────────────────────────────────────────
@@ -69,6 +113,8 @@ def _run_step(name, script):
 
 
 def main():
+    _ensure_venv()  # no-op if already in venv; creates + restarts if not
+
     args = sys.argv[1:]
     skip_extract = "--skip-extract" in args
     only = None
