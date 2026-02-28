@@ -20,13 +20,29 @@ Produces human-readable HTML reference reports from raw game data — no AI, pur
 
 ## Quick start
 
+**Step 1 — Clone the repo:**
 ```
-1. git clone https://github.com/saladin1980/sc_datapack.git
-2. Place Data.p4k in the repo root folder
-3. python runner.py
+git clone https://github.com/saladin1980/sc_datapack.git
+cd sc_datapack
 ```
 
-That's it. `scdatatools` is installed automatically on first run. Reports land in `HTML\` when done.
+**Step 2 — Point it at your game files (no copying needed):**
+
+Copy `.env.example` to `.env`, then open it and set your path:
+```
+SC_P4K_PATH=C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\Data.p4k
+```
+
+> Data.p4k is ~150 GB. Do **not** copy it — just point the pipeline at your existing
+> Star Citizen install. The default LIVE path is shown above.
+
+**Step 3 — Run:**
+```
+python runner.py
+```
+
+That's it. Dependencies are installed automatically on first run (~1-2 min).
+Reports land in `HTML\` when done (~10 min total).
 
 **Only requirement:** Python 3.12+ — [python.org](https://www.python.org/downloads/)
 
@@ -36,13 +52,13 @@ That's it. `scdatatools` is installed automatically on first run. Reports land i
 
 ```
 sc_datapack\
-  Data.p4k           <- put your game data file here
   runner.py          <- run this to start everything
+  .env               <- your config (copy from .env.example)
 
   DOCS\              <- documentation and reference files
   SCRIPTS\           <- pipeline source code
   Tools\             <- venv (auto-created on first run)
-  Data_Extraction\   <- extracted game files (created on first run)
+  Data_Extraction\   <- extracted game data (created on first run, ~400 MB)
   HTML\              <- generated HTML reports (created on first run)
 ```
 
@@ -68,27 +84,17 @@ python SCRIPTS\pipeline\weapons_preview.py
 
 ---
 
-## Custom paths (optional)
-
-By default everything is relative to the repo root. To override (e.g. Data.p4k
-is on a different drive), copy `.env.example` to `.env` and uncomment the lines
-you need. No code editing required.
-
----
-
 ## What gets extracted
 
-Only ~400 MB of the archive is needed for report generation:
+Only ~400 MB of the archive is read for report generation:
 
 ```
 Data/Game2.dcb        285 MB  — DataCore binary (ships, items, weapons, armor)
 Data/Localization/     79 MB  — display name strings
 ```
 
-The extractor parses Game2.dcb in-memory via scdatatools and dumps ~25,000 XML
-records to disk. No full archive extraction required.
-
-See [`DOCS/EXTRACTION_PLAN.md`](DOCS/EXTRACTION_PLAN.md) for the full breakdown.
+The extractor parses Game2.dcb in-memory and dumps ~25,000 XML records to disk.
+No full archive extraction required — Data.p4k is never modified.
 
 ---
 
