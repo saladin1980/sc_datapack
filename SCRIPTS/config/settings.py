@@ -2,7 +2,8 @@
 SC DataPack Pipeline — Settings
 ================================
 All paths default to locations relative to the repo root.
-Zero configuration needed if Data.p4k is placed in the repo root folder.
+Zero configuration needed if Data.p4k is placed in the repo root folder,
+OR if Star Citizen is installed at the default RSI Launcher path.
 
 Override any path by setting it in a .env file at the repo root
 (copy .env.example to .env). Env vars also work if set in the shell.
@@ -13,6 +14,9 @@ from pathlib import Path
 
 # Repo root = three levels up from SCRIPTS/config/settings.py
 REPO_ROOT = Path(__file__).parent.parent.parent
+
+# Default Star Citizen install location (RSI Launcher)
+_SC_DEFAULT = Path(r"C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\Data.p4k")
 
 
 # ── Load .env from repo root (optional) ──────────────────────────────────────
@@ -35,3 +39,7 @@ P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    str(REPO_ROOT / "Data.p4k"))
 OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  str(REPO_ROOT / "Data_Extraction")))
 REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", str(REPO_ROOT / "HTML")))
 LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    str(REPO_ROOT / "Data_Extraction" / "logs")))
+
+# Auto-detect: if configured path doesn't exist, try the default SC install
+if not P4K_PATH.exists() and _SC_DEFAULT.exists():
+    P4K_PATH = _SC_DEFAULT

@@ -90,8 +90,12 @@ def _ensure_venv():
 
 def _check_p4k():
     if not P4K_PATH.exists():
-        print(f"ERROR: Data.p4k not found at {P4K_PATH}")
-        print(f"Place your Star Citizen Data.p4k in the repo root folder:")
+        print("ERROR: Data.p4k not found.")
+        print("")
+        print("To fix, copy .env.example to .env and set your path:")
+        print("  SC_P4K_PATH=C:\\Program Files\\Roberts Space Industries\\StarCitizen\\LIVE\\Data.p4k")
+        print("")
+        print("Or place Data.p4k in the repo root folder:")
         print(f"  {ROOT}")
         sys.exit(1)
     print(f"Data.p4k : {P4K_PATH}  ({P4K_PATH.stat().st_size / 1e9:.1f} GB)")
