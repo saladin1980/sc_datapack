@@ -124,6 +124,62 @@ def _run_step(name, script):
     sys.stdout.flush()
 
 
+def _write_index():
+    """Generate HTML\index.html linking to all reports."""
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    reports = [
+        ("ships_preview.html",      "Ships",      "276 ships — full loadout, every port resolved with stats"),
+        ("components_preview.html", "Components", "2,500+ equippable ship components by type"),
+        ("armor_preview.html",      "Armor",      "2,200+ player armor pieces — resistances, storage, signatures"),
+        ("weapons_preview.html",    "Weapons",    "600+ ship weapons, FPS weapons, and attachments"),
+    ]
+    links = ""
+    for filename, title, desc in reports:
+        exists = (REPORTS_DIR / filename).exists()
+        if exists:
+            links += f'''
+        <a href="{filename}" class="card">
+            <div class="title">{title}</div>
+            <div class="desc">{desc}</div>
+        </a>'''
+        else:
+            links += f'''
+        <div class="card disabled">
+            <div class="title">{title}</div>
+            <div class="desc">{desc} <em>(not yet generated)</em></div>
+        </div>'''
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SC DataPack Reports</title>
+<style>
+  body {{ font-family: sans-serif; background: #0f1117; color: #e0e0e0; margin: 0; padding: 40px 20px; }}
+  h1 {{ color: #7eb8f7; margin-bottom: 6px; }}
+  p  {{ color: #888; margin-top: 0; margin-bottom: 32px; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 900px; }}
+  .card {{ display: block; background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px;
+           padding: 20px 24px; text-decoration: none; color: inherit; transition: border-color .2s; }}
+  .card:hover {{ border-color: #7eb8f7; }}
+  .card.disabled {{ opacity: .4; cursor: default; }}
+  .title {{ font-size: 1.2em; font-weight: 600; color: #7eb8f7; margin-bottom: 6px; }}
+  .card.disabled .title {{ color: #888; }}
+  .desc  {{ font-size: .9em; color: #aaa; line-height: 1.4; }}
+</style>
+</head>
+<body>
+<h1>SC DataPack Reports</h1>
+<p>Star Citizen game data extracted from Data.p4k &mdash; open any report below.</p>
+<div class="grid">{links}
+</div>
+</body>
+</html>"""
+    (REPORTS_DIR / "index.html").write_text(html, encoding="utf-8")
+    print(f"  Index    : {REPORTS_DIR / 'index.html'}")
+
+
 def main():
     _ensure_venv()  # no-op if already in venv; creates + restarts if not
 
@@ -153,6 +209,7 @@ def main():
         ran.append(name)
 
     total_elapsed = time.time() - total_start
+    _write_index()
     _banner(f"All done in {total_elapsed/60:.1f} min")
     print(f"  Steps    : {', '.join(ran)}")
     print(f"  Reports  : {REPORTS_DIR}")
