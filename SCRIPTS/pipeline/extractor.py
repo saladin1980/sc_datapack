@@ -1,12 +1,17 @@
 """
-Phase 1: Selective extraction from Data.p4k into Data_Extraction/.
+Phase 1: Extract game data from Data.p4k into Data_Extraction/.
 
-Extracts only the paths the pipeline needs (~2.4 GB, ~10-15 min):
-  Data/Libs/Foundry/    - all XML item/ship/component records
-  Data/Localization/    - global.ini display name strings
+Two data sources are used:
+  1. P4K direct files (extracted with scdatatools):
+       Data/Localization/*/global.ini   - display name strings (~12 files, instant)
 
-Uses scdatatools to open the P4K and extract by path prefix.
-Uses unforge.exe to convert any CryXML binary files to plain XML after.
+  2. DataCore binary (parsed in-memory, dumped as XML):
+       Data/Game2.dcb -> records/entities/spaceships/   - ship definitions
+                      -> records/entities/scitem/        - items/components/weapons
+                      -> records/scitemmanufacturer/     - manufacturer names
+                      -> records/damage/                 - damage tables
+                      -> records/ammoparams/             - ammo params
+       (~24,667 records, ~10-15 min total)
 
 Skips extraction if Data_Extraction/.version already matches current version.
 """
@@ -17,12 +22,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR, UNFORGE_EXE
+from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR
 
-# Only extract what the pipeline actually needs
-EXTRACT_PREFIXES = [
-    "Data/Libs/Foundry",
-    "Data/Localization",
+# DataCore record prefixes to dump (DataCore internal paths, lowercase, no "Data/" prefix)
+RECORD_PREFIXES = [
+    "libs/foundry/records/entities/spaceships/",
+    "libs/foundry/records/entities/scitem/",
+    "libs/foundry/records/scitemmanufacturer/",
+    "libs/foundry/records/damage/",
+    "libs/foundry/records/ammoparams/",
 ]
 
 
@@ -44,10 +52,9 @@ def _ensure_scdatatools():
     except ImportError:
         pass
 
-    print("scdatatools not found — installing...")
+    print("scdatatools not found - installing...")
     sys.stdout.flush()
 
-    # Pre-install numpy to avoid version pin conflicts
     subprocess.run(
         [sys.executable, "-m", "pip", "install", "numpy>=1.24.3", "--quiet"],
         capture_output=True,
@@ -65,27 +72,14 @@ def _ensure_scdatatools():
     return True
 
 
-def _selective_extract(version, error_log):
-    """Extract only EXTRACT_PREFIXES from the P4K using scdatatools."""
-    from scdatatools.sc import StarCitizen
-
-    print("Opening P4K index (~30s)...")
-    sys.stdout.flush()
-    sc = StarCitizen(P4K_PATH.parent)
-
-    # Filter file list by prefix
-    to_extract = [
-        info for info in sc.p4k.filelist
-        if any(info.filename.startswith(p) for p in EXTRACT_PREFIXES)
-    ]
-    total = len(to_extract)
-    print(f"Files to extract : {total:,}")
+def _extract_localization(sc, error_log):
+    """Extract global.ini files directly from P4K."""
+    ini_files = [f for f in sc.p4k.filelist if "global.ini" in f.filename]
+    print(f"Extracting {len(ini_files)} global.ini files...")
     sys.stdout.flush()
 
-    start = time.time()
     errors = 0
-
-    for i, info in enumerate(to_extract, 1):
+    for info in ini_files:
         try:
             sc.p4k._extract_member(info, OUTPUT_DIR)
         except Exception as e:
@@ -93,15 +87,53 @@ def _selective_extract(version, error_log):
             with open(str(error_log), "a", encoding="utf-8") as f:
                 f.write(f"ERROR: {info.filename}: {e}\n")
 
+    return len(ini_files), errors
+
+
+def _dump_datacore_records(sc, error_log):
+    """Parse Game2.dcb from P4K and dump needed records to disk as plain XML."""
+    print("Loading DataCore (Game2.dcb) ... (~75s)")
+    sys.stdout.flush()
+    t = time.time()
+    dc = sc.datacore
+    print(f"DataCore loaded in {time.time() - t:.0f}s: {len(dc.records):,} records total")
+    sys.stdout.flush()
+
+    # Filter to only records the pipeline scripts need
+    needed = [
+        r for r in dc.records
+        if any(r.filename.lower().startswith(p) for p in RECORD_PREFIXES)
+    ]
+    total = len(needed)
+    print(f"Records to dump : {total:,} (~10-15 min)")
+    sys.stdout.flush()
+
+    start = time.time()
+    errors = 0
+
+    for i, record in enumerate(needed, 1):
+        try:
+            xml = dc.dump_record_xml(record)
+            # record.filename: "libs/foundry/records/entities/spaceships/aegs_gladius.xml"
+            # Strip "libs/" -> "foundry/records/..."
+            # Output: OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records" / ...
+            rel = record.filename[len("libs/"):]
+            out = OUTPUT_DIR / "Data" / "Libs" / rel
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(xml, encoding="utf-8")
+        except Exception as e:
+            errors += 1
+            with open(str(error_log), "a", encoding="utf-8") as f:
+                f.write(f"ERROR: {record.filename}: {e}\n")
+
         if i % 2000 == 0 or i == total:
             elapsed = time.time() - start
             rate = i / elapsed if elapsed > 0 else 0
-            eta  = (total - i) / rate if rate > 0 else 0
+            eta = (total - i) / rate if rate > 0 else 0
             print(f"  {i:,}/{total:,}  ({rate:.0f}/s, ETA {eta/60:.1f}m)")
             sys.stdout.flush()
 
-    elapsed = time.time() - start
-    return total, errors, elapsed
+    return total, errors, time.time() - start
 
 
 def run():
@@ -120,39 +152,33 @@ def run():
     print(f"Version  : {version}")
     print(f"P4K      : {P4K_PATH}")
     print(f"Output   : {OUTPUT_DIR}")
-    print(f"Paths    : {', '.join(EXTRACT_PREFIXES)}")
-    print(f"Note     : Selective extract (~10-15 min, ~2.4 GB)")
     sys.stdout.flush()
 
     _ensure_scdatatools()
 
-    total, errors, elapsed = _selective_extract(version, error_log)
+    from scdatatools.sc import StarCitizen
 
-    # ── Convert any CryXML binary files to plain XML ──────────────────────────
-    if UNFORGE_EXE.exists():
-        print(f"\nConverting CryXML files...")
-        sys.stdout.flush()
-        forge_result = subprocess.run(
-            [str(UNFORGE_EXE), str(OUTPUT_DIR)],
-            capture_output=True, text=True, encoding="utf-8", errors="replace"
-        )
-        if forge_result.returncode != 0:
-            print(f"WARNING: unforge exited {forge_result.returncode}")
-            with open(str(error_log), "a", encoding="utf-8") as f:
-                f.write(f"--- unforge stderr ---\n{forge_result.stderr}\n")
-        else:
-            print(f"CryXML conversion done.")
-        sys.stdout.flush()
-    else:
-        print(f"WARNING: unforge.exe not found at {UNFORGE_EXE} — skipping CryXML conversion")
+    print("Opening P4K index...")
+    sys.stdout.flush()
+    sc = StarCitizen(P4K_PATH.parent)
+
+    # Step 1: Localization files from P4K
+    loc_total, loc_errors = _extract_localization(sc, error_log)
+    print(f"Localization : {loc_total} files ({loc_errors} errors)")
+    sys.stdout.flush()
+
+    # Step 2: DataCore records -> individual XML files
+    rec_total, rec_errors, rec_elapsed = _dump_datacore_records(sc, error_log)
 
     version_file.write_text(version)
 
+    total_errors = loc_errors + rec_errors
     print(f"\n--- Extraction complete ---")
-    print(f"  Version   : {version}")
-    print(f"  Extracted : {total:,} files")
-    print(f"  Errors    : {errors}")
-    print(f"  Elapsed   : {elapsed/60:.1f} min")
+    print(f"  Version      : {version}")
+    print(f"  Localization : {loc_total} files")
+    print(f"  Records      : {rec_total:,} XML files")
+    print(f"  Errors       : {total_errors}")
+    print(f"  Elapsed      : {rec_elapsed / 60:.1f} min (DataCore dump)")
     sys.stdout.flush()
 
 
