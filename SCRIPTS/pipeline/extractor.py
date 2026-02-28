@@ -15,6 +15,7 @@ Two data sources are used:
 
 Skips extraction if Data_Extraction/.version already matches current version.
 """
+import re
 import sys
 import time
 import subprocess
@@ -23,6 +24,23 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR
+
+# ── XML sanitization ──────────────────────────────────────────────────────────
+# DataCore XML can contain invalid constructs that ET cannot parse:
+#   1. UUID-as-attribute-names  (e.g. 6bd01ea7-...="value") — attr names must start with letter
+#   2. Empty element names      (e.g. < />)                  — from null list entries
+# Strip both so standard xml.etree.ElementTree can parse the output files.
+_UUID_ATTR = re.compile(
+    r'\s+[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}="[^"]*"',
+    re.IGNORECASE,
+)
+_EMPTY_ELEM = re.compile(r'[ \t]*< +/>[ \t]*\n?')
+
+
+def _sanitize_xml(xml_str: str) -> str:
+    xml_str = _UUID_ATTR.sub("", xml_str)
+    xml_str = _EMPTY_ELEM.sub("", xml_str)
+    return xml_str
 
 # DataCore record prefixes to dump (DataCore internal paths, lowercase, no "Data/" prefix)
 RECORD_PREFIXES = [
@@ -113,7 +131,7 @@ def _dump_datacore_records(sc, error_log):
 
     for i, record in enumerate(needed, 1):
         try:
-            xml = dc.dump_record_xml(record)
+            xml = _sanitize_xml(dc.dump_record_xml(record))
             # record.filename: "libs/foundry/records/entities/spaceships/aegs_gladius.xml"
             # Strip "libs/" -> "foundry/records/..."
             # Output: OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records" / ...
