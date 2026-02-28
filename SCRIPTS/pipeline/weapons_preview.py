@@ -150,17 +150,25 @@ def _parse_ammo(ammo_uuid, ammo_idx):
         root = ET.parse(path).getroot()
         result["speed"]    = float(root.get("speed", 0) or 0)
         result["lifetime"] = float(root.get("lifetime", 0) or 0)
-        # First DamageInfo = primary impact damage
-        # DataCore XML: tag is "damage", type is in __polymorphicType="DamageInfo"
+        # Primary impact damage element — some ammo XMLs have two <damage> nodes:
+        # a near-zero splash/secondary node first, then the real damage node.
+        # Select the element with the highest total damage to avoid zero reads.
+        # DataCore XML: tag is "damage", type in __polymorphicType="DamageInfo"
+        _DMG_ATTRS = ["DamagePhysical", "DamageEnergy", "DamageDistortion",
+                      "DamageThermal", "DamageBiochemical", "DamageStun"]
+        best_el, best_total = None, 0.0
         for el in root.iter():
             if el.tag == "damage" or "DamageInfo" in el.get("__polymorphicType", "") or "DamageInfo" in el.tag:
-                result["dmg_physical"]   = float(el.get("DamagePhysical", 0) or 0)
-                result["dmg_energy"]     = float(el.get("DamageEnergy", 0) or 0)
-                result["dmg_distortion"] = float(el.get("DamageDistortion", 0) or 0)
-                result["dmg_thermal"]    = float(el.get("DamageThermal", 0) or 0)
-                result["dmg_biochemical"]= float(el.get("DamageBiochemical", 0) or 0)
-                result["dmg_stun"]       = float(el.get("DamageStun", 0) or 0)
-                break
+                total = sum(float(el.get(a, 0) or 0) for a in _DMG_ATTRS)
+                if total > best_total:
+                    best_total, best_el = total, el
+        if best_el is not None:
+            result["dmg_physical"]   = float(best_el.get("DamagePhysical", 0) or 0)
+            result["dmg_energy"]     = float(best_el.get("DamageEnergy", 0) or 0)
+            result["dmg_distortion"] = float(best_el.get("DamageDistortion", 0) or 0)
+            result["dmg_thermal"]    = float(best_el.get("DamageThermal", 0) or 0)
+            result["dmg_biochemical"]= float(best_el.get("DamageBiochemical", 0) or 0)
+            result["dmg_stun"]       = float(best_el.get("DamageStun", 0) or 0)
     except Exception:
         pass
     return result
