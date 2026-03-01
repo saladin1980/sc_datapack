@@ -662,6 +662,21 @@ def parse_ship(xml_path, uuid_idx, cls_idx, mfr_idx, loc_idx=None):
         "systems":    [],   # all other components keyed by category
     }
 
+    # Insurance
+    ship["ins_wait"] = 0.0
+    ship["ins_fee"]  = 0
+    for elem in root.iter():
+        if elem.tag == "shipInsuranceParams" or "shipInsuranceParams" in elem.tag:
+            try:
+                ship["ins_wait"] = float(elem.get("baseWaitTimeMinutes", 0))
+            except (ValueError, TypeError):
+                pass
+            try:
+                ship["ins_fee"] = int(float(elem.get("baseExpeditingFee", 0)))
+            except (ValueError, TypeError):
+                pass
+            break
+
     # VehicleComponentParams
     for elem in root.iter():
         pt = elem.get("__polymorphicType","")
@@ -822,6 +837,8 @@ def ship_to_html(ship):
         ("Cargo (SCU)",  ship.get("cargo_scu",0) or "0"),
         ("Career",       _career(ship.get("career",""))),
         ("Role",         _career(ship.get("role",""))),
+        ("Ins. Wait",    f'{ship["ins_wait"]:.1f} min' if ship.get("ins_wait") else "—"),
+        ("Ins. Expedite",f'{ship["ins_fee"]:,} aUEC'   if ship.get("ins_fee")  else "—"),
         ("Vehicle Def",  ship.get("vehicle_def","—")),
     ]
     ifcs = ship.get("ifcs",{})
