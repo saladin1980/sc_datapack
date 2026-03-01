@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR
+from config.settings import P4K_PATH, OUTPUT_DIR, LOGS_DIR, GAME_VERSION
 
 # ── XML sanitization ──────────────────────────────────────────────────────────
 # DataCore XML dump contains several constructs that xml.etree.ElementTree rejects:
@@ -157,10 +157,10 @@ def run():
 
     version_file = OUTPUT_DIR / ".version"
     if version_file.exists() and version_file.read_text().strip() == version:
-        print(f"Already extracted version {version}, skipping.")
+        print(f"Already extracted version {GAME_VERSION}, skipping.")
         return
 
-    print(f"Version  : {version}")
+    print(f"Version  : {GAME_VERSION}")
     print(f"P4K      : {P4K_PATH}")
     print(f"Output   : {OUTPUT_DIR}")
     sys.stdout.flush()
@@ -185,7 +185,7 @@ def run():
 
     total_errors = loc_errors + rec_errors
     print(f"\n--- Extraction complete ---")
-    print(f"  Version      : {version}")
+    print(f"  Version      : {GAME_VERSION}")
     print(f"  Localization : {loc_total} files")
     print(f"  Records      : {rec_total:,} XML files")
     print(f"  Errors       : {total_errors}")
