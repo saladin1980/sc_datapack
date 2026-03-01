@@ -51,3 +51,4 @@ test_*.py
 *.swp
 .DS_Store
 Thumbs.db
+nul
