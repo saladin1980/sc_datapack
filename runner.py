@@ -12,6 +12,8 @@ Caching rules:
   - Extraction : skips automatically when version already matches
                  (checked inside extractor.py against Data_Extraction/.version)
   - Reports    : each report skips if its HTML file already exists
+  - Version bump: if a new game patch is detected, all stale HTML reports are
+                  cleared automatically so they rebuild against the fresh data
   - Use --force to rebuild reports even if HTML files are present
   - Use --only  to run a single report regardless of HTML existence
 
@@ -30,7 +32,7 @@ ROOT    = Path(__file__).parent
 SCRIPTS = ROOT / "SCRIPTS"
 
 sys.path.insert(0, str(SCRIPTS))
-from config.settings import P4K_PATH, REPORTS_DIR
+from config.settings import P4K_PATH, OUTPUT_DIR, REPORTS_DIR
 
 VENV_DIR    = ROOT / "Tools" / "venv"
 VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
@@ -209,6 +211,27 @@ def main():
 
     _banner("SC DataPack Pipeline")
     _check_p4k()
+
+    # ── Version bump check ────────────────────────────────────────────────────
+    # If the game version has changed since last extraction, clear all stale
+    # HTML reports so they rebuild against the fresh data after re-extraction.
+    # Only applies to a normal run (not --skip-extract / --only / --force,
+    # which each have their own explicit intent).
+    if not skip_extract and not only and not force:
+        manifest   = P4K_PATH.parent / "build_manifest.id"
+        version_file = OUTPUT_DIR / ".version"
+        if manifest.exists() and version_file.exists():
+            if manifest.read_text(encoding="utf-8").strip() != version_file.read_text(encoding="utf-8").strip():
+                cleared = []
+                for fn, _, _ in REPORT_FILES:
+                    html = REPORTS_DIR / fn
+                    if html.exists():
+                        html.unlink()
+                        cleared.append(fn)
+                if cleared:
+                    print(f"\nNew game version detected — cleared {len(cleared)} stale report(s) for rebuild.")
+                    sys.stdout.flush()
+    # ─────────────────────────────────────────────────────────────────────────
 
     total_start = time.time()
     ran = []
