@@ -259,9 +259,12 @@ def main():
 
     total_elapsed = time.time() - total_start
     _write_index()
+    json_dir = REPORTS_DIR / "JSON"
     _banner(f"All done in {total_elapsed/60:.1f} min")
     print(f"  Steps    : {', '.join(ran) if ran else 'none (all up to date)'}")
     print(f"  Reports  : {REPORTS_DIR}")
+    if json_dir.exists():
+        print(f"  JSON     : {json_dir}")
     sys.stdout.flush()
 
 

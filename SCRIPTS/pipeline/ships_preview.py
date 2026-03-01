@@ -1128,6 +1128,13 @@ def run():
     good = len([s for s in ships if s])
     print(f"\nDone. {good}/{len(ship_paths)} ships.")
     print(f"Report -> {out}")
+
+    from pipeline.export_json import ships_to_records, write_json
+    json_records = ships_to_records(ships)
+    json_out = write_json(json_records, "ships.json")
+    print(f"JSON   -> {json_out}  ({json_out.stat().st_size:,} bytes)")
+    sys.stdout.flush()
+
     return out
 
 if __name__ == "__main__":

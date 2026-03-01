@@ -675,6 +675,12 @@ def run():
     print(f"\nWrote {out_path}")
     print(f"  File size: {out_path.stat().st_size / 1024:.0f} KB")
 
+    from pipeline.export_json import armor_to_records, write_json
+    json_records = armor_to_records(items)
+    json_out = write_json(json_records, "armor.json")
+    print(f"JSON     -> {json_out}  ({json_out.stat().st_size:,} bytes)")
+    sys.stdout.flush()
+
 
 if __name__ == "__main__":
     run()

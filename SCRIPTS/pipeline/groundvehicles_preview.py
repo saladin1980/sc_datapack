@@ -526,6 +526,11 @@ def run():
     out.write_text(html, encoding="utf-8")
     sz   = len(html)
     print(f"  Written: {out.name} ({sz:,} bytes)")
+
+    from pipeline.export_json import vehicles_to_records, write_json
+    json_records = vehicles_to_records(vehicles)
+    json_out = write_json(json_records, "ground_vehicles.json")
+    print(f"  JSON   : {json_out.name} ({json_out.stat().st_size:,} bytes)")
     sys.stdout.flush()
 
 

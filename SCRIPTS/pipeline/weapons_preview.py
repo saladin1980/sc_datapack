@@ -797,6 +797,14 @@ def run():
     out_path.write_text(html, encoding="utf-8")
     print(f"Written -> {out_path}  ({len(html):,} bytes)")
 
+    from pipeline.export_json import weapons_to_records, write_json
+    json_records = weapons_to_records(weapons)
+    json_out = write_json(
+        json_records, "weapons.json",
+        extra_meta={"ship_weapons": n_ship, "fps_weapons": n_fps, "attachments": n_att},
+    )
+    print(f"JSON    -> {json_out}  ({json_out.stat().st_size:,} bytes)")
+
     elapsed = time.time() - t0
     print(f"Done in {elapsed:.1f}s")
     sys.stdout.flush()

@@ -466,6 +466,13 @@ def run():
     out  = REPORTS_DIR / "components_preview.html"
     out.write_text(html, encoding="utf-8")
     print(f"Done. Report -> {out}")
+
+    from pipeline.export_json import components_to_records, write_json
+    json_records = components_to_records(components)
+    json_out = write_json(json_records, "components.json")
+    print(f"JSON  -> {json_out}  ({json_out.stat().st_size:,} bytes)")
+    sys.stdout.flush()
+
     return out
 
 
