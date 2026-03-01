@@ -11,7 +11,7 @@ first run (~1-2 min). Subsequent runs are instant.
 Optional flags:
   python runner.py --skip-extract      # re-run reports only (already extracted)
   python runner.py --only ships        # run just one report
-                                       # (ships / components / armor / weapons)
+                                       # (ships / components / armor / weapons / vehicles)
 """
 import sys
 import time
@@ -34,6 +34,7 @@ STEPS = [
     ("Components",  SCRIPTS / "pipeline" / "components_preview.py", False),
     ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",      False),
     ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",    False),
+    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py", False),
 ]
 
 

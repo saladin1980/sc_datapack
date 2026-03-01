@@ -46,6 +46,7 @@ def _sanitize_xml(xml_str: str) -> str:
 RECORD_PREFIXES = [
     "libs/foundry/records/entities/spaceships/",
     "libs/foundry/records/entities/scitem/",
+    "libs/foundry/records/entities/groundvehicles/",
     "libs/foundry/records/scitemmanufacturer/",
     "libs/foundry/records/damage/",
     "libs/foundry/records/ammoparams/",
