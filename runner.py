@@ -8,15 +8,17 @@ Zero configuration needed. Just place Data.p4k in this folder and run:
 A virtual environment with all dependencies is created automatically on
 first run (~1-2 min). Subsequent runs are instant.
 
-Smart caching:
-  - If version matches AND all HTML reports exist -> does nothing (instant)
-  - If version matches but HTML reports are missing -> rebuilds reports only
-  - If version has changed -> full extraction + reports
+Caching rules:
+  - Extraction : skips automatically when version already matches
+                 (checked inside extractor.py against Data_Extraction/.version)
+  - Reports    : each report skips if its HTML file already exists
+  - Use --force to rebuild reports even if HTML files are present
+  - Use --only  to run a single report regardless of HTML existence
 
 Optional flags:
-  python runner.py --skip-extract      # re-run reports only (already extracted)
-  python runner.py --force             # rebuild reports even if already up to date
-  python runner.py --only ships        # run just one report
+  python runner.py --skip-extract      # skip extraction, run reports only
+  python runner.py --force             # rebuild all reports even if they exist
+  python runner.py --only ships        # run just one report (always runs it)
                                        # ships / components / armor / weapons / vehicles / items
 """
 import sys
@@ -28,12 +30,24 @@ ROOT    = Path(__file__).parent
 SCRIPTS = ROOT / "SCRIPTS"
 
 sys.path.insert(0, str(SCRIPTS))
-from config.settings import P4K_PATH, OUTPUT_DIR, REPORTS_DIR
+from config.settings import P4K_PATH, REPORTS_DIR
 
 VENV_DIR    = ROOT / "Tools" / "venv"
 VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
 
-# Report HTML files — shared by cache check and index generator
+# Pipeline steps — (name, script, is_extract, output_html)
+# output_html: filename written to REPORTS_DIR, or None for extraction
+STEPS = [
+    ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",             True,  None),
+    ("Ships",       SCRIPTS / "pipeline" / "ships_preview.py",         False, "ships_preview.html"),
+    ("Components",  SCRIPTS / "pipeline" / "components_preview.py",    False, "components_preview.html"),
+    ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",         False, "armor_preview.html"),
+    ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",       False, "weapons_preview.html"),
+    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py",False, "groundvehicles.html"),
+    ("Items",       SCRIPTS / "pipeline" / "items_preview.py",         False, "items_preview.html"),
+]
+
+# Report metadata — used by index.html generator
 REPORT_FILES = [
     ("ships_preview.html",      "Ships",           "276 ships — full loadout, ports resolved, insurance times"),
     ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
@@ -42,40 +56,6 @@ REPORT_FILES = [
     ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
     ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
 ]
-
-# Pipeline steps in order
-STEPS = [
-    ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",         True),
-    ("Ships",       SCRIPTS / "pipeline" / "ships_preview.py",      False),
-    ("Components",  SCRIPTS / "pipeline" / "components_preview.py", False),
-    ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",      False),
-    ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",    False),
-    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py", False),
-    ("Items",       SCRIPTS / "pipeline" / "items_preview.py",         False),
-]
-
-
-# ── Cache helpers ─────────────────────────────────────────────────────────────
-
-def _current_version():
-    """Version string from build_manifest.id next to Data.p4k."""
-    manifest = P4K_PATH.parent / "build_manifest.id"
-    if manifest.exists():
-        v = manifest.read_text(encoding="utf-8").strip()
-        if v:
-            return v
-    return P4K_PATH.parent.name
-
-
-def _cached_version():
-    """Version string that was last extracted (from Data_Extraction/.version)."""
-    vf = OUTPUT_DIR / ".version"
-    return vf.read_text(encoding="utf-8").strip() if vf.exists() else None
-
-
-def _all_reports_exist():
-    """True only if every report HTML file is present."""
-    return all((REPORTS_DIR / fn).exists() for fn, _, _ in REPORT_FILES)
 
 
 # ── Venv bootstrap ────────────────────────────────────────────────────────────
@@ -230,36 +210,34 @@ def main():
     _banner("SC DataPack Pipeline")
     _check_p4k()
 
-    # ── Smart cache check ──────────────────────────────────────────────────────
-    # Only applies to a normal full run (no --force / --only / --skip-extract)
-    if not force and not only and not skip_extract:
-        cur = _current_version()
-        if cur and cur == _cached_version() and _all_reports_exist():
-            print(f"\nAlready up to date (version {cur[:40]})")
-            print(f"  All reports present in {REPORTS_DIR}")
-            print("  Nothing to do. Use --force to rebuild anyway.")
-            sys.stdout.flush()
-            return
-    # ──────────────────────────────────────────────────────────────────────────
-
     total_start = time.time()
     ran = []
 
-    for name, script, is_extract in STEPS:
+    for name, script, is_extract, out_html in STEPS:
+        # Extraction: skip if --skip-extract flag set
         if is_extract and skip_extract:
             print(f"\nSkipping: {name} (--skip-extract)")
             continue
+
+        # --only: skip extraction, skip non-matching reports
         if only and is_extract:
             continue
         if only and name.lower() != only:
             continue
+
+        # Report steps: skip if HTML already exists (version is extraction's concern)
+        if not is_extract and not force and not only and out_html:
+            if (REPORTS_DIR / out_html).exists():
+                print(f"\nSkipping: {name} ({out_html} already exists)")
+                continue
+
         _run_step(name, script)
         ran.append(name)
 
     total_elapsed = time.time() - total_start
     _write_index()
     _banner(f"All done in {total_elapsed/60:.1f} min")
-    print(f"  Steps    : {', '.join(ran)}")
+    print(f"  Steps    : {', '.join(ran) if ran else 'none (all up to date)'}")
     print(f"  Reports  : {REPORTS_DIR}")
     sys.stdout.flush()
 
