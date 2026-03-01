@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 # Reuse helpers from ships_preview
 from pipeline.ships_preview import (
@@ -586,7 +586,7 @@ def generate_html(items):
 <body>
 <header>
   <h1>Star Citizen — Armor Reference</h1>
-  <div class="sub">All player-usable armor &mdash; {count} items</div>
+  <div class="sub">All player-usable armor &mdash; {count} items &middot; {GAME_VERSION}</div>
 </header>
 <div class="controls">
   <div class="filter-row">

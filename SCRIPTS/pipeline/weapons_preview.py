@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 RECORDS_DIR      = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SHIP_WEAPONS_DIR = RECORDS_DIR / "entities" / "scitem" / "ships" / "weapons"
@@ -655,6 +655,7 @@ h1{{font-size:1.3rem;font-weight:600;color:#e6edf3}}
 
 <div class="page-header">
   <h1>SC Weapons Reference</h1>
+  <div class="version-tag">{GAME_VERSION}</div>
   <span class="count-badge">{n_ship} ship weapons</span>
   <span class="count-badge">{n_fps} FPS weapons</span>
   <span class="count-badge">{n_att} attachments</span>

@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 from collections import Counter
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 # Reuse localization helper from ships_preview
 from pipeline.ships_preview import build_localization_index
@@ -435,7 +435,7 @@ def generate_html(vehicles):
 <body>
 <header>
   <h1>Ground Vehicles</h1>
-  <div class="sub">Star Citizen &mdash; {count} vehicles &middot; SC 4.6.172</div>
+  <div class="sub">Star Citizen &mdash; {count} vehicles &middot; {GAME_VERSION}</div>
 </header>
 <div class="controls">
   <div class="filter-row">

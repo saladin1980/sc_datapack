@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 # Reuse index builders + helpers from ships_preview
 from pipeline.ships_preview import (
@@ -366,7 +366,7 @@ code.cls-qtc      {{ color:#bc8cff; }}
 </head>
 <body>
 <h1>&#x1F4E6; SC DataPack — Component Reference</h1>
-<p class="subtitle">{total:,} equippable components extracted from game data — all sizes &amp; grades</p>
+<p class="subtitle">{total:,} equippable components extracted from game data — all sizes &amp; grades &mdash; {GAME_VERSION}</p>
 
 <div class="search-bar">
   <input id="search" type="text" placeholder="Search name, class, manufacturer..." oninput="filterRows(this.value)">

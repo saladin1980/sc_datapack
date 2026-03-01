@@ -9,7 +9,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 RECORDS_DIR = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SHIPS_DIR   = RECORDS_DIR / "entities" / "spaceships"
@@ -1067,7 +1067,7 @@ code.sec-other   {{ color:#8b949e; }}
 </head>
 <body>
 <h1>&#x1F680; SC DataPack — Ships</h1>
-<p class="subtitle">All loadout ports resolved &nbsp;·&nbsp; base loadouts only &nbsp;·&nbsp; {count} ships</p>
+<p class="subtitle">All loadout ports resolved &nbsp;·&nbsp; base loadouts only &nbsp;·&nbsp; {count} ships &nbsp;·&nbsp; {GAME_VERSION}</p>
 <div class="mfr-bar">{tabs_html}</div>
 <div class="search-row">
   <input id="ship-search" type="text" placeholder="Search ship name..." oninput="applyFilters()">

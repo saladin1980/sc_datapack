@@ -16,7 +16,7 @@ from xml.etree import ElementTree as ET
 from collections import Counter
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config.settings import OUTPUT_DIR, REPORTS_DIR
+from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
 from pipeline.ships_preview import build_localization_index
 from pipeline.groundvehicles_preview import build_mfr_index
@@ -370,7 +370,7 @@ def generate_html(items):
 <body>
 <header>
   <h1>Items Reference</h1>
-  <div class="sub">Star Citizen &mdash; {count} items &middot; SC 4.6.172
+  <div class="sub">Star Citizen &mdash; {count} items &middot; {GAME_VERSION}
     &middot; Consumables · Melee · Throwables · Deployables · Tools</div>
 </header>
 <div class="controls">

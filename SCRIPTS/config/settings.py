@@ -43,3 +43,46 @@ LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    str(REPO_ROOT / "Data_Extrac
 # Auto-detect: if configured path doesn't exist, try the default SC install
 if not P4K_PATH.exists() and _SC_DEFAULT.exists():
     P4K_PATH = _SC_DEFAULT
+
+
+# ── Game version string ───────────────────────────────────────────────────────
+def _read_game_version():
+    """
+    Parse build_manifest.id next to Data.p4k and return the public version
+    string shown in the RSI Launcher, e.g. "4.6.0-live.11319298".
+
+    Format: {branch}-{tag}.{P4changelist}
+      branch:  "sc-alpha-4.6.0" -> strip "sc-alpha-" -> "4.6.0"
+      tag:     "public"         -> "live"
+      cl:      "11319298"
+
+    Falls back to the raw Version field ("4.6.172.47106") if parsing fails,
+    or "unknown" if the manifest is missing entirely.
+    """
+    import json
+    manifest = P4K_PATH.parent / "build_manifest.id"
+    if not manifest.exists():
+        return "unknown"
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8")).get("Data", {})
+        branch = data.get("Branch", "")          # "sc-alpha-4.6.0"
+        tag    = data.get("Tag", "")             # "public"
+        cl     = data.get("RequestedP4ChangeNum", "")  # "11319298"
+
+        # Strip known prefix from branch
+        for prefix in ("sc-alpha-", "sc-"):
+            if branch.startswith(prefix):
+                branch = branch[len(prefix):]
+                break
+
+        tag_label = "live" if tag == "public" else tag
+
+        if branch and cl:
+            return f"{branch}-{tag_label}.{cl}"
+        # Fallback to raw Version field
+        return data.get("Version", "unknown")
+    except Exception:
+        return "unknown"
+
+
+GAME_VERSION = _read_game_version()
