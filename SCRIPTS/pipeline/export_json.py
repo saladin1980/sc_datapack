@@ -80,16 +80,73 @@ def _safe_int(v, default=None):
         return default
 
 
+_CAREER_COMPOUND_FIXES = {
+    # Joined words from DataCore that need a space inserted
+    "Capitalship":         "Capital Ship",
+    "Heavygunship":        "Heavy Gunship",
+    "Luxurytouring":       "Luxury Touring",
+    "Heavyfighter":        "Heavy Fighter",
+    "Lightfighter":        "Light Fighter",
+    "Mediumfighter":       "Medium Fighter",
+    "Lightfreight":        "Light Freight",
+    "Mediumfreight":       "Medium Freight",
+    "Heavyfreight":        "Heavy Freight",
+    "Starterlightfreight": "Starter Light Freight",
+    "Heavyrefuelling":     "Heavy Refuelling",
+    "Lightsalvage":        "Light Salvage",
+    "Heavysalvage":        "Heavy Salvage",
+    "Mediumsalvage":       "Medium Salvage",
+    "Startersalvage":      "Starter Salvage",
+    "Mediummining":        "Medium Mining",
+    "Lightmining":         "Light Mining",
+    "Startermining":       "Starter Mining",
+    "Stealthfighter":      "Stealth Fighter",
+    "Stealthbomber":       "Stealth Bomber",
+    "Heavybomber":         "Heavy Bomber",
+    "Heavyfighterbomber":  "Heavy Fighter Bomber",
+    "Snubfighter":         "Snub Fighter",
+    "Starterpathfinder":   "Starter Pathfinder",
+    "Mediumdata":          "Medium Data",
+    "Lightscience":        "Light Science",
+    # Dual-role compound values
+    "Lightfreight Mediumfighter": "Light Freight / Medium Fighter",
+    # Game data typo (RSI Constellation Andromeda)
+    "Mediumfreightgunshio": "Medium Freight Gunship",
+}
+
+
 def _clean_career(v):
-    """Strip raw loc key prefixes and title-case the result."""
+    """Strip raw loc key prefixes, clean joined words, and title-case the result."""
     if not v:
         return ""
+    # Unresolved procedural placeholder — not a real career value
+    if v == "Procedural Text Null":
+        return ""
+    # Strip @vehicle_* and @item_ShipFocus_* loc key prefixes
     for pfx in ("@vehicle_focus_", "@vehicle_career_", "@vehicle_class_",
-                 "@vehicle_role_", "@vehicle_"):
+                 "@vehicle_role_", "@vehicle_", "@item_ShipFocus_", "@item_shipfocus_"):
         if v.startswith(pfx):
-            return v[len(pfx):].replace("_", " ").strip().title()
-    # Could already be a plain-text resolved string (groundvehicles style)
-    return v.lstrip("@").replace("_", " ").strip().title()
+            v = v[len(pfx):].replace("_", " ").strip().title()
+            return _CAREER_COMPOUND_FIXES.get(v, v)
+    # Strip "Item Shipfocus " prefix (pre-resolved fallback)
+    if v.startswith("Item Shipfocus "):
+        v = v[len("Item Shipfocus "):].strip().title()
+        return _CAREER_COMPOUND_FIXES.get(v, v)
+    # Plain-text resolved string (groundvehicles style) — still may have compound words
+    v = v.lstrip("@").replace("_", " ").strip().title()
+    return _CAREER_COMPOUND_FIXES.get(v, v)
+
+
+# Canonical manufacturer codes derived from class_name prefix.
+# DataCore Code field is truncated (AEGS->AEG, MISC->MIS, KRIG->KRI) and
+# Mirai (MRAI) collides with MISC (both Code='MIS'). Class prefix is authoritative.
+_CLASS_TO_MFR_CODE = {
+    "AEGS": "AEGS", "ANVL": "ANVL", "ARGO": "ARGO", "BANU": "BANU",
+    "CNOU": "CNOU", "CRUS": "CRUS", "DRAK": "DRAK", "ESPR": "ESPR",
+    "GRIN": "GRIN", "KRIG": "KRIG", "MISC": "MISC", "MRAI": "MRAI",
+    "ORIG": "ORIG", "RSI":  "RSI",  "TMBL": "TMBL", "XIAN": "XIAN",
+    "XNAA": "XNAA",
+}
 
 
 def ships_to_records(ships):
@@ -108,6 +165,19 @@ def ships_to_records(ships):
     for s in ships:
         if not s:
             continue
+
+        cn   = s.get("class_name", "")
+        name = s.get("display_name", "")
+
+        # Derive canonical mfr_code from class_name prefix (DataCore Code field
+        # is truncated and Mirai/MISC collide on 'MIS').
+        prefix   = cn.split("_")[0]
+        mfr_code = _CLASS_TO_MFR_CODE.get(prefix, s.get("mfr_code", ""))
+
+        # canonical_name strips the manufacturer code prefix from the display name
+        # (e.g. "AEGS Gladius" -> "Gladius") — used as UEX join key.
+        parts          = name.split(" ", 1)
+        canonical_name = parts[1] if len(parts) > 1 else name
 
         hardpoints = []
         for h in s.get("hardpoints", []):
@@ -135,10 +205,12 @@ def ships_to_records(ships):
             })
 
         records.append({
-            "class_name":        s.get("class_name", ""),
-            "name":              s.get("display_name", ""),
+            "class_name":        cn,
+            "name":              name,
+            "canonical_name":    canonical_name,  # ship name without mfr prefix — UEX join key
+            "uex_id":            None,             # populated later via UEX API match
             "manufacturer":      s.get("mfr_name", ""),
-            "manufacturer_code": s.get("mfr_code", ""),
+            "manufacturer_code": mfr_code,
             "career":            _clean_career(s.get("career", "")),
             "role":              _clean_career(s.get("role", "")),
             "crew":              _safe_int(s.get("crew")),

@@ -38,6 +38,9 @@ _SKIP_PATTERNS = (
     "_pu_ai_", "_ai_", "_unmanned_", "_tutorial", "_teach",
     "_tier_1", "_tier_2", "_tier_3", "_pu_hijacked", "_pu_civilian",
     "_pu_npc", "_ea_",
+    # Non-flyable world objects / dev artifacts
+    "_derelict", "_wreck", "_template", "_pu_gamemaster", "_pu_invictus",
+    "_drug_", "_pu_pirate_",
 )
 
 def scan_all_ships():

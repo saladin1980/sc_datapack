@@ -84,6 +84,7 @@ SUBTYPE_REFINE = {
     "MedPack":    "Medical / Stim",
     "Medical":    "Medical / Stim",
     "OxygenCap":  "Medical / Stim",
+    "Hacking":    "Hacking Tool",      # multi-tool exploit chips — NOT medical
     "Grenade":    "Throwable",
     "Melee":      "Melee",
     "Knife":      "Melee",
@@ -212,6 +213,7 @@ CAT_COLORS = {
     "Throwable":      "#e67e22",
     "Deployable":     "#c0392b",
     "Tool / Gadget":  "#2980b9",
+    "Hacking Tool":   "#00b894",
     "Misc":           "#546e7a",
     "Other":          "#546e7a",
 }
@@ -284,7 +286,7 @@ def generate_html(items):
         f'All <span class="tc">{count}</span></button>\n'
     )
     for cat in ["Medical / Stim", "Food & Drink", "Melee", "Throwable",
-                "Deployable", "Tool / Gadget", "Misc", "Other"]:
+                "Deployable", "Tool / Gadget", "Hacking Tool", "Misc", "Other"]:
         c = cat_counts.get(cat, 0)
         if not c:
             continue
