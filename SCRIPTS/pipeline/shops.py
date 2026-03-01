@@ -243,10 +243,8 @@ def build_shop_data(uuid_idx: dict, loc_idx: dict) -> list:
                 name       = _resolve_name(xml_path, loc_idx) or class_name
                 category   = _category_from_path(xml_path)
             else:
-                class_name = None
-                name       = ""
-                category   = "Unknown"
                 unresolved += 1
+                continue  # skip commodity/resource UUIDs not in DataCore extraction
 
             rows.append({
                 "shop_file":  stem,
