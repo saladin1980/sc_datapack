@@ -11,7 +11,7 @@ first run (~1-2 min). Subsequent runs are instant.
 Optional flags:
   python runner.py --skip-extract      # re-run reports only (already extracted)
   python runner.py --only ships        # run just one report
-                                       # ships / components / armor / weapons / vehicles
+                                       # ships / components / armor / weapons / vehicles / items
 """
 import sys
 import time
@@ -35,6 +35,7 @@ STEPS = [
     ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",      False),
     ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",    False),
     ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py", False),
+    ("Items",       SCRIPTS / "pipeline" / "items_preview.py",         False),
 ]
 
 
@@ -134,6 +135,7 @@ def _write_index():
         ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
         ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
         ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
+        ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
     ]
     links = ""
     for filename, title, desc in reports:

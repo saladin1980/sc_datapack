@@ -6,12 +6,16 @@ Two data sources are used:
        Data/Localization/*/global.ini   - display name strings (~12 files, instant)
 
   2. DataCore binary (parsed in-memory, dumped as XML):
-       Data/Game2.dcb -> records/entities/spaceships/   - ship definitions
-                      -> records/entities/scitem/        - items/components/weapons
-                      -> records/scitemmanufacturer/     - manufacturer names
-                      -> records/damage/                 - damage tables
-                      -> records/ammoparams/             - ammo params
-       (~24,667 records, ~10-15 min total)
+       Data/Game2.dcb -> records/entities/spaceships/      - ship definitions
+                      -> records/entities/scitem/           - items/components/weapons
+                      -> records/entities/groundvehicles/   - ground vehicles
+                      -> records/scitemmanufacturer/        - manufacturer names
+                      -> records/damage/                    - damage tables
+                      -> records/ammoparams/                - ammo params
+                      -> records/commodityconfiguration/    - commodity damage configs
+                      -> records/commoditytypedatabase/     - commodity type index
+                      -> records/resourcetypedatabase/      - resource type index
+       (~24,672 records, ~10-15 min total)
 
 Skips extraction if Data_Extraction/.version already matches current version.
 """
@@ -50,6 +54,10 @@ RECORD_PREFIXES = [
     "libs/foundry/records/scitemmanufacturer/",
     "libs/foundry/records/damage/",
     "libs/foundry/records/ammoparams/",
+    # Commodity / economy reference data (small, useful for database layer)
+    "libs/foundry/records/commodityconfiguration/",
+    "libs/foundry/records/commoditytypedatabase/",
+    "libs/foundry/records/resourcetypedatabase/",
 ]
 
 
