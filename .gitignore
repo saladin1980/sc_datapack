@@ -23,8 +23,8 @@ Tools/venv/
 # ── Generated output (created on run, not tracked) ───────────────────────────
 Data_Extraction/*
 !Data_Extraction/.gitkeep
-HTML/*
-!HTML/.gitkeep
+reports/*
+!reports/.gitkeep
 output/
 logs/
 

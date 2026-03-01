@@ -37,7 +37,7 @@ _load_env()
 # ── Paths — all default to repo-relative locations ───────────────────────────
 P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    str(REPO_ROOT / "Data.p4k")))
 OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  str(REPO_ROOT / "Data_Extraction")))
-REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", str(REPO_ROOT / "HTML")))
+REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", str(REPO_ROOT / "reports")))
 LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    str(REPO_ROOT / "Data_Extraction" / "logs")))
 
 # Auto-detect: if configured path doesn't exist, try the default SC install

@@ -3,7 +3,7 @@ export_json.py -- Shared JSON export utility for the SC DataPack pipeline.
 ========================================================================
 Each report script calls write_json() after building its data list.
 
-Output directory: HTML/JSON/
+Output directory: reports/JSON/
   ships.json           -- 276 ships with loadout and insurance
   components.json      -- 1,791 equippable ship components
   armor.json           -- 2,208 player armor pieces
