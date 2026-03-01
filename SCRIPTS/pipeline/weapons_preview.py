@@ -288,6 +288,7 @@ def parse_ship_weapon(path, loc_idx, mfr_idx, ammo_idx):
     return {
         "category":     "ship",
         "name":         name,
+        "class_name":   path.stem,
         "manufacturer": manufacturer,
         "size":         size,
         "subtype":      "Gun",
@@ -357,6 +358,7 @@ def parse_fps_weapon(path, loc_idx, mfr_idx, ammo_idx, uuid_idx):
     return {
         "category":         "fps",
         "name":             name,
+        "class_name":       path.stem,
         "manufacturer":     manufacturer,
         "size":             size,
         "subtype":          subtype,
@@ -396,6 +398,7 @@ def parse_attachment(path, loc_idx, mfr_idx):
     return {
         "category":     "attachment",
         "name":         name,
+        "class_name":   path.stem,
         "manufacturer": manufacturer,
         "size":         size,
         "subtype":      subtype,

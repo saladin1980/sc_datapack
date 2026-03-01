@@ -30,6 +30,7 @@ SCITEM_DIR     = RECORDS_DIR / "entities" / "scitem"
 SHIPS_COMP_DIR = SCITEM_DIR / "ships"
 
 MFR_NAMES = {
+    # Full 4-letter canonical codes
     "AEGS": "Aegis",   "ANVL": "Anvil",    "BEHR": "Behring",
     "BASL": "Basilisk","CGPO": "CIG",       "JUST": "JUST",
     "ACOM": "Acom",    "AMRS": "Amrs",      "GATS": "Gatso",
@@ -40,6 +41,14 @@ MFR_NAMES = {
     "KLWE": "Klaus&Werner","MNVR": "Musashi","BANU": "Banu",
     "VOLT": "Volt",    "GRYO": "Greycat",   "SBER": "Sber",
     "CRSD": "Crossfire","LNDR": "Lander",
+    # Truncated 3-letter DataCore Code field values (fallback keys)
+    "AEG": "Aegis",    "ANV": "Anvil",     "BEH": "Behring",
+    "MIS": "MISC",     "KRI": "Kruger",    "CRU": "Crusader",
+    "DRK": "Drake",    "KLW": "Klaus&Werner","MNV": "Musashi",
+    "VOL": "Volt",     "GRY": "Greycat",   "ORI": "Origin",
+    "ARG": "Argo",     "TMB": "Tumbril",   "GAT": "Gatso",
+    # Component-manufacturer-specific short codes (already their canonical form)
+    "JOK": "Joker",    "KLA": "Klaus&Werner","VNC": "Vanduul",
 }
 
 # ── Category definitions ───────────────────────────────────────────────────────
@@ -193,6 +202,7 @@ def scan_all_components(uuid_idx, cls_idx, loc_idx, mfr_idx):
                 "size":         size,
                 "grade":        grade,
                 "mfr":          mfr_display,
+                "mfr_code":     mfr_code,   # raw DataCore Code (may be truncated: AEG, BEH, MIS)
                 "stats":        stats,
                 "bucket":       bucket,
                 "path":         str(xml_file.relative_to(RECORDS_DIR)),

@@ -148,6 +148,20 @@ _CLASS_TO_MFR_CODE = {
     "XNAA": "XNAA",
 }
 
+# Normalize truncated DataCore component manufacturer codes → canonical 4-letter codes.
+# DataCore Code field is truncated for many manufacturers (AEGS→AEG, BEHR→BEH, etc.).
+# This ensures components.manufacturer_code aligns with ships.manufacturer_code for Postgres joins.
+_COMP_MFR_CODE_NORM = {
+    "AEG": "AEGS", "ANV": "ANVL", "BEH": "BEHR",
+    "MIS": "MISC", "KRI": "KRIG", "CRU": "CRUS",
+    "DRK": "DRAK", "KLW": "KLWE", "MNV": "MNVR",
+    "VOL": "VOLT", "GRY": "GRYO", "ORI": "ORIG",
+    "ARG": "ARGO", "TMB": "TMBL", "GAT": "GATS",
+    "KLA": "KLWE",  # Klaus & Werner (DataCore uses KLA)
+    # Pass-throughs (already canonical or unique to component data)
+    "JOK": "JOK",  "VNC": "VNC",
+}
+
 
 def ships_to_records(ships):
     """
@@ -243,15 +257,17 @@ def components_to_records(components):
         for item in c.get("stats", []):
             if isinstance(item, (list, tuple)) and len(item) >= 2:
                 stats.append({"label": item[0], "value": item[1]})
+        raw_code = c.get("mfr_code", "")
         records.append({
-            "class":        c.get("class", ""),
-            "name":         c.get("display_name", ""),
-            "type":         c.get("type", ""),
-            "sub_type":     c.get("sub_type", ""),
-            "size":         c.get("size", ""),
-            "grade":        c.get("grade", ""),
-            "manufacturer": c.get("mfr", ""),
-            "stats":        stats,
+            "class":             c.get("class", ""),
+            "name":              c.get("display_name", ""),
+            "type":              c.get("type", ""),
+            "sub_type":          c.get("sub_type", ""),
+            "size":              c.get("size", ""),
+            "grade":             c.get("grade", ""),
+            "manufacturer":      c.get("mfr", ""),
+            "manufacturer_code": _COMP_MFR_CODE_NORM.get(raw_code, raw_code),
+            "stats":             stats,
         })
     return records
 
@@ -314,6 +330,7 @@ def weapons_to_records(weapons):
         rec = {
             "category":      cat,
             "name":          w.get("name", ""),
+            "class_name":    w.get("class_name", ""),  # DataCore class — links to ship hardpoints
             "manufacturer":  w.get("manufacturer", ""),
             "size":          w.get("size", 0),
             "subtype":       w.get("subtype", ""),
