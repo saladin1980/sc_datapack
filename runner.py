@@ -21,7 +21,7 @@ Optional flags:
   python runner.py --skip-extract      # skip extraction, run reports only
   python runner.py --force             # rebuild all reports even if they exist
   python runner.py --only ships        # run just one report (always runs it)
-                                       # ships / components / armor / weapons / vehicles / items
+                                       # ships / components / armor / weapons / vehicles / items / shops
 """
 import sys
 import time
@@ -47,16 +47,18 @@ STEPS = [
     ("Weapons",     SCRIPTS / "pipeline" / "weapons.py",       False, "weapons_preview.html"),
     ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles.py",False, "groundvehicles.html"),
     ("Items",       SCRIPTS / "pipeline" / "items.py",         False, "items_preview.html"),
+    ("Shops",       SCRIPTS / "pipeline" / "shops.py",         False, "shops.html"),
 ]
 
 # Report metadata — used by index.html generator
 REPORT_FILES = [
-    ("ships_preview.html",      "Ships",           "276 ships — full loadout, ports resolved, insurance times"),
+    ("ships_preview.html",      "Ships",           "257 ships — full loadout, ports resolved, insurance times"),
     ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
     ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
     ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
     ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
     ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
+    ("shops.html",              "Shops",           "6,300+ shop inventory entries — what sells where and at what price"),
 ]
 
 

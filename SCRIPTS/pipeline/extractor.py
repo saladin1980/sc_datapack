@@ -1,9 +1,10 @@
 """
 Phase 1: Extract game data from Data.p4k into Data_Extraction/.
 
-Two data sources are used:
+Two data sources are used (a third is planned but not yet implemented):
   1. P4K direct files (extracted with scdatatools):
-       Data/Localization/*/global.ini   - display name strings (~12 files, instant)
+       Data/Localization/*/global.ini        - display name strings (~12 files, instant)
+       Data/Scripts/ShopInventories/*.json   - shop/vendor inventory + prices (~119 files)
 
   2. DataCore binary (parsed in-memory, dumped as XML):
        Data/Game2.dcb -> records/entities/spaceships/      - ship definitions
@@ -113,6 +114,28 @@ def _extract_localization(sc, error_log):
     return len(ini_files), errors
 
 
+def _extract_shop_inventories(sc, error_log):
+    """Extract Data/Scripts/ShopInventories/*.json directly from P4K."""
+    shop_files = [
+        f for f in sc.p4k.filelist
+        if "Scripts/ShopInventories" in f.filename
+        and not f.filename.endswith("/")
+    ]
+    print(f"Extracting {len(shop_files)} ShopInventory files...")
+    sys.stdout.flush()
+
+    errors = 0
+    for info in shop_files:
+        try:
+            sc.p4k._extract_member(info, OUTPUT_DIR)
+        except Exception as e:
+            errors += 1
+            with open(str(error_log), "a", encoding="utf-8") as f:
+                f.write(f"ERROR: {info.filename}: {e}\n")
+
+    return len(shop_files), errors
+
+
 def _dump_datacore_records(sc, error_log):
     """Parse Game2.dcb from P4K and dump needed records to disk as plain XML."""
     print("Loading DataCore (Game2.dcb) ... (~75s)")
@@ -187,21 +210,27 @@ def run():
 
     # Step 1: Localization files from P4K
     loc_total, loc_errors = _extract_localization(sc, error_log)
-    print(f"Localization : {loc_total} files ({loc_errors} errors)")
+    print(f"Localization    : {loc_total} files ({loc_errors} errors)")
     sys.stdout.flush()
 
-    # Step 2: DataCore records -> individual XML files
+    # Step 2: ShopInventories from P4K (Data/Scripts/ShopInventories/*.json)
+    shop_total, shop_errors = _extract_shop_inventories(sc, error_log)
+    print(f"ShopInventories : {shop_total} files ({shop_errors} errors)")
+    sys.stdout.flush()
+
+    # Step 3: DataCore records -> individual XML files
     rec_total, rec_errors, rec_elapsed = _dump_datacore_records(sc, error_log)
 
     version_file.write_text(version)
 
-    total_errors = loc_errors + rec_errors
+    total_errors = loc_errors + shop_errors + rec_errors
     print(f"\n--- Extraction complete ---")
-    print(f"  Version      : {GAME_VERSION}")
-    print(f"  Localization : {loc_total} files")
-    print(f"  Records      : {rec_total:,} XML files")
-    print(f"  Errors       : {total_errors}")
-    print(f"  Elapsed      : {rec_elapsed / 60:.1f} min (DataCore dump)")
+    print(f"  Version         : {GAME_VERSION}")
+    print(f"  Localization    : {loc_total} files")
+    print(f"  ShopInventories : {shop_total} files")
+    print(f"  Records         : {rec_total:,} XML files")
+    print(f"  Errors          : {total_errors}")
+    print(f"  Elapsed         : {rec_elapsed / 60:.1f} min (DataCore dump)")
     sys.stdout.flush()
 
 

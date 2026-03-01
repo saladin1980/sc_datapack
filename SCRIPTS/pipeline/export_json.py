@@ -4,12 +4,13 @@ export_json.py -- Shared JSON export utility for the SC DataPack pipeline.
 Each report script calls write_json() after building its data list.
 
 Output directory: reports/JSON/
-  ships.json           -- 276 ships with loadout and insurance
+  ships.json           -- 257 ships with loadout and insurance
   components.json      -- 1,791 equippable ship components
   armor.json           -- 2,208 player armor pieces
   weapons.json         -- ship + FPS weapons + attachments
   ground_vehicles.json -- 27 ground vehicles
   items.json           -- 501 consumables, food, melee, tools, etc.
+  shops.json           -- 6,317 shop inventory entries (flat join table: shop x item)
 
 Schema envelope (all files):
   {
@@ -420,5 +421,31 @@ def items_to_records(items):
             "grade":             v.get("grade", ""),
             "micro_scu":         v.get("micro_scu", 0),
             "tags":              v.get("tags", ""),
+        })
+    return records
+
+
+def shops_to_records(rows):
+    """
+    Transform build_shop_data() rows into clean JSON records.
+
+    Input rows (from shops.py):
+      shop_file, shop, location, class_name, name, category, buy_auec, sell_auec
+
+    Output is a flat join table: one row per shop x item.
+    class_name links to ships/components/armor/weapons/items tables.
+    Rows with unresolved class_name (unknown items) are included with class_name=null.
+    """
+    records = []
+    for r in rows:
+        records.append({
+            "shop_file":  r.get("shop_file", ""),   # raw filename — unique shop identifier
+            "shop":       r.get("shop", ""),         # human-readable shop name
+            "location":   r.get("location", ""),     # human-readable location
+            "class_name": r.get("class_name"),       # DataCore class — join key to other tables
+            "name":       r.get("name", ""),         # display name (from localization)
+            "category":   r.get("category", ""),     # derived from XML path
+            "buy_auec":   r.get("buy_auec", 0),      # price to buy from shop (aUEC)
+            "sell_auec":  r.get("sell_auec", 0),     # price shop pays when selling to it (aUEC)
         })
     return records
