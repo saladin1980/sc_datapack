@@ -11,7 +11,7 @@ first run (~1-2 min). Subsequent runs are instant.
 Optional flags:
   python runner.py --skip-extract      # re-run reports only (already extracted)
   python runner.py --only ships        # run just one report
-                                       # (ships / components / armor / weapons / vehicles)
+                                       # ships / components / armor / weapons / vehicles
 """
 import sys
 import time
@@ -129,10 +129,11 @@ def _write_index():
     """Generate HTML/index.html linking to all reports."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     reports = [
-        ("ships_preview.html",      "Ships",      "276 ships — full loadout, every port resolved with stats"),
-        ("components_preview.html", "Components", "2,500+ equippable ship components by type"),
-        ("armor_preview.html",      "Armor",      "2,200+ player armor pieces — resistances, storage, signatures"),
-        ("weapons_preview.html",    "Weapons",    "600+ ship weapons, FPS weapons, and attachments"),
+        ("ships_preview.html",      "Ships",           "276 ships — full loadout, ports resolved, insurance times"),
+        ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
+        ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
+        ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
+        ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
     ]
     links = ""
     for filename, title, desc in reports:
