@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SC Ground Vehicles</title>
+<style>
+  :root {
+    --bg:     #0d0f14;
+    --card:   #161922;
+    --border: #2a2f3d;
+    --text:   #e8ecf0;
+    --muted:  #8892a4;
+    --accent: #5b9cf6;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font:14px/1.5 "Inter","Segoe UI",sans-serif; }
+  h1 { font-size:1.6rem; font-weight:700; letter-spacing:-.02em; }
+  header { padding:20px 24px 12px; border-bottom:1px solid var(--border); }
+  header .sub { color:var(--muted); font-size:.85rem; margin-top:4px; }
+  .controls { display:flex; flex-direction:column; border-bottom:1px solid var(--border); }
+  .filter-row { display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+                 padding:10px 24px; border-bottom:1px solid var(--border); }
+  .filter-row:last-child { border-bottom:none; }
+  .filter-label { font-size:.7rem; font-weight:700; letter-spacing:.06em;
+                   text-transform:uppercase; color:var(--muted); min-width:60px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:6px; flex:1; }
+  .tab { background:var(--card); border:1px solid var(--border); border-radius:6px;
+          color:var(--muted); cursor:pointer; font-size:.8rem; padding:5px 12px;
+          transition:all .15s; }
+  .tab:hover { border-color:var(--accent); color:var(--text); }
+  .tab.active { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  .career-tab.active { background:var(--cc,var(--accent)); border-color:var(--cc,var(--accent)); }
+  .tc { opacity:.7; font-weight:400; }
+  #search-box { background:var(--card); border:1px solid var(--border); border-radius:6px;
+                 color:var(--text); font-size:.85rem; padding:6px 12px; width:220px; }
+  #search-box:focus { outline:none; border-color:var(--accent); }
+  #vis-count { color:var(--muted); font-size:.8rem; white-space:nowrap; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+           gap:14px; padding:18px 24px; }
+  .item-card { background:var(--card); border:1px solid var(--border); border-radius:10px;
+                overflow:hidden; transition:border-color .15s; }
+  .item-card:hover { border-color:var(--accent); }
+  .card-header { padding:12px 14px 10px; border-bottom:1px solid var(--border); }
+  .card-title-row { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
+  .item-name { font-weight:600; font-size:.9rem; line-height:1.3; flex:1; min-width:0;
+                overflow-wrap:break-word; }
+  .badge { font-size:.7rem; font-weight:700; border-radius:4px; padding:2px 7px;
+            color:#fff; white-space:nowrap; align-self:flex-start; }
+  .card-meta { font-size:.75rem; color:var(--muted); }
+  .card-body { padding:10px 14px 12px; display:flex; flex-direction:column; gap:10px; }
+  .stat-section { display:flex; flex-direction:column; gap:4px; }
+  .stat-title { font-size:.7rem; font-weight:700; letter-spacing:.05em;
+                 text-transform:uppercase; color:var(--muted); margin-bottom:2px; }
+  .kv-grid { display:grid; grid-template-columns:auto 1fr; gap:2px 14px; }
+  .k { font-size:.8rem; color:var(--muted); }
+  .v { font-size:.8rem; font-weight:500; }
+  .no-stats { font-size:.8rem; color:var(--muted); font-style:italic; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Ground Vehicles</h1>
+  <div class="sub">Star Citizen &mdash; 27 vehicles &middot; SC 4.6.172</div>
+</header>
+<div class="controls">
+  <div class="filter-row">
+    <span class="filter-label">Maker</span>
+    <div class="tabs"><button class="tab mfr-tab active" data-mfr="all" onclick="setMfrTab(this)">All <span class="tc">27</span></button>
+<button class="tab mfr-tab" data-mfr="anvl" onclick="setMfrTab(this)">Anvil Aerospace <span class="tc">5</span></button>
+<button class="tab mfr-tab" data-mfr="argo" onclick="setMfrTab(this)">Argo Astronautics <span class="tc">1</span></button>
+<button class="tab mfr-tab" data-mfr="drak" onclick="setMfrTab(this)">Drake Interplanetary <span class="tc">1</span></button>
+<button class="tab mfr-tab" data-mfr="grin" onclick="setMfrTab(this)">Greycat Industrial <span class="tc">6</span></button>
+<button class="tab mfr-tab" data-mfr="rsi" onclick="setMfrTab(this)">Roberts Space Industries <span class="tc">5</span></button>
+<button class="tab mfr-tab" data-mfr="tmbl" onclick="setMfrTab(this)">Tumbril <span class="tc">9</span></button>
+</div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Career</span>
+    <div class="tabs"><button class="tab career-tab active" data-career="all" onclick="setCareerTab(this)">All Careers <span class="tc">27</span></button>
+<button class="tab career-tab" data-career="combat" style="--cc:#c0392b" onclick="setCareerTab(this)">Combat <span class="tc">9</span></button>
+<button class="tab career-tab" data-career="competition" style="--cc:#f39c12" onclick="setCareerTab(this)">Competition <span class="tc">1</span></button>
+<button class="tab career-tab" data-career="exploration" style="--cc:#2980b9" onclick="setCareerTab(this)">Exploration <span class="tc">3</span></button>
+<button class="tab career-tab" data-career="ground" style="--cc:#546e7a" onclick="setCareerTab(this)">Ground <span class="tc">4</span></button>
+<button class="tab career-tab" data-career="groundcombat" style="--cc:#c0392b" onclick="setCareerTab(this)">Ground Combat <span class="tc">3</span></button>
+<button class="tab career-tab" data-career="industrial" style="--cc:#7f8c8d" onclick="setCareerTab(this)">Industrial <span class="tc">2</span></button>
+<button class="tab career-tab" data-career="support" style="--cc:#8e44ad" onclick="setCareerTab(this)">Support <span class="tc">2</span></button>
+<button class="tab career-tab" data-career="transporter" style="--cc:#27ae60" onclick="setCareerTab(this)">Transporter <span class="tc">3</span></button>
+</div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Search</span>
+    <input id="search-box" type="search" placeholder="vehicle name...">
+    <span id="vis-count"></span>
+  </div>
+</div>
+<div class="grid" id="grid">
+<div class="item-card" data-mfr="anvl" data-career="combat" data-name="anvil ballista">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Anvil Ballista</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Anvil Aerospace &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">12</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">7</span><span class="k">L</span><span class="v">17</span><span class="k">H</span><span class="v">5.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">6.2 min</span><span class="k">Expedite</span><span class="v">8,073 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="anvl" data-career="combat" data-name="anvil ballista dunestalker">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Anvil Ballista Dunestalker</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Anvil Aerospace &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">12</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">7</span><span class="k">L</span><span class="v">17</span><span class="k">H</span><span class="v">5.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">6.2 min</span><span class="k">Expedite</span><span class="v">8,073 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="anvl" data-career="combat" data-name="anvil ballista snowblind">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Anvil Ballista Snowblind</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Anvil Aerospace &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">12</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">7</span><span class="k">L</span><span class="v">17</span><span class="k">H</span><span class="v">5.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">6.2 min</span><span class="k">Expedite</span><span class="v">8,073 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="anvl" data-career="combat" data-name="anvil centurion">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Anvil Centurion</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Anvil Aerospace &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">12</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">7</span><span class="k">L</span><span class="v">17</span><span class="k">H</span><span class="v">5.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">7.6 min</span><span class="k">Expedite</span><span class="v">5,920 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="anvl" data-career="combat" data-name="anvil spartan">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Anvil Spartan</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Anvil Aerospace &middot; Passenger</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">15</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">7</span><span class="k">L</span><span class="v">17</span><span class="k">H</span><span class="v">5.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">6.2 min</span><span class="k">Expedite</span><span class="v">2,475 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="argo" data-career="transporter" data-name="argo csv-sm">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Argo CSV-SM</span><span class="badge" style="background:#27ae60">Transporter</span></div>
+    <div class="card-meta">Argo Astronautics &middot; Light Freight</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">2</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">0.3 min</span><span class="k">Expedite</span><span class="v">190 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="drak" data-career="transporter" data-name="drake mule">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Drake Mule</span><span class="badge" style="background:#27ae60">Transporter</span></div>
+    <div class="card-meta">Drake Interplanetary &middot; Light Freight</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">2</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">3.0 min</span><span class="k">Expedite</span><span class="v">1,215 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="ground" data-name="greycat mdc">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat MDC</span><span class="badge" style="background:#546e7a">Ground</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">1</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">5.1 min</span><span class="k">Expedite</span><span class="v">5,060 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="ground" data-name="greycat mtc">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat MTC</span><span class="badge" style="background:#546e7a">Ground</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Passenger</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">2</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.2 min</span><span class="k">Expedite</span><span class="v">540 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="ground" data-name="greycat ptv">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat PTV</span><span class="badge" style="background:#546e7a">Ground</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Passenger</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">1</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">2.5</span><span class="k">L</span><span class="v">3.5</span><span class="k">H</span><span class="v">2.2</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">0.3 min</span><span class="k">Expedite</span><span class="v">115 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="industrial" data-name="greycat roc">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat ROC</span><span class="badge" style="background:#7f8c8d">Industrial</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Light Mining</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">1</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">3.9</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">3.5 min</span><span class="k">Expedite</span><span class="v">1,460 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="industrial" data-name="greycat roc-ds">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat ROC-DS</span><span class="badge" style="background:#7f8c8d">Industrial</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Light Mining</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">3</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">5</span><span class="k">L</span><span class="v">6.6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">4.4 min</span><span class="k">Expedite</span><span class="v">1,825 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="grin" data-career="ground" data-name="greycat stv">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Greycat STV</span><span class="badge" style="background:#546e7a">Ground</span></div>
+    <div class="card-meta">Greycat Industrial &middot; Passenger</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">2</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">0.2 min</span><span class="k">Expedite</span><span class="v">75 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="rsi" data-career="transporter" data-name="rsi lynx">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">RSI Lynx</span><span class="badge" style="background:#27ae60">Transporter</span></div>
+    <div class="card-meta">Roberts Space Industries &middot; Luxury Touring</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">4</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">5.7</span><span class="k">L</span><span class="v">7.75</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.7 min</span><span class="k">Expedite</span><span class="v">1,080 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="rsi" data-career="exploration" data-name="rsi ursa">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">RSI Ursa</span><span class="badge" style="background:#2980b9">Exploration</span></div>
+    <div class="card-meta">Roberts Space Industries &middot; Pathfinder</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">6</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.5 min</span><span class="k">Expedite</span><span class="v">1,015 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="rsi" data-career="exploration" data-name="rsi ursa fortuna">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">RSI Ursa Fortuna</span><span class="badge" style="background:#2980b9">Exploration</span></div>
+    <div class="card-meta">Roberts Space Industries &middot; Pathfinder</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">6</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.5 min</span><span class="k">Expedite</span><span class="v">1,015 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="rsi" data-career="support" data-name="rsi ursa medivac">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">RSI Ursa Medivac</span><span class="badge" style="background:#8e44ad">Support</span></div>
+    <div class="card-meta">Roberts Space Industries &middot; Medical</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.5 min</span><span class="k">Expedite</span><span class="v">1,015 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="rsi" data-career="support" data-name="rsi ursa medivac wikelo special">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">RSI Ursa Medivac Wikelo Special</span><span class="badge" style="background:#8e44ad">Support</span></div>
+    <div class="card-meta">Roberts Space Industries &middot; Medical</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">2</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.5 min</span><span class="k">Expedite</span><span class="v">1,015 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="combat" data-name="tumbril cyclone">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Passenger</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">3</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.0 min</span><span class="k">Expedite</span><span class="v">810 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="combat" data-name="tumbril cyclone aa">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone AA</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">6</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.0 min</span><span class="k">Expedite</span><span class="v">1,345 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="combat" data-name="tumbril cyclone mt">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone MT</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Anti-Air</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">7</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.0 min</span><span class="k">Expedite</span><span class="v">1,605 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="competition" data-name="tumbril cyclone rc">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone RC</span><span class="badge" style="background:#f39c12">Competition</span></div>
+    <div class="card-meta">Tumbril &middot; Racing</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">3</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.8 min</span><span class="k">Expedite</span><span class="v">1,135 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="exploration" data-name="tumbril cyclone rn">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone RN</span><span class="badge" style="background:#2980b9">Exploration</span></div>
+    <div class="card-meta">Tumbril &middot; Pathfinder</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">3</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.0 min</span><span class="k">Expedite</span><span class="v">810 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="combat" data-name="tumbril cyclone tr">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Cyclone TR</span><span class="badge" style="background:#c0392b">Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Antivehicle</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">8.75</span><span class="k">L</span><span class="v">6</span><span class="k">H</span><span class="v">3.5</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">2.0 min</span><span class="k">Expedite</span><span class="v">810 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="groundcombat" data-name="tumbril nova">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Nova</span><span class="badge" style="background:#c0392b">Ground Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Heavy Tank</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">11</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">12</span><span class="k">L</span><span class="v">20</span><span class="k">H</span><span class="v">11</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">12.4 min</span><span class="k">Expedite</span><span class="v">7,398 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="groundcombat" data-name="tumbril storm">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Storm</span><span class="badge" style="background:#c0392b">Ground Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Light Tank</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">5</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">10.25</span><span class="k">L</span><span class="v">7.65</span><span class="k">H</span><span class="v">4</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">5.3 min</span><span class="k">Expedite</span><span class="v">1,730 aUEC</span></div></div></div>
+</div>
+<div class="item-card" data-mfr="tmbl" data-career="groundcombat" data-name="tumbril storm aa">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tumbril Storm AA</span><span class="badge" style="background:#c0392b">Ground Combat</span></div>
+    <div class="card-meta">Tumbril &middot; Light Tank</div>
+  </div>
+  <div class="card-body"><div class="stat-section"><div class="stat-title">Specifications</div><div class="kv-grid"><span class="k">Crew</span><span class="v">1</span><span class="k">Hull HP</span><span class="v">2,500</span><span class="k">Drive</span><span class="v">Wheeled</span><span class="k">Weapon ports</span><span class="v">8</span></div></div><div class="stat-section"><div class="stat-title">Dimensions (m)</div><div class="kv-grid"><span class="k">W</span><span class="v">10.25</span><span class="k">L</span><span class="v">7.65</span><span class="k">H</span><span class="v">4</span></div></div><div class="stat-section"><div class="stat-title">Insurance</div><div class="kv-grid"><span class="k">Wait</span><span class="v">5.3 min</span><span class="k">Expedite</span><span class="v">1,740 aUEC</span></div></div></div>
+</div>
+</div>
+<script>
+var allCards = Array.from(document.querySelectorAll('.item-card'));
+var activeMfr = 'all', activeCareer = 'all', searchVal = '';
+function setMfrTab(btn) {
+  document.querySelectorAll('.mfr-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeMfr = btn.dataset.mfr;
+  applyFilters();
+}
+function setCareerTab(btn) {
+  document.querySelectorAll('.career-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeCareer = btn.dataset.career;
+  applyFilters();
+}
+document.getElementById('search-box').addEventListener('input', function() {
+  searchVal = this.value.toLowerCase();
+  applyFilters();
+});
+function applyFilters() {
+  var vis = 0;
+  allCards.forEach(function(c) {
+    var m = activeMfr    === 'all' || c.dataset.mfr    === activeMfr;
+    var r = activeCareer === 'all' || c.dataset.career === activeCareer;
+    var s = !searchVal   || c.dataset.name.indexOf(searchVal) !== -1;
+    var show = m && r && s;
+    c.style.display = show ? '' : 'none';
+    if (show) vis++;
+  });
+  document.getElementById('vis-count').textContent =
+    vis + ' vehicle' + (vis !== 1 ? 's' : '');
+}
+applyFilters();
+</script>
+</body>
+</html>
