@@ -62,13 +62,25 @@ RECORD_PREFIXES = [
 
 
 def _detect_version():
-    """Read build_manifest.id if present, fall back to parent folder name."""
+    """
+    Return a unique version fingerprint for the current Data.p4k.
+
+    Priority:
+      1. build_manifest.id next to Data.p4k (present in a full SC install)
+      2. Data.p4k file size + mtime — unique per patch even without a manifest
+         (covers the case where only Data.p4k was copied to the repo root)
+    """
     manifest = P4K_PATH.parent / "build_manifest.id"
     if manifest.exists():
         version = manifest.read_text(encoding="utf-8").strip()
         if version:
             return version
-    return P4K_PATH.parent.name
+    # No manifest — fingerprint the P4K file itself
+    try:
+        stat = P4K_PATH.stat()
+        return f"p4k-{stat.st_size}-{int(stat.st_mtime)}"
+    except Exception:
+        return P4K_PATH.parent.name
 
 
 def _ensure_scdatatools():
