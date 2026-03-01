@@ -8,8 +8,14 @@ Zero configuration needed. Just place Data.p4k in this folder and run:
 A virtual environment with all dependencies is created automatically on
 first run (~1-2 min). Subsequent runs are instant.
 
+Smart caching:
+  - If version matches AND all HTML reports exist -> does nothing (instant)
+  - If version matches but HTML reports are missing -> rebuilds reports only
+  - If version has changed -> full extraction + reports
+
 Optional flags:
   python runner.py --skip-extract      # re-run reports only (already extracted)
+  python runner.py --force             # rebuild reports even if already up to date
   python runner.py --only ships        # run just one report
                                        # ships / components / armor / weapons / vehicles / items
 """
@@ -22,10 +28,20 @@ ROOT    = Path(__file__).parent
 SCRIPTS = ROOT / "SCRIPTS"
 
 sys.path.insert(0, str(SCRIPTS))
-from config.settings import P4K_PATH, REPORTS_DIR
+from config.settings import P4K_PATH, OUTPUT_DIR, REPORTS_DIR
 
 VENV_DIR    = ROOT / "Tools" / "venv"
 VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
+
+# Report HTML files — shared by cache check and index generator
+REPORT_FILES = [
+    ("ships_preview.html",      "Ships",           "276 ships — full loadout, ports resolved, insurance times"),
+    ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
+    ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
+    ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
+    ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
+    ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
+]
 
 # Pipeline steps in order
 STEPS = [
@@ -37,6 +53,29 @@ STEPS = [
     ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py", False),
     ("Items",       SCRIPTS / "pipeline" / "items_preview.py",         False),
 ]
+
+
+# ── Cache helpers ─────────────────────────────────────────────────────────────
+
+def _current_version():
+    """Version string from build_manifest.id next to Data.p4k."""
+    manifest = P4K_PATH.parent / "build_manifest.id"
+    if manifest.exists():
+        v = manifest.read_text(encoding="utf-8").strip()
+        if v:
+            return v
+    return P4K_PATH.parent.name
+
+
+def _cached_version():
+    """Version string that was last extracted (from Data_Extraction/.version)."""
+    vf = OUTPUT_DIR / ".version"
+    return vf.read_text(encoding="utf-8").strip() if vf.exists() else None
+
+
+def _all_reports_exist():
+    """True only if every report HTML file is present."""
+    return all((REPORTS_DIR / fn).exists() for fn, _, _ in REPORT_FILES)
 
 
 # ── Venv bootstrap ────────────────────────────────────────────────────────────
@@ -129,16 +168,8 @@ def _run_step(name, script):
 def _write_index():
     """Generate HTML/index.html linking to all reports."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    reports = [
-        ("ships_preview.html",      "Ships",           "276 ships — full loadout, ports resolved, insurance times"),
-        ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
-        ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
-        ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
-        ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
-        ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
-    ]
     links = ""
-    for filename, title, desc in reports:
+    for filename, title, desc in REPORT_FILES:
         exists = (REPORTS_DIR / filename).exists()
         if exists:
             links += f'''
@@ -189,6 +220,7 @@ def main():
 
     args = sys.argv[1:]
     skip_extract = "--skip-extract" in args
+    force        = "--force" in args
     only = None
     if "--only" in args:
         idx = args.index("--only")
@@ -197,6 +229,18 @@ def main():
 
     _banner("SC DataPack Pipeline")
     _check_p4k()
+
+    # ── Smart cache check ──────────────────────────────────────────────────────
+    # Only applies to a normal full run (no --force / --only / --skip-extract)
+    if not force and not only and not skip_extract:
+        cur = _current_version()
+        if cur and cur == _cached_version() and _all_reports_exist():
+            print(f"\nAlready up to date (version {cur[:40]})")
+            print(f"  All reports present in {REPORTS_DIR}")
+            print("  Nothing to do. Use --force to rebuild anyway.")
+            sys.stdout.flush()
+            return
+    # ──────────────────────────────────────────────────────────────────────────
 
     total_start = time.time()
     ran = []
