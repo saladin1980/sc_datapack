@@ -83,11 +83,20 @@ Result: 24,316 / 24,317 records parse cleanly after sanitisation.
 
 ## Future data sources
 
-These are within Data.p4k but not yet used by the pipeline:
+These are within Data.p4k but not yet used by the pipeline.
 
-| Source | Size | What it unlocks |
-|--------|------|-----------------|
-| `Data/Scripts/Loadouts/` | 13 MB | Default ship component loadouts (what each ship spawns with) |
-| `Data/Scripts/ShopInventories/` | 1.6 MB | Buy/sell locations per item — shop/vendor data |
-| DataCore records: `missionbroker/` | ~71 MB | Mission definitions |
-| DataCore records: `contracts/` | ~60 MB | Contract definitions |
+> **Important distinction:** `Data/Scripts/` files are plain text and can be extracted directly
+> from the archive (same as localization `global.ini` — no DataCore parsing needed).
+> DataCore records require the full scdatatools in-memory parse of `Game2.dcb`.
+
+| Source | Extract method | Size | What it unlocks |
+|--------|---------------|------|-----------------|
+| `Data/Scripts/ShopInventories/` | Direct p4k extract | 1.6 MB | **Vendor/shop data** — which items are sold where and at what price. This is the answer to "where do we get shop prices." |
+| `Data/Scripts/Loadouts/` | Direct p4k extract | 13 MB | Default ship component loadouts (what each ship spawns with) |
+| DataCore records: `missionbroker/` | scdatatools DataCore | ~71 MB | Mission definitions |
+| DataCore records: `contracts/` | scdatatools DataCore | ~60 MB | Contract definitions |
+
+> **Note on shop/vendor data:** DataCore XMLs (`Game2.dcb`) describe *what* items are — their stats,
+> manufacturers, and properties. They do **not** contain where items are sold or at what price.
+> That data lives exclusively in `Data/Scripts/ShopInventories/` — a completely separate part
+> of the archive, not a DataCore record.
