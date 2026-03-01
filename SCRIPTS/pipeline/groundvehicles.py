@@ -12,8 +12,8 @@ from collections import Counter
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
-# Reuse localization helper from ships_preview
-from pipeline.ships_preview import build_localization_index
+# Reuse localization helper from ships
+from pipeline.ships import build_localization_index
 
 RECORDS_DIR = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 GV_DIR      = RECORDS_DIR / "entities" / "groundvehicles"

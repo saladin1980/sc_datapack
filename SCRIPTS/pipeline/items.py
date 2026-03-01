@@ -18,8 +18,8 @@ from collections import Counter
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
-from pipeline.ships_preview import build_localization_index
-from pipeline.groundvehicles_preview import build_mfr_index
+from pipeline.ships import build_localization_index
+from pipeline.groundvehicles import build_mfr_index
 
 RECORDS_DIR = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SCITEM_DIR  = RECORDS_DIR / "entities" / "scitem"

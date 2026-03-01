@@ -40,13 +40,13 @@ VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
 # Pipeline steps — (name, script, is_extract, output_html)
 # output_html: filename written to REPORTS_DIR, or None for extraction
 STEPS = [
-    ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",             True,  None),
-    ("Ships",       SCRIPTS / "pipeline" / "ships_preview.py",         False, "ships_preview.html"),
-    ("Components",  SCRIPTS / "pipeline" / "components_preview.py",    False, "components_preview.html"),
-    ("Armor",       SCRIPTS / "pipeline" / "armor_preview.py",         False, "armor_preview.html"),
-    ("Weapons",     SCRIPTS / "pipeline" / "weapons_preview.py",       False, "weapons_preview.html"),
-    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles_preview.py",False, "groundvehicles.html"),
-    ("Items",       SCRIPTS / "pipeline" / "items_preview.py",         False, "items_preview.html"),
+    ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",    True,  None),
+    ("Ships",       SCRIPTS / "pipeline" / "ships.py",         False, "ships_preview.html"),
+    ("Components",  SCRIPTS / "pipeline" / "components.py",   False, "components_preview.html"),
+    ("Armor",       SCRIPTS / "pipeline" / "armor.py",         False, "armor_preview.html"),
+    ("Weapons",     SCRIPTS / "pipeline" / "weapons.py",       False, "weapons_preview.html"),
+    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles.py",False, "groundvehicles.html"),
+    ("Items",       SCRIPTS / "pipeline" / "items.py",         False, "items_preview.html"),
 ]
 
 # Report metadata — used by index.html generator

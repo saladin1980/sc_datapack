@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-weapons_preview.py -- Builds weapons reference HTML page.
+weapons.py -- Builds weapons reference HTML page + weapons.json.
 
 Covers:
   - Ship weapons   (WeaponGun)        from entities/scitem/ships/weapons/

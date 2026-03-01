@@ -12,8 +12,8 @@ from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
 
-# Reuse helpers from ships_preview
-from pipeline.ships_preview import (
+# Reuse helpers from ships
+from pipeline.ships import (
     build_uuid_index,
     build_localization_index,
     build_manufacturer_index,
