@@ -17,6 +17,7 @@ from collections import Counter
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
+from pipeline.shop_lookup import load_shop_lookup, shop_html, SHOP_CSS
 
 from pipeline.ships import build_localization_index
 from pipeline.groundvehicles import build_mfr_index
@@ -232,7 +233,7 @@ def _kv(k, v):
     return f'<span class="k">{k}</span><span class="v">{v}</span>'
 
 
-def item_to_html(v):
+def item_to_html(v, shop_lookup=None):
     name    = v["name"] or v["file"]
     mfr     = v["mfr"] or v["mfr_code"] or "Unknown"
     dcat    = v["display_cat"]
@@ -261,6 +262,9 @@ def item_to_html(v):
     cat_key = dcat.lower().replace(" ", "").replace("/", "")
     mfr_key = v["mfr_code"].lower() if v["mfr_code"] else "unknown"
 
+    cn = v.get("file", "").lower()
+    shop_section = shop_html(shop_lookup.get(cn, []) if shop_lookup else [])
+
     return (
         f'<div class="item-card" '
         f'data-cat="{cat_key}" data-mfr="{mfr_key}" data-name="{name.lower()}">\n'
@@ -269,15 +273,15 @@ def item_to_html(v):
         f'<span class="item-name">{name}</span>{cat_badge}</div>\n'
         f'    <div class="card-meta">{mfr}{sub_text}</div>\n'
         f'  </div>\n'
-        f'  <div class="card-body">{stats_html}</div>\n'
+        f'  <div class="card-body">{stats_html}{shop_section}</div>\n'
         f'</div>'
     )
 
 
-def generate_html(items):
+def generate_html(items, shop_lookup=None):
     valid = [v for v in items if v and v["name"]]
     count = len(valid)
-    cards = "\n".join(item_to_html(v) for v in valid)
+    cards = "\n".join(item_to_html(v, shop_lookup) for v in valid)
 
     # Category tabs
     cat_counts = Counter(v["display_cat"] for v in valid)
@@ -367,6 +371,7 @@ def generate_html(items):
   .k {{ font-size:.78rem; color:var(--muted); }}
   .v {{ font-size:.78rem; font-weight:500; }}
   .no-stats {{ font-size:.78rem; color:var(--muted); font-style:italic; }}
+  {SHOP_CSS}
 </style>
 </head>
 <body>
@@ -453,8 +458,9 @@ def run():
         print(f"    {cat}: {c}")
     sys.stdout.flush()
 
+    _shop_lookup = load_shop_lookup()
     out  = REPORTS_DIR / "items_preview.html"
-    html = generate_html(items)
+    html = generate_html(items, _shop_lookup)
     out.write_text(html, encoding="utf-8")
     print(f"  Written: {out.name} ({len(html):,} bytes)")
 

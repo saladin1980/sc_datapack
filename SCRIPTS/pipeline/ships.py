@@ -10,6 +10,7 @@ from xml.etree import ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
+from pipeline.shop_lookup import load_shop_lookup, shop_html, SHOP_CSS
 
 RECORDS_DIR = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SHIPS_DIR   = RECORDS_DIR / "entities" / "spaceships"
@@ -824,7 +825,7 @@ def _stats_badge(stats):
     return " ".join(parts)
 
 
-def ship_to_html(ship):
+def ship_to_html(ship, shop_lookup=None):
     mfr   = ship.get("mfr_name","Unknown")
     color = MFR_COLORS.get(mfr,"#444")
     name  = ship.get("display_name", ship.get("class_name","Unknown"))
@@ -980,16 +981,17 @@ def ship_to_html(ship):
         <div class="stats-grid">{stats_html}</div>
         {weapons_section}
         {systems_html}
+        {shop_html(shop_lookup.get(ship["class_name"].lower(), []) if shop_lookup else [])}
         <p class="muted file-ref">Source: {ship['file']}</p>
       </div>
     </div>"""
 
 
-def generate_html(ships):
+def generate_html(ships, shop_lookup=None):
     from collections import Counter
     valid = [s for s in ships if s]
     count = len(valid)
-    cards = "\n".join(ship_to_html(s) for s in valid)
+    cards = "\n".join(ship_to_html(s, shop_lookup) for s in valid)
 
     # Manufacturer tabs
     mfr_counts = Counter(s.get("mfr_name","Unknown") for s in valid)
@@ -1066,6 +1068,7 @@ code.sec-other   {{ color:#8b949e; }}
 .cat-badge {{ display:inline-block; border-radius:3px; padding:1px 6px; font-size:11px; font-weight:600; }}
 .cat-missile {{ background:#332500; color:#ffa657; border:1px solid #5a3a00; }}
 .cat-turret  {{ background:#2d1f52; color:#d2a8ff; border:1px solid #4a3080; }}
+{SHOP_CSS}
 </style>
 </head>
 <body>
@@ -1124,7 +1127,8 @@ def run():
             print("SKIP")
         ships.append(ship)
 
-    html = generate_html(ships)
+    _shop_lookup = load_shop_lookup()
+    html = generate_html(ships, _shop_lookup)
     out  = REPORTS_DIR / "ships_preview.html"
     out.write_text(html, encoding="utf-8")
 

@@ -11,6 +11,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
+from pipeline.shop_lookup import load_shop_lookup, SHOP_CSS
 
 # Reuse index builders + helpers from ships
 from pipeline.ships import (
@@ -215,7 +216,7 @@ def scan_all_components(uuid_idx, cls_idx, loc_idx, mfr_idx):
 
 # ── HTML generator ─────────────────────────────────────────────────────────────
 
-def generate_html(components):
+def generate_html(components, shop_lookup=None):
     by_bucket = defaultdict(list)
     for c in components:
         by_bucket[c["bucket"]].append(c)
@@ -255,10 +256,30 @@ def generate_html(components):
             dname = c["display_name"]
             # Search text embedded as data attr for JS filtering
             search_text = f"{dname} {c['class']} {c['mfr']} {c['sub_type']}".lower()
+            # Shop availability sub-line
+            cn = c["class"].lower()
+            shop_entries = shop_lookup.get(cn, []) if shop_lookup else []
+            seen_shops = set()
+            shop_lines = []
+            for e in shop_entries:
+                key = (e.get("shop",""), e.get("location",""))
+                if key not in seen_shops:
+                    seen_shops.add(key)
+                    buy = e.get("buy_auec", 0)
+                    price_str = f'<span class="cs-price">{buy:,} aUEC</span>' if buy else ""
+                    shop_lines.append(
+                        f'<span class="cs-entry">{e.get("shop","")}, {e.get("location","")}'
+                        f'{" · " + price_str if price_str else ""}</span>'
+                    )
+            comp_shops_html = (
+                f'<div class="comp-shops">{"  ·  ".join(shop_lines)}</div>'
+                if shop_lines else ""
+            )
             rows += f"""<tr data-search="{search_text}">
               <td class="td-name">
                 <span class="item-name">{dname}</span>
                 <code class="cls cls-{css}">{c['class']}</code>
+                {comp_shops_html}
               </td>
               <td class="td-mfr">{c['mfr'] or '—'}</td>
               <td class="td-sg td-center">{sg or '—'}</td>
@@ -372,6 +393,7 @@ code.cls-qtc      {{ color:#bc8cff; }}
 .badge .bl {{ padding:0 4px; color:#8b949e; border-right:1px solid #30363d; }}
 .badge .bv {{ padding:0 5px; color:#e6edf3; }}
 .muted {{ color:#484f58; }}
+{SHOP_CSS}
 </style>
 </head>
 <body>
@@ -471,8 +493,9 @@ def run():
     for t, n in sorted(by_type.items(), key=lambda x: -x[1]):
         print(f"    {t or '(blank)':<35s} {n:4d}")
 
+    _shop_lookup = load_shop_lookup()
     print("\nGenerating HTML...")
-    html = generate_html(components)
+    html = generate_html(components, _shop_lookup)
     out  = REPORTS_DIR / "components_preview.html"
     out.write_text(html, encoding="utf-8")
     print(f"Done. Report -> {out}")

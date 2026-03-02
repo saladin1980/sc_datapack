@@ -11,6 +11,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
+from pipeline.shop_lookup import load_shop_lookup, shop_html, SHOP_CSS
 
 # Reuse helpers from ships
 from pipeline.ships import (
@@ -362,7 +363,7 @@ def _dmg_bar(pct, label):
     )
 
 
-def item_to_html(item):
+def item_to_html(item, shop_lookup=None):
     if not item or item["slot"] == "Other":
         return ""
 
@@ -453,6 +454,9 @@ def item_to_html(item):
     if not stats_body:
         stats_body = '<div class="no-stats">No detailed stats found</div>'
 
+    cn = item.get("file", "").lower()
+    shop_section = shop_html(shop_lookup.get(cn, []) if shop_lookup else [])
+
     return f"""
 <div class="item-card" data-slot="{slot}" data-tier="{item['tier']}" data-name="{name.lower()}">
   <div class="card-header">
@@ -463,16 +467,16 @@ def item_to_html(item):
     <div class="card-meta">{mfr} &middot; {slot} {size_badge}</div>
   </div>
   <div class="card-body">
-    {stats_body}
+    {stats_body}{shop_section}
   </div>
 </div>"""
 
 
-def generate_html(items):
+def generate_html(items, shop_lookup=None):
     from collections import Counter
     valid  = [i for i in items if i and i["slot"] != "Other"]
     count  = len(valid)
-    cards  = "\n".join(item_to_html(i) for i in valid)
+    cards  = "\n".join(item_to_html(i, shop_lookup) for i in valid)
 
     # Slot tabs
     slot_counts = Counter(i["slot"] for i in valid)
@@ -581,6 +585,7 @@ def generate_html(items):
   .v {{ font-size:.75rem; color:var(--text); font-weight:500; }}
   .no-stats {{ font-size:.78rem; color:var(--muted); font-style:italic; }}
   footer {{ text-align:center; padding:20px; color:var(--muted); font-size:.8rem; }}
+  {SHOP_CSS}
 </style>
 </head>
 <body>
@@ -669,8 +674,9 @@ def run():
 
     print(f"  {len(items)} items rendered, {skipped} skipped (Other/untyped)")
 
+    _shop_lookup = load_shop_lookup()
     out_path = REPORTS_DIR / "armor_preview.html"
-    html = generate_html(items)
+    html = generate_html(items, _shop_lookup)
     out_path.write_text(html, encoding="utf-8")
     print(f"\nWrote {out_path}")
     print(f"  File size: {out_path.stat().st_size / 1024:.0f} KB")

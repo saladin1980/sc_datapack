@@ -41,13 +41,13 @@ VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
 # output_html: filename written to REPORTS_DIR, or None for extraction
 STEPS = [
     ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",    True,  None),
+    ("Shops",       SCRIPTS / "pipeline" / "shops.py",         False, "shops.html"),
     ("Ships",       SCRIPTS / "pipeline" / "ships.py",         False, "ships_preview.html"),
     ("Components",  SCRIPTS / "pipeline" / "components.py",   False, "components_preview.html"),
     ("Armor",       SCRIPTS / "pipeline" / "armor.py",         False, "armor_preview.html"),
     ("Weapons",     SCRIPTS / "pipeline" / "weapons.py",       False, "weapons_preview.html"),
     ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles.py",False, "groundvehicles.html"),
     ("Items",       SCRIPTS / "pipeline" / "items.py",         False, "items_preview.html"),
-    ("Shops",       SCRIPTS / "pipeline" / "shops.py",         False, "shops.html"),
 ]
 
 # Report metadata — used by index.html generator

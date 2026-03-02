@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config.settings import OUTPUT_DIR, REPORTS_DIR, GAME_VERSION
+from pipeline.shop_lookup import load_shop_lookup, shop_html, SHOP_CSS
 
 RECORDS_DIR      = OUTPUT_DIR / "Data" / "Libs" / "foundry" / "records"
 SHIP_WEAPONS_DIR = RECORDS_DIR / "entities" / "scitem" / "ships" / "weapons"
@@ -486,7 +487,7 @@ def _type_color(display_type):
     return TYPE_COLORS.get(display_type.lower(), "#607d8b")
 
 
-def item_to_html(item):
+def item_to_html(item, shop_lookup=None):
     name         = item["name"]
     mfr          = item["manufacturer"]
     cat          = item["category"]
@@ -554,16 +555,19 @@ def item_to_html(item):
     data_attrs = (f'data-cat="{cat}" data-type="{type_key}" '
                   f'data-name="{name.lower()}" data-size="{size}"')
 
+    cn = item.get("class_name", "").lower()
+    shop_section = shop_html(shop_lookup.get(cn, []) if shop_lookup else [])
+
     return f'''<div class="item-card" {data_attrs}>
   <div class="card-header">
     <div class="card-name">{name}</div>
     <div class="card-badges">{mfr_badge}{size_badge}{type_badge}</div>
   </div>
-  {stats_html}{slots_html}
+  {stats_html}{slots_html}{shop_section}
 </div>'''
 
 
-def generate_html(weapons):
+def generate_html(weapons, shop_lookup=None):
     ship_weapons = sorted([w for w in weapons if w["category"] == "ship"],
                           key=lambda x: (x["size"], x["name"]))
     fps_weapons  = sorted([w for w in weapons if w["category"] == "fps"],
@@ -582,9 +586,9 @@ def generate_html(weapons):
             btns += f'<button class="{prefix}-tab" data-{prefix}="{key}" onclick="{fn_name}(this)">{opt}</button>'
         return btns
 
-    ship_cards = "\n".join(item_to_html(w) for w in ship_weapons)
-    fps_cards  = "\n".join(item_to_html(w) for w in fps_weapons)
-    att_cards  = "\n".join(item_to_html(w) for w in attachments)
+    ship_cards = "\n".join(item_to_html(w, shop_lookup) for w in ship_weapons)
+    fps_cards  = "\n".join(item_to_html(w, shop_lookup) for w in fps_weapons)
+    att_cards  = "\n".join(item_to_html(w, shop_lookup) for w in attachments)
 
     ship_type_tabs = tab_row(ship_types, "stype", "setShipType")
     fps_type_tabs  = tab_row(fps_types,  "ftype", "setFpsType")
@@ -652,6 +656,7 @@ h1{{font-size:1.3rem;font-weight:600;color:#e6edf3}}
 /* Slot badges */
 .slots-row{{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid #21262d}}
 .slot-badge{{background:#21262d;border:1px solid #30363d;border-radius:3px;padding:1px 6px;font-size:10px;color:#8b949e}}
+{SHOP_CSS}
 </style>
 </head>
 <body>
@@ -794,7 +799,8 @@ def run():
 
     print("Generating HTML...")
     sys.stdout.flush()
-    html = generate_html(weapons)
+    _shop_lookup = load_shop_lookup()
+    html = generate_html(weapons, _shop_lookup)
 
     out_path = REPORTS_DIR / "weapons_preview.html"
     out_path.write_text(html, encoding="utf-8")
