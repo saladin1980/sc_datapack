@@ -1,16 +1,17 @@
 services:
   sc-datapack:
-    build: .
+    build:
+      # Clones latest code from the docker branch on every build — no local repo needed
+      context: https://github.com/saladin1980/sc_datapack.git#docker
+      dockerfile: Dockerfile
     container_name: sc-datapack
     restart: unless-stopped
 
     volumes:
       # Single folder mount — drop Data.p4k here, JSON output appears in DATA_DIR/JSON/
-      # Set DATA_DIR in .env or override on the command line
       - ${DATA_DIR:-./sc-data}:/data
 
     environment:
-      # All optional — defaults match the volume mount above
       SC_P4K_PATH:    /data/Data.p4k
       SC_OUTPUT_DIR:  /work/extraction
       SC_REPORTS_DIR: /data
