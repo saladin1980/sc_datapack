@@ -1,0 +1,19 @@
+# scdatatools runtime dependencies (installed separately from the package itself
+# so pip can pick up binary wheels and avoid source builds where possible).
+# See Dockerfile — scdatatools itself is installed via git+ before this file.
+fnvhash
+hexdump
+humanize
+numpy
+packaging
+pycryptodome
+pyquaternion
+pyrsi
+rich
+tqdm
+xxhash
+zstandard
+Pillow
+python-nubia
+sentry-sdk
+line_profiler

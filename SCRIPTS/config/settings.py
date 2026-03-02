@@ -1,22 +1,21 @@
 """
-SC DataPack Pipeline — Settings
-================================
-All paths default to locations relative to the repo root.
-Zero configuration needed if Data.p4k is placed in the repo root folder,
-OR if Star Citizen is installed at the default RSI Launcher path.
+SC DataPack Pipeline — Settings (Docker)
+=========================================
+Designed for the self-contained Docker image.
 
-Override any path by setting it in a .env file at the repo root
-(copy .env.example to .env). Env vars also work if set in the shell.
+Default paths assume the standard Docker volume mounts:
+  /input/Data.p4k          -- source P4K (read-only mount)
+  /input/build_manifest.id -- optional game manifest (for version string)
+  /output                  -- JSON output volume (reports/JSON/ lands here)
+  /work/extraction         -- intermediate DataCore XML (container-local, ephemeral)
+
+Override any path via environment variables or a .env file next to entrypoint.py.
 """
 import os
-import sys
 from pathlib import Path
 
 # Repo root = three levels up from SCRIPTS/config/settings.py
 REPO_ROOT = Path(__file__).parent.parent.parent
-
-# Default Star Citizen install location (RSI Launcher)
-_SC_DEFAULT = Path(r"C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\Data.p4k")
 
 
 # ── Load .env from repo root (optional) ──────────────────────────────────────
@@ -34,15 +33,11 @@ def _load_env():
 _load_env()
 
 
-# ── Paths — all default to repo-relative locations ───────────────────────────
-P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    str(REPO_ROOT / "Data.p4k")))
-OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  str(REPO_ROOT / "Data_Extraction")))
-REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", str(REPO_ROOT / "reports")))
-LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    str(REPO_ROOT / "Data_Extraction" / "logs")))
-
-# Auto-detect: if configured path doesn't exist, try the default SC install
-if not P4K_PATH.exists() and _SC_DEFAULT.exists():
-    P4K_PATH = _SC_DEFAULT
+# ── Paths ─────────────────────────────────────────────────────────────────────
+P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    "/input/Data.p4k"))
+OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  "/work/extraction"))
+REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", "/output"))
+LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    "/work/logs"))
 
 
 # ── Game version string ───────────────────────────────────────────────────────

@@ -1,0 +1,28 @@
+# Large game data — never bake into image (mount at runtime)
+*.p4k
+Data_Extraction/
+Tools/
+
+# Report output — generated at runtime, not source
+reports/
+HTML/
+output/
+
+# Dev environment
+.env
+.git/
+.gitignore
+.claude/
+nul
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Docs / readme (not needed in image)
+DOCS/
+README.md
+*.md

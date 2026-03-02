@@ -1,0 +1,10 @@
+services:
+  sc-datapack:
+    build: .
+    volumes:
+      # Required: path to your Data.p4k
+      - ${P4K_PATH:?set P4K_PATH in .env}:/input/Data.p4k:ro
+      # Optional: game manifest — provides the version string in JSON meta
+      - ${MANIFEST_PATH:-/dev/null}:/input/build_manifest.id:ro
+      # Output: JSON files land in OUTPUT_DIR/JSON/
+      - ${OUTPUT_DIR:-./output}:/output
