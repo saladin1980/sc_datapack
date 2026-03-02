@@ -7,7 +7,7 @@ How the pipeline reads from `Data.p4k` (153.8 GB, 1,287,040 files).
 ## Extraction approach
 
 The pipeline does NOT perform a bulk file extraction from Data.p4k.
-Instead it uses two targeted methods (a third is planned):
+Instead it uses three targeted methods:
 
 **1. DataCore binary (primary — ~24,700 records)**
 `scdatatools` opens `Data.p4k` and reads `Data/Game2.dcb` (285 MB, DataCore binary) in-memory.
@@ -21,18 +21,18 @@ This avoids touching the 150+ GB of meshes, textures, audio, and other assets en
 `Data/Localization/*/global.ini` files are extracted directly from the archive.
 These contain all display name strings keyed by UUID.
 
-**3. Scripts directory (NOT YET IMPLEMENTED)**
-`Data/Scripts/` contains plain-text data files that can be extracted directly from the archive
-(same method as localization — no DataCore/scdatatools needed).
-This is where **vendor/shop/price data lives**, entirely separate from DataCore records:
+**3. Scripts directory (direct extract — 119 files)**
+`Data/Scripts/ShopInventories/*.json` files are extracted directly from the archive
+(same method as localization — no DataCore/scdatatools DataCore parsing needed).
+This is where **vendor/shop/price data lives**, entirely separate from DataCore records.
 
-| File path | What it contains |
-|---|---|
-| `Data/Scripts/ShopInventories/` | Which items are sold at which shops, at what price |
-| `Data/Scripts/Loadouts/` | Default component loadouts each ship spawns with |
+| File path | What it contains | Status |
+|---|---|---|
+| `Data/Scripts/ShopInventories/` | Which items are sold at which shops, at what price | **Implemented** — `shops.py` |
+| `Data/Scripts/Loadouts/` | Default component loadouts each ship spawns with | Future |
 
-> **This is the answer to "how do we get shop/price data."** The source is known and accessible;
-> it simply hasn't been implemented as a pipeline stage yet.
+> **Key distinction:** DataCore = *what* items are (stats, properties). Scripts/ = *where* items are sold
+> and at what price. These are completely separate data sources in the archive.
 
 ---
 
@@ -80,6 +80,10 @@ Data_Extraction/Data/Libs/foundry/records/
 
 Data_Extraction/Data/Localization/*/
 └── global.ini                          ← all scripts (display name string lookup)
+
+Data_Extraction/Data/Scripts/ShopInventories/
+└── Inv_*.json (119 files)              ← shops.py (shop inventories — vendor/price data)
+                                           shop_lookup.py (cross-references into all other reports)
 ```
 
 ---
@@ -89,8 +93,6 @@ Data_Extraction/Data/Localization/*/
 Data that could expand future pipeline stages:
 
 ```
-Data/Scripts/ShopInventories/    1.6 MB  — VENDOR DATA: which items sell where and at what price
-                                           (direct p4k extract — NOT a DataCore record)
 Data/Scripts/Loadouts/           13 MB   — default ship component loadouts (what ships spawn with)
                                            (direct p4k extract — NOT a DataCore record)
 libs/foundry/records/ui/         556 MB  — UI config XMLs (swept for UUID index only, not queried)
@@ -98,10 +100,6 @@ libs/foundry/records/actor/      215 MB  — actor records (swept for UUID index
 libs/foundry/records/missionbroker/       — mission definitions (DataCore)
 libs/foundry/records/contracts/           — contract definitions (DataCore)
 ```
-
-> **Key distinction:** ShopInventories and Loadouts are plain-text files in `Data/Scripts/` —
-> extracted directly from the archive like `global.ini`, not via the DataCore binary.
-> No scdatatools DataCore parsing needed; they can be read with a simple p4k member extract.
 
 ---
 

@@ -11,12 +11,13 @@ Produces human-readable HTML reference reports and machine-readable JSON exports
 
 | Report | Items | Description |
 |---|---|---|
-| [Ships](https://saladin1980.github.io/sc_datapack/ships_preview.html) | 257 | Full loadout — every hardpoint and system port resolved to its component, with stats (shields, power, cooling, QD, thrusters, weapons, cargo, IFCS speeds), insurance times |
-| [Components](https://saladin1980.github.io/sc_datapack/components_preview.html) | 1,791 | All equippable ship components by type — searchable, key stats per item |
-| [Armor](https://saladin1980.github.io/sc_datapack/armor_preview.html) | 2,208 | All player armor by slot and tier — damage resistances, temperature, radiation, signatures, storage |
-| [Weapons](https://saladin1980.github.io/sc_datapack/weapons_preview.html) | 601 | Ship weapons, FPS personal weapons, and attachments — damage, fire rate, bullet speed, mag capacity, range, attachment slots |
+| [Ships](https://saladin1980.github.io/sc_datapack/ships_preview.html) | 257 | Full loadout — every hardpoint and system port resolved to its component, with stats (shields, power, cooling, QD, thrusters, weapons, cargo, IFCS speeds), insurance times. Includes purchase locations and prices where available. |
+| [Components](https://saladin1980.github.io/sc_datapack/components_preview.html) | 1,791 | All equippable ship components by type — searchable, key stats per item, sold-at locations inline |
+| [Armor](https://saladin1980.github.io/sc_datapack/armor_preview.html) | 2,208 | All player armor by slot and tier — damage resistances, temperature, radiation, signatures, storage, purchase locations |
+| [Weapons](https://saladin1980.github.io/sc_datapack/weapons_preview.html) | 601 | Ship weapons, FPS personal weapons, and attachments — damage, fire rate, bullet speed, mag capacity, range, purchase locations |
 | [Ground Vehicles](https://saladin1980.github.io/sc_datapack/groundvehicles.html) | 27 | All player ground vehicles — specs, dimensions, insurance times |
-| [Items](https://saladin1980.github.io/sc_datapack/items_preview.html) | 501 | Consumables, food & drink, melee weapons, throwables, tools, hacking chips |
+| [Items](https://saladin1980.github.io/sc_datapack/items_preview.html) | 501 | Consumables, food & drink, melee weapons, throwables, tools, hacking chips — purchase locations where available |
+| [Shops](https://saladin1980.github.io/sc_datapack/shops.html) | 5,994 | All shop terminal inventories — what sells where and at what price. Filterable by location and category. |
 
 All reports are also exported as JSON (`reports/JSON/`) — see [JSON exports](#json-exports) below.
 
@@ -76,7 +77,7 @@ python runner.py                    # full run: extract + all reports
 python runner.py --skip-extract     # reports only (extraction already cached)
 python runner.py --force            # rebuild all reports (extraction cache respected)
 python runner.py --only ships       # single report: ships | components | armor
-python runner.py --only weapons     #               weapons | vehicles | items
+python runner.py --only weapons     #               weapons | vehicles | items | shops
 ```
 
 Smart caching — the pipeline skips work it's already done:
@@ -90,6 +91,7 @@ Smart caching — the pipeline skips work it's already done:
 
 ```bash
 python SCRIPTS\pipeline\extractor.py       # extraction only
+python SCRIPTS\pipeline\shops.py           # shops report + shops.json  (run before others)
 python SCRIPTS\pipeline\ships.py           # ships report + ships.json
 python SCRIPTS\pipeline\components.py      # components report + components.json
 python SCRIPTS\pipeline\armor.py           # armor report + armor.json
@@ -120,6 +122,7 @@ All files share the same envelope:
 | `weapons.json` | 601 | Includes class_name (DataCore identifier), dmg by type, ranges |
 | `ground_vehicles.json` | 27 | Includes insurance, dimensions |
 | `items.json` | 501 | Includes category, manufacturer, size, grade |
+| `shops.json` | 5,994 | Flat join table: one row per shop × item. Fields: shop_file, shop, location, class_name, name, category, buy_auec, sell_auec |
 
 ---
 
@@ -128,11 +131,13 @@ All files share the same envelope:
 Only ~400 MB of the archive is read for report generation:
 
 ```
-Data/Game2.dcb        285 MB  — DataCore binary (ships, items, weapons, armor, components)
-Data/Localization/     79 MB  — display name strings (12 language files)
+Data/Game2.dcb                285 MB  — DataCore binary (ships, items, weapons, armor, components)
+Data/Localization/             79 MB  — display name strings (12 language files)
+Data/Scripts/ShopInventories/   2 MB  — shop terminal inventories (119 JSON files, vendor/price data)
 ```
 
 The extractor parses Game2.dcb in-memory and dumps ~24,700 XML records to disk.
+ShopInventories JSON files are extracted directly (no DataCore parsing needed).
 No full archive extraction required — Data.p4k is never modified.
 
 ---

@@ -263,6 +263,54 @@ Type "RemovableChip"                       → "RemovableChip"
 
 ---
 
+## shops.py → shops.json
+
+Source: `Data_Extraction/Data/Scripts/ShopInventories/Inv_*.json` (119 files)
+Cross-referenced via: `build_uuid_index()` from ships.py
+
+Shop JSON files contain a `ShopID` field (`"uuid,uuid,..."`) that encodes both the shop
+terminal name and its location. The pipeline splits on `,`, strips outer quotes, and
+resolves each segment via localization to produce `shop` and `location` display names.
+
+Item UUIDs inside `Collection.Inventory[].ID.ID[]` are resolved against the UUID index
+to find the DataCore XML for each item. The XML path stem becomes `class_name` and the
+localization name becomes `name`. The item's XML directory path determines `category`.
+
+| Source field | Notes | JSON field |
+|---|---|---|
+| Filename stem | e.g. `Inv_GrimHex_Shop_Deakins` | `shop_file` |
+| `ShopID` first UUID segment | Loc key → global.ini → shop terminal name | `shop` |
+| `ShopID` second UUID segment | Loc key → global.ini → station / location name | `location` |
+| `Collection.Inventory[].ID.ID[]` | UUID → uuid_idx → XML file path | (item lookup) |
+| XML file path stem | DataCore class name (e.g. `amrs_lasercannon_s1`) | `class_name` |
+| XML `AttachDef.Localization.Name` | Loc key → global.ini → display name | `name` |
+| XML directory path | e.g. `weapons/ship/` → `"Ship Weapon"` | `category` |
+| `Collection.Inventory[].BuyPrice` | Float → int (0 = not purchasable) | `buy_auec` |
+| `Collection.Inventory[].SellPrice` | Float → int (0 = not sellable) | `sell_auec` |
+
+**Unresolved UUIDs:** 323 items across the 119 files could not be resolved via the UUID index
+(commodity/resource terminal items not present in the DataCore extraction). These are dropped.
+
+**Output:** flat join table — one row per shop × item. 5,994 rows total.
+
+---
+
+## shop_lookup.py — cross-report shop injection
+
+`shop_lookup.py` is a standalone shared module (no pipeline imports — avoids circular dependencies).
+It reads `shops.json` at report-generation time and is imported by all five report scripts.
+
+| Function / constant | Purpose |
+|---|---|
+| `load_shop_lookup()` | Reads shops.json → `{class_name.lower(): [row_dicts]}`. Returns `{}` silently if shops.json not yet built. |
+| `shop_html(entries)` | Renders deduplicated "Available at (N)" HTML block with "show X more" toggle at 5 entries. |
+| `SHOP_CSS` | CSS string injected into each report's `<style>` block (`.shop-avail`, `.sh-row`, etc.) |
+
+Lookup key normalization: all class names are `.lower()`-ed before dict insertion so that
+`AEGS_Gladius` from DataCore matches `aegs_gladius` from the shops.json `class_name` field.
+
+---
+
 ## Common data quality notes
 
 | Issue | Affected fields | Fix applied |

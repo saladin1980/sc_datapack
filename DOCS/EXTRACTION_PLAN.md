@@ -23,12 +23,20 @@ Data.p4k (153.8 GB, 1,287,040 files)
        │                                                 └── sanitise XML → write to disk
        │                                                           (~400 MB, Data_Extraction/)
        │
-       └── Data/Localization/*/global.ini (12 files, ~79 MB total)
+       ├── Data/Localization/*/global.ini (12 files, ~79 MB total)
+       │         │
+       │         └── extracted directly via sc.p4k._extract_member()
+       │
+       └── Data/Scripts/ShopInventories/*.json (119 files, ~2 MB)
                  │
                  └── extracted directly via sc.p4k._extract_member()
+                           │
+                           └── UUID cross-referenced with DataCore UUID index
+                                     │
+                                     └── 5,994 entries (class_name, shop, location, price)
 ```
 
-This approach reads only ~365 MB from the 153.8 GB archive and avoids touching
+This approach reads only ~367 MB from the 153.8 GB archive and avoids touching
 the 3D meshes, textures, audio, and other assets entirely.
 
 ---
@@ -50,7 +58,7 @@ Reference table showing what's in the archive and why we skip most of it:
 | Materials/           | 370 MB    | 10,571    | SKIP — material defs |
 | **Game2.dcb**        | **285 MB**| **1**     | **PRIMARY** — DataCore binary (our main data source) |
 | **Localization/**    | **79 MB** | **36**    | **YES** — global.ini display name strings |
-| Scripts/             | 27 MB     | 4,032     | FUTURE — Loadouts + ShopInventories |
+| **Scripts/**         | **27 MB** | **4,032** | **PARTIAL** — ShopInventories/ implemented; Loadouts/ future |
 | Libs/                | 2.4 GB    | 63,491    | INDIRECT — records exist inside Game2.dcb, written here after extraction |
 | Levels/              | 0.1 MB    | 2         | SKIP |
 
@@ -81,22 +89,40 @@ Result: 24,316 / 24,317 records parse cleanly after sanitisation.
 
 ---
 
+## Implemented: ShopInventories
+
+`Data/Scripts/ShopInventories/*.json` — 119 files, ~2 MB.
+
+Shop files use the format:
+```json
+{
+  "ShopID": "uuid,uuid,...",
+  "Collection": {
+    "Inventory": [
+      { "ID": { "ID": ["item-uuid"] }, "BuyPrice": 4250.0, "SellPrice": 0.0 }
+    ]
+  }
+}
+```
+
+Item UUIDs are cross-referenced with the DataCore UUID index (`build_uuid_index()` from `ships.py`)
+to resolve each UUID to a class name and display name. Unresolved UUIDs (commodity/resource terminal
+items not in DataCore extraction) are dropped — 323 entries across the 119 files.
+
+Output: `shops.json` — flat join table, one row per shop × item:
+```
+{ shop_file, shop, location, class_name, name, category, buy_auec, sell_auec }
+```
+
+`shop_lookup.py` reads `shops.json` at report-generation time and injects "Available at (N)" sections
+into every ship, armor, weapon, item, and component page.
+
+---
+
 ## Future data sources
-
-These are within Data.p4k but not yet used by the pipeline.
-
-> **Important distinction:** `Data/Scripts/` files are plain text and can be extracted directly
-> from the archive (same as localization `global.ini` — no DataCore parsing needed).
-> DataCore records require the full scdatatools in-memory parse of `Game2.dcb`.
 
 | Source | Extract method | Size | What it unlocks |
 |--------|---------------|------|-----------------|
-| `Data/Scripts/ShopInventories/` | Direct p4k extract | 1.6 MB | **Vendor/shop data** — which items are sold where and at what price. This is the answer to "where do we get shop prices." |
 | `Data/Scripts/Loadouts/` | Direct p4k extract | 13 MB | Default ship component loadouts (what each ship spawns with) |
 | DataCore records: `missionbroker/` | scdatatools DataCore | ~71 MB | Mission definitions |
 | DataCore records: `contracts/` | scdatatools DataCore | ~60 MB | Contract definitions |
-
-> **Note on shop/vendor data:** DataCore XMLs (`Game2.dcb`) describe *what* items are — their stats,
-> manufacturers, and properties. They do **not** contain where items are sold or at what price.
-> That data lives exclusively in `Data/Scripts/ShopInventories/` — a completely separate part
-> of the archive, not a DataCore record.

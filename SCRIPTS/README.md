@@ -10,12 +10,14 @@ SCRIPTS\
     settings.py           <- path configuration + GAME_VERSION parser (reads from .env)
   pipeline\
     extractor.py          <- Phase 1: DataCore XML dump + localization extraction
+    shops.py              <- shop inventories HTML report + shops.json  (run before other reports)
     ships.py              <- ships HTML report + ships.json
     components.py         <- ship components HTML report + components.json
     armor.py              <- armor HTML report + armor.json
     weapons.py            <- weapons HTML report + weapons.json
     groundvehicles.py     <- ground vehicles HTML report + ground_vehicles.json
     items.py              <- items/consumables HTML report + items.json
+    shop_lookup.py        <- shared shop-availability helper (imported by all report scripts)
     export_json.py        <- shared JSON export utility (called by all report scripts)
 ```
 
@@ -26,6 +28,7 @@ To run a single script manually, use the venv Python directly:
 
 ```bash
 Tools\venv\Scripts\python.exe SCRIPTS\pipeline\extractor.py
+Tools\venv\Scripts\python.exe SCRIPTS\pipeline\shops.py       # run before other reports — produces shops.json
 Tools\venv\Scripts\python.exe SCRIPTS\pipeline\ships.py
 Tools\venv\Scripts\python.exe SCRIPTS\pipeline\components.py
 Tools\venv\Scripts\python.exe SCRIPTS\pipeline\armor.py
@@ -40,6 +43,7 @@ Or use `runner.py --only <name>` to run one report in context — see the main R
 
 Each script adds `SCRIPTS\` to `sys.path` and imports from `config.settings` (for paths + GAME_VERSION).
 Report scripts also import shared helpers from `pipeline.ships` (localization index, UUID index builders).
+All report scripts import `pipeline.shop_lookup` for shop-availability data (safe — no pipeline imports inside).
 All JSON export is handled by `pipeline.export_json` — called at the end of each report script's `run()`.
 
 ## Dependencies
