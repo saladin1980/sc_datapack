@@ -8,8 +8,8 @@ Drop in the game file, get JSON data out. Runs continuously and re-processes aut
 ## Setup
 
 ```bash
-# 1. Build the image (one time, ~5 min)
-docker build -t sc-datapack .
+# 1. Build the image — clones latest code from GitHub automatically (~5 min)
+docker build -t sc-datapack https://github.com/saladin1980/sc_datapack.git#docker
 
 # 2. Create your data folder and drop Data.p4k into it
 mkdir sc-data
@@ -24,6 +24,9 @@ docker run -d --restart unless-stopped \
 
 That's it. JSON files appear in `sc-data/JSON/` when the pipeline finishes (~8–10 min first run).
 
+The container pulls the latest pipeline code from GitHub automatically before each run.
+To pick up dependency changes (rare), rebuild the image: `docker build -t sc-datapack https://github.com/saladin1980/sc_datapack.git#docker`
+
 ---
 
 ## With docker-compose (recommended)
@@ -31,6 +34,7 @@ That's it. JSON files appear in `sc-data/JSON/` when the pipeline finishes (~8�
 ```bash
 cp .env.example .env
 # edit .env: set DATA_DIR to your folder
+docker compose build   # clones latest code from GitHub
 docker compose up -d
 ```
 

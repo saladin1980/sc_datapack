@@ -69,7 +69,28 @@ def _run_step(name, script):
     sys.stdout.flush()
 
 
+def _git_pull():
+    """Pull latest pipeline code from origin before each run."""
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "fetch", "origin"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        _log(f"git fetch failed (continuing with current code): {result.stderr.strip()}")
+        return
+
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "reset", "--hard", "origin/docker"],
+        capture_output=True, text=True
+    )
+    if result.returncode == 0:
+        _log(f"git: {result.stdout.strip()}")
+    else:
+        _log(f"git reset failed (continuing with current code): {result.stderr.strip()}")
+
+
 def _run_pipeline(skip_extract=False):
+    _git_pull()
     total_start = time.time()
     for name, script in STEPS:
         if name == "Extraction" and skip_extract:
