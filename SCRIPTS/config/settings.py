@@ -3,10 +3,10 @@ SC DataPack Pipeline — Settings (Docker)
 =========================================
 Designed for the self-contained Docker image.
 
-Default paths assume the standard Docker volume mounts:
-  /input/Data.p4k          -- source P4K (read-only mount)
-  /input/build_manifest.id -- optional game manifest (for version string)
-  /output                  -- JSON output volume (reports/JSON/ lands here)
+Default paths assume a single /data volume mount:
+  /data/Data.p4k           -- source P4K (drop file here)
+  /data/build_manifest.id  -- optional game manifest (for version string)
+  /data/JSON/              -- JSON output lands here
   /work/extraction         -- intermediate DataCore XML (container-local, ephemeral)
 
 Override any path via environment variables or a .env file next to entrypoint.py.
@@ -34,10 +34,10 @@ _load_env()
 
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    "/input/Data.p4k"))
+P4K_PATH    = Path(os.environ.get("SC_P4K_PATH",    "/data/Data.p4k"))
 OUTPUT_DIR  = Path(os.environ.get("SC_OUTPUT_DIR",  "/work/extraction"))
-REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", "/output"))
-LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    "/work/logs"))
+REPORTS_DIR = Path(os.environ.get("SC_REPORTS_DIR", "/data"))
+LOGS_DIR    = Path(os.environ.get("SC_LOGS_DIR",    "/data/logs"))
 
 
 # ── Game version string ───────────────────────────────────────────────────────

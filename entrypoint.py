@@ -1,14 +1,19 @@
 """
-SC DataPack Pipeline — Docker Entrypoint
-=========================================
-Runs the full extraction + JSON export pipeline inside the container.
+SC DataPack Pipeline — Docker Watchdog
+=======================================
+Runs continuously. Watches /data/Data.p4k for changes and re-runs
+the full extraction + JSON export pipeline whenever a new version is detected.
 
-Input:  /input/Data.p4k             (mount: -v /path/to/Data.p4k:/input/Data.p4k:ro)
-        /input/build_manifest.id    (optional — provides game version string)
-Output: /output/JSON/               (mount: -v /path/to/output:/output)
+Single volume mount:
+  /data/              -- drop Data.p4k (and optionally build_manifest.id) here
+  /data/JSON/         -- output JSON files appear here after each run
+
+Usage:
+  docker run -v /path/to/folder:/data sc-datapack
 
 Optional flags:
-  python entrypoint.py --skip-extract   skip P4K extraction, run report scripts only
+  python entrypoint.py --run-once        run once and exit (no watch loop)
+  python entrypoint.py --skip-extract    skip P4K extraction on the next run
 """
 import sys
 import time
@@ -32,6 +37,12 @@ STEPS = [
     ("Items",       SCRIPTS / "pipeline" / "items.py"),
 ]
 
+# File that persists the last-processed mtime across container restarts
+_MTIME_FILE = P4K_PATH.parent / ".last_mtime"
+
+# How often to poll for a changed Data.p4k (seconds)
+_POLL_INTERVAL = 300  # 5 minutes
+
 
 def _banner(text):
     print(f"\n{'=' * 60}")
@@ -40,15 +51,9 @@ def _banner(text):
     sys.stdout.flush()
 
 
-def _check_p4k():
-    if not P4K_PATH.exists():
-        print(f"ERROR: Data.p4k not found at {P4K_PATH}")
-        print("")
-        print("Mount your Data.p4k file:")
-        print("  docker run -v /path/to/Data.p4k:/input/Data.p4k:ro ...")
-        sys.exit(1)
-    size_gb = P4K_PATH.stat().st_size / 1e9
-    print(f"Data.p4k : {P4K_PATH}  ({size_gb:.1f} GB)")
+def _log(msg):
+    ts = time.strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{ts}] {msg}")
     sys.stdout.flush()
 
 
@@ -64,25 +69,75 @@ def _run_step(name, script):
     sys.stdout.flush()
 
 
-def main():
-    skip_extract = "--skip-extract" in sys.argv[1:]
-
-    _banner("SC DataPack Pipeline")
-    _check_p4k()
-
+def _run_pipeline(skip_extract=False):
     total_start = time.time()
-
     for name, script in STEPS:
         if name == "Extraction" and skip_extract:
-            print(f"\nSkipping: {name} (--skip-extract)")
+            _log(f"Skipping: {name} (--skip-extract)")
             continue
         _run_step(name, script)
 
     json_dir = REPORTS_DIR / "JSON"
     total_elapsed = time.time() - total_start
     _banner(f"All done in {total_elapsed / 60:.1f} min")
-    print(f"  JSON     : {json_dir}")
-    sys.stdout.flush()
+    _log(f"JSON output : {json_dir}")
+
+
+def _get_mtime():
+    """Return current Data.p4k mtime as a string, or None if file missing."""
+    try:
+        return str(P4K_PATH.stat().st_mtime)
+    except FileNotFoundError:
+        return None
+
+
+def _read_last_mtime():
+    try:
+        return _MTIME_FILE.read_text(encoding="utf-8").strip()
+    except FileNotFoundError:
+        return None
+
+
+def _write_mtime(mtime):
+    _MTIME_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _MTIME_FILE.write_text(mtime, encoding="utf-8")
+
+
+def main():
+    args = sys.argv[1:]
+    run_once     = "--run-once"     in args
+    skip_extract = "--skip-extract" in args
+
+    _banner("SC DataPack — Watchdog")
+    _log(f"Watching : {P4K_PATH}")
+    _log(f"Output   : {REPORTS_DIR / 'JSON'}")
+    if run_once:
+        _log("Mode     : run-once")
+    else:
+        _log(f"Mode     : watch (poll every {_POLL_INTERVAL}s)")
+
+    while True:
+        mtime = _get_mtime()
+
+        if mtime is None:
+            _log(f"Waiting for Data.p4k at {P4K_PATH} ...")
+            time.sleep(30)
+            continue
+
+        last_mtime = _read_last_mtime()
+
+        if mtime != last_mtime:
+            _log("Data.p4k changed — starting pipeline ...")
+            _run_pipeline(skip_extract=skip_extract)
+            _write_mtime(mtime)
+            _log("Pipeline complete. Watching for next change.")
+        else:
+            _log("Data.p4k unchanged — nothing to do.")
+
+        if run_once:
+            break
+
+        time.sleep(_POLL_INTERVAL)
 
 
 if __name__ == "__main__":

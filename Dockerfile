@@ -24,16 +24,18 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY SCRIPTS/ SCRIPTS/
 COPY entrypoint.py .
 
-# /input  -- mount Data.p4k (and optionally build_manifest.id) here (read-only)
-# /output -- JSON files land in /output/JSON/
-VOLUME ["/input", "/output"]
+# Single volume mount:
+#   /data/Data.p4k           -- drop your Data.p4k here
+#   /data/build_manifest.id  -- optional, for proper game version string
+#   /data/JSON/              -- output JSON files appear here
+VOLUME ["/data"]
 
-# Intermediate extraction writes to /work (container-local, ephemeral)
+# /work is container-local (ephemeral extraction scratch space)
 RUN mkdir -p /work/extraction /work/logs
 
-ENV SC_P4K_PATH=/input/Data.p4k \
+ENV SC_P4K_PATH=/data/Data.p4k \
     SC_OUTPUT_DIR=/work/extraction \
-    SC_REPORTS_DIR=/output \
-    SC_LOGS_DIR=/work/logs
+    SC_REPORTS_DIR=/data \
+    SC_LOGS_DIR=/data/logs
 
 CMD ["python", "entrypoint.py"]

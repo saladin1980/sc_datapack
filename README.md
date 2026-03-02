@@ -1,7 +1,66 @@
 # SC DataPack — Docker Pipeline
 
 Self-contained extraction pipeline for Star Citizen's `Data.p4k`.
-Drop in the game file, get JSON data out. No install required beyond Docker.
+Drop in the game file, get JSON data out. Runs continuously and re-processes automatically when `Data.p4k` changes.
+
+---
+
+## Setup
+
+```bash
+# 1. Build the image (one time, ~5 min)
+docker build -t sc-datapack .
+
+# 2. Create your data folder and drop Data.p4k into it
+mkdir sc-data
+cp /path/to/Data.p4k sc-data/
+
+# 3. Start the container
+docker run -d --restart unless-stopped \
+  -v ./sc-data:/data \
+  --name sc-datapack \
+  sc-datapack
+```
+
+That's it. JSON files appear in `sc-data/JSON/` when the pipeline finishes (~8–10 min first run).
+
+---
+
+## With docker-compose (recommended)
+
+```bash
+cp .env.example .env
+# edit .env: set DATA_DIR to your folder
+docker compose up -d
+```
+
+`.env`:
+```env
+DATA_DIR=/path/to/your/folder
+```
+
+---
+
+## How it works
+
+The container watches `/data/Data.p4k` for changes every 5 minutes.
+When a new or updated file is detected it runs the full pipeline automatically.
+Drop a new `Data.p4k` in the folder after a game patch and it will re-process on its own.
+
+```
+sc-data/                   ← your folder (DATA_DIR)
+  Data.p4k                 ← drop game file here
+  build_manifest.id        ← optional, for proper version string in JSON meta
+  JSON/                    ← output appears here
+    ships.json
+    components.json
+    armor.json
+    weapons.json
+    ground_vehicles.json
+    items.json
+    shops.json
+  .last_mtime              ← internal: tracks last processed version (do not delete)
+```
 
 ---
 
@@ -17,7 +76,7 @@ Drop in the game file, get JSON data out. No install required beyond Docker.
 | `items.json` | 501 items — consumables, food, melee, tools, gadgets |
 | `shops.json` | 5,994 shop inventory rows — what sells where and at what price |
 
-All files follow the same envelope:
+All files use the same envelope:
 ```json
 {
   "meta": { "game_version": "4.6.0-live.11319298", "generated_at": "...", "count": 257 },
@@ -27,111 +86,55 @@ All files follow the same envelope:
 
 ---
 
-## Requirements
+## Getting the game version string
 
-- Docker (any recent version)
-- `Data.p4k` from your Star Citizen install (`~154 GB`)
-- ~20 GB free disk space for intermediate extraction
-- ~200 MB for the output JSON files
+Copy `build_manifest.id` from your SC install folder into `DATA_DIR` alongside `Data.p4k`.
+This provides the proper version string (e.g. `4.6.0-live.11319298`) in every JSON file's `meta.game_version`.
+Without it, version falls back to the `Data.p4k` modification date (`p4k-2026-03-01`).
+
+Default SC install locations:
+- **Windows:** `C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\`
+- **Linux:** `~/.local/share/Star Citizen/LIVE/`
 
 ---
 
-## Quick start
+## Logs
 
 ```bash
-# 1. Build the image (one time, ~5 min)
-docker build -t sc-datapack .
-
-# 2. Run — swap in your actual paths
-docker run \
-  -v /path/to/Data.p4k:/input/Data.p4k:ro \
-  -v /path/to/output:/output \
-  sc-datapack
+docker logs sc-datapack          # follow output
+docker logs -f sc-datapack       # live tail
 ```
-
-JSON files will be at `/path/to/output/JSON/` when complete.
-
-**First run takes ~8–10 min** (extraction + all reports).
-Subsequent runs on the same game version take the same time — extraction always runs fresh inside the container.
-
----
-
-## With docker-compose
-
-Copy `.env.example` to `.env` and fill in your paths:
-
-```env
-# .env
-P4K_PATH=/path/to/Data.p4k
-OUTPUT_DIR=/path/to/output
-
-# Optional — provides the game version string in JSON meta
-MANIFEST_PATH=/path/to/build_manifest.id
-```
-
-Then:
-
-```bash
-docker compose up
-```
-
----
-
-## Output structure
-
-```
-/path/to/output/
-  JSON/
-    ships.json
-    components.json
-    armor.json
-    weapons.json
-    ground_vehicles.json
-    items.json
-    shops.json
-```
-
-HTML report files are also written alongside `JSON/` — these are for reference only and can be ignored.
-
----
-
-## Environment variables
-
-All optional. Defaults work with the standard volume mounts above.
-
-| Variable | Default | Description |
-|---|---|---|
-| `SC_P4K_PATH` | `/input/Data.p4k` | Path to `Data.p4k` inside the container |
-| `SC_OUTPUT_DIR` | `/work/extraction` | Where DataCore XML is extracted (ephemeral) |
-| `SC_REPORTS_DIR` | `/output` | Where JSON and HTML output is written |
-| `SC_LOGS_DIR` | `/work/logs` | Log output directory |
 
 ---
 
 ## Flags
 
 ```bash
-# Skip P4K extraction — re-run report scripts only
-# (only useful if you mount the extraction cache from a previous run)
-docker run ... sc-datapack python entrypoint.py --skip-extract
+# Run once and exit instead of staying in watch loop
+docker run -v ./sc-data:/data sc-datapack python entrypoint.py --run-once
+
+# Skip P4K extraction, re-run report scripts only
+docker run -v ./sc-data:/data sc-datapack python entrypoint.py --run-once --skip-extract
 ```
 
 ---
 
-## Including the game manifest (recommended)
+## Environment variables
 
-The `build_manifest.id` file sits next to `Data.p4k` in your SC install folder.
-Mounting it gives you the proper version string (`4.6.0-live.11319298`) in every JSON file's `meta.game_version`.
-Without it, version falls back to the `Data.p4k` modification date (`p4k-2026-03-01`).
+All optional.
 
-```bash
-docker run \
-  -v /path/to/Data.p4k:/input/Data.p4k:ro \
-  -v /path/to/build_manifest.id:/input/build_manifest.id:ro \
-  -v /path/to/output:/output \
-  sc-datapack
-```
+| Variable | Default | Description |
+|---|---|---|
+| `SC_P4K_PATH` | `/data/Data.p4k` | Path to `Data.p4k` inside the container |
+| `SC_OUTPUT_DIR` | `/work/extraction` | Intermediate DataCore XML (ephemeral) |
+| `SC_REPORTS_DIR` | `/data` | Where JSON output is written |
+| `SC_LOGS_DIR` | `/data/logs` | Log directory |
 
-Default SC install location:
-- **Windows:** `C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\`
-- **Linux:** `~/.local/share/Star Citizen/LIVE/`
+---
+
+## Requirements
+
+- Docker (any recent version)
+- `Data.p4k` from your Star Citizen install (~154 GB)
+- ~20 GB free disk space for intermediate extraction
+- ~200 MB for the output JSON files
