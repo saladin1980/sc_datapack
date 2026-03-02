@@ -45,6 +45,9 @@ test_*.ps1
 test_*.py
 *.xml
 
+# ── Claude Code (local AI session data — never commit) ───────────────────────
+.claude/
+
 # ── IDE / OS ──────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
