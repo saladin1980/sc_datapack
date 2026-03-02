@@ -53,6 +53,27 @@
   .k { font-size:.78rem; color:var(--muted); }
   .v { font-size:.78rem; font-weight:500; }
   .no-stats { font-size:.78rem; color:var(--muted); font-style:italic; }
+  
+/* ── Shop availability (injected by shop_lookup.py) ── */
+.shop-avail { margin-top:10px; padding:8px 10px; background:rgba(0,0,0,.18);
+              border-radius:4px; border:1px solid #2a2f3d; }
+.sh-hdr  { font-size:10px; font-weight:700; color:#8b949e; text-transform:uppercase;
+           letter-spacing:.08em; margin-bottom:6px; }
+.sh-row  { display:flex; gap:6px; align-items:baseline; font-size:11px;
+           padding:2px 0; border-bottom:1px solid rgba(255,255,255,.04); flex-wrap:wrap; }
+.sh-row:last-child { border-bottom:none; }
+.sh-name { color:#c9d1d9; font-weight:500; min-width:110px; }
+.sh-loc  { color:#8b949e; flex:1; }
+.sh-buy  { color:#4caf82; white-space:nowrap; }
+.sh-sell { color:#e8a030; white-space:nowrap; font-size:10px; }
+.sh-toggle { background:none; border:1px solid #2a2f3d; border-radius:3px;
+             color:#8b949e; font-size:10px; cursor:pointer; padding:1px 6px; margin-top:4px; }
+.sh-toggle:hover { border-color:#58a6ff; color:#58a6ff; }
+/* components table sub-line */
+.comp-shops { margin-top:3px; font-size:10px; color:#8b949e; line-height:1.4; }
+.comp-shops .cs-entry { white-space:nowrap; }
+.comp-shops .cs-price { color:#4caf82; }
+
 </style>
 </head>
 <body>
@@ -65,11 +86,12 @@
   <div class="filter-row">
     <span class="filter-label">Category</span>
     <div class="tabs"><button class="tab cat-tab active" data-cat="all" onclick="setCatTab(this)">All <span class="tc">501</span></button>
-<button class="tab cat-tab" data-cat="medicalstim" style="--cc:#8e44ad" onclick="setCatTab(this)">Medical / Stim <span class="tc">22</span></button>
+<button class="tab cat-tab" data-cat="medicalstim" style="--cc:#8e44ad" onclick="setCatTab(this)">Medical / Stim <span class="tc">16</span></button>
 <button class="tab cat-tab" data-cat="food&drink" style="--cc:#27ae60" onclick="setCatTab(this)">Food & Drink <span class="tc">172</span></button>
 <button class="tab cat-tab" data-cat="melee" style="--cc:#c0392b" onclick="setCatTab(this)">Melee <span class="tc">23</span></button>
 <button class="tab cat-tab" data-cat="throwable" style="--cc:#e67e22" onclick="setCatTab(this)">Throwable <span class="tc">1</span></button>
 <button class="tab cat-tab" data-cat="toolgadget" style="--cc:#2980b9" onclick="setCatTab(this)">Tool / Gadget <span class="tc">12</span></button>
+<button class="tab cat-tab" data-cat="hackingtool" style="--cc:#00b894" onclick="setCatTab(this)">Hacking Tool <span class="tc">6</span></button>
 <button class="tab cat-tab" data-cat="misc" style="--cc:#546e7a" onclick="setCatTab(this)">Misc <span class="tc">251</span></button>
 </div>
   </div>
@@ -1301,6 +1323,48 @@
   </div>
   <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">220</span><span class="k">Tags</span><span class="v">sandwich</span></div></div>
 </div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="funt">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">FUNT</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
+</div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="icepick">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">icePick</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
+</div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="re-authorizer">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Re-Authorizer</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
+</div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="ripper">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Ripper</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
+</div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="tigersclaw">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Tigersclaw</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">HackingChip</span></div></div>
+</div>
+<div class="item-card" data-cat="hackingtool" data-mfr="unknown" data-name="walesko">
+  <div class="card-header">
+    <div class="card-title-row"><span class="item-name">Walesko</span><span class="badge" style="background:#00b894">Hacking Tool</span></div>
+    <div class="card-meta">Unknown</div>
+  </div>
+  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
+</div>
 <div class="item-card" data-cat="medicalstim" data-mfr="cur" data-name="adrenapen (demexatrine)">
   <div class="card-header">
     <div class="card-title-row"><span class="item-name">AdrenaPen (Demexatrine)</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
@@ -1371,20 +1435,6 @@
   </div>
   <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">180</span><span class="k">Tags</span><span class="v">Stash_MediPen · medical_injection</span></div></div>
 </div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="funt">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">FUNT</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
-</div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="icepick">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">icePick</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
-</div>
 <div class="item-card" data-cat="medicalstim" data-mfr="cur" data-name="medpen (hemozal)">
   <div class="card-header">
     <div class="card-title-row"><span class="item-name">MedPen (Hemozal)</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
@@ -1406,33 +1456,12 @@
   </div>
   <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">180</span><span class="k">Tags</span><span class="v">Stash_Oxygen · medical_injection</span></div></div>
 </div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="re-authorizer">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">Re-Authorizer</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
-</div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="ripper">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">Ripper</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
-</div>
 <div class="item-card" data-cat="medicalstim" data-mfr="cur" data-name="slam">
   <div class="card-header">
     <div class="card-title-row"><span class="item-name">SLAM</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
     <div class="card-meta">CUR</div>
   </div>
   <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">180</span><span class="k">Tags</span><span class="v">Stash_MediPen · medical_injection</span></div></div>
-</div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="tigersclaw">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">Tigersclaw</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">HackingChip</span></div></div>
 </div>
 <div class="item-card" data-cat="medicalstim" data-mfr="cur" data-name="treat injuries">
   <div class="card-header">
@@ -1447,13 +1476,6 @@
     <div class="card-meta">CUR</div>
   </div>
   <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">180</span><span class="k">Tags</span><span class="v">Stash_MediPen · medical_injection</span></div></div>
-</div>
-<div class="item-card" data-cat="medicalstim" data-mfr="unknown" data-name="walesko">
-  <div class="card-header">
-    <div class="card-title-row"><span class="item-name">Walesko</span><span class="badge" style="background:#8e44ad">Medical / Stim</span></div>
-    <div class="card-meta">Unknown &middot; Hacking</div>
-  </div>
-  <div class="card-body"><div class="kv-grid"><span class="k">Size</span><span class="v">1</span><span class="k">Grade</span><span class="v">1</span><span class="k">microSCU</span><span class="v">140</span><span class="k">Tags</span><span class="v">MissionQuestItem</span></div></div>
 </div>
 <div class="item-card" data-cat="melee" data-mfr="apar" data-name="demon fang combat knife">
   <div class="card-header">

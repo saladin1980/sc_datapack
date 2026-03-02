@@ -55,6 +55,27 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
 /* Slot badges */
 .slots-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid #21262d}
 .slot-badge{background:#21262d;border:1px solid #30363d;border-radius:3px;padding:1px 6px;font-size:10px;color:#8b949e}
+
+/* ── Shop availability (injected by shop_lookup.py) ── */
+.shop-avail { margin-top:10px; padding:8px 10px; background:rgba(0,0,0,.18);
+              border-radius:4px; border:1px solid #2a2f3d; }
+.sh-hdr  { font-size:10px; font-weight:700; color:#8b949e; text-transform:uppercase;
+           letter-spacing:.08em; margin-bottom:6px; }
+.sh-row  { display:flex; gap:6px; align-items:baseline; font-size:11px;
+           padding:2px 0; border-bottom:1px solid rgba(255,255,255,.04); flex-wrap:wrap; }
+.sh-row:last-child { border-bottom:none; }
+.sh-name { color:#c9d1d9; font-weight:500; min-width:110px; }
+.sh-loc  { color:#8b949e; flex:1; }
+.sh-buy  { color:#4caf82; white-space:nowrap; }
+.sh-sell { color:#e8a030; white-space:nowrap; font-size:10px; }
+.sh-toggle { background:none; border:1px solid #2a2f3d; border-radius:3px;
+             color:#8b949e; font-size:10px; cursor:pointer; padding:1px 6px; margin-top:4px; }
+.sh-toggle:hover { border-color:#58a6ff; color:#58a6ff; }
+/* components table sub-line */
+.comp-shops { margin-top:3px; font-size:10px; color:#8b949e; line-height:1.4; }
+.comp-shops .cs-entry { white-space:nowrap; }
+.comp-shops .cs-price { color:#4caf82; }
+
 </style>
 </head>
 <body>
@@ -88,14 +109,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">'WEAK' Repeater</div>
     <div class="card-badges"><span class="badge mfr">Vanduul</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">72.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">72.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,336 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,336 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,336 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,336 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="9-series longsword cannon" data-size="1">
   <div class="card-header">
     <div class="card-name">9-Series Longsword Cannon</div>
     <div class="card-badges"><span class="badge mfr">KnightBridge Arms</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">48.6</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">48.6</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,348 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="ardor-1 salvaged repeater" data-size="1">
   <div class="card-header">
@@ -109,14 +130,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Attrition-1 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">66.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">66.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">4,140 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-117 bulldog repeater" data-size="1">
   <div class="card-header">
     <div class="card-name">CF-117 Bulldog Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">17.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">17.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,870 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-117 bulldog repeater" data-size="1">
   <div class="card-header">
@@ -130,7 +151,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">DR Model-XJ1 Repeater</div>
     <div class="card-badges"><span class="badge size">S1</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">25.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">25.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,452 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,452 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,452 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">1,452 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,452 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="deadbolt i cannon" data-size="1">
   <div class="card-header">
@@ -144,7 +165,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Dominance-1 Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">63.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">63.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">2,295 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="fl-11 cannon" data-size="1">
   <div class="card-header">
@@ -158,7 +179,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Havoc Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">46.8</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">46.8</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">1,827 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">1,828 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="havoc scattergun sharkmouth edition" data-size="1">
   <div class="card-header">
@@ -186,7 +207,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M3A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">182.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">182.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,506 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="m3a cannon defense division" data-size="1">
   <div class="card-header">
@@ -214,21 +235,21 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">NN-13 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Aegis Dynamics</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">101.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">101.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">8,176 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">8,150 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="omnisky iii cannon" data-size="1">
   <div class="card-header">
     <div class="card-name">Omnisky III Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S1</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">97.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">97.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,141 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="sw16br1 “buzzsaw” repeater" data-size="1">
   <div class="card-header">
     <div class="card-name">SW16BR1 “Buzzsaw” Repeater</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">36.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">36.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,924 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="singe cannon (s1)" data-size="1">
   <div class="card-header">
@@ -249,42 +270,42 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Suckerpunch Cannon</div>
     <div class="card-badges"><span class="badge mfr">Joker Engineering</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">81.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">81.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,604 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,604 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,340 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,604 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,604 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="tarantula gt-870 mark 1 cannon" data-size="1">
   <div class="card-header">
     <div class="card-name">Tarantula GT-870 Mark 1 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">60.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">60.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">9,303 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="yellowjacket gt-210 gatling" data-size="1">
   <div class="card-header">
     <div class="card-name">YellowJacket GT-210 Gatling</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">7.6</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">7.6</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">8,082 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="'wasp' repeater" data-size="2">
   <div class="card-header">
     <div class="card-name">'WASP' Repeater</div>
     <div class="card-badges"><span class="badge mfr">Vanduul</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">89.1</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">89.1</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,100 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,100 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">3,100 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,100 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="'whip' cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">'WHIP' Cannon</div>
     <div class="card-badges"><span class="badge mfr">Vanduul</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">273.1</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">273.1</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,676 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,676 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,676 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,676 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="10-series greatsword cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">10-Series Greatsword Cannon</div>
     <div class="card-badges"><span class="badge mfr">KnightBridge Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">73.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">73.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,348 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="distortion" data-name="atvs repeater" data-size="2">
   <div class="card-header">
@@ -305,7 +326,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Attrition-2 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">99.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">99.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">6,750 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="brvs repeater" data-size="2">
   <div class="card-header">
@@ -333,7 +354,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">CF-227 Badger Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">26.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">26.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">5,625 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="cvsa cannon" data-size="2">
   <div class="card-header">
@@ -347,7 +368,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">DR Model-XJ2 Repeater</div>
     <div class="card-badges"><span class="badge size">S2</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">38.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">38.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,005 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,005 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">3,005 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">3,004 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,005 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="deadbolt ii cannon" data-size="2">
   <div class="card-header">
@@ -361,7 +382,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Dominance-2 Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">99.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">99.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">2,610 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="distortion" data-name="evsd cannon" data-size="2">
   <div class="card-header">
@@ -396,7 +417,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Hellion Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">70.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">70.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,559 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">2,488 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="lightstrike ii cannon" data-size="2">
   <div class="card-header">
@@ -410,7 +431,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M4A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">273.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">273.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,864 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="m4a cannon defense division" data-size="2">
   <div class="card-header">
@@ -438,28 +459,28 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">NN-14 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Aegis Dynamics</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">152.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">152.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">16,082 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">16,872 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="omnisky vi cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">Omnisky VI Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">145.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">145.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,551 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="sw16br2 “sawbuck” repeater" data-size="2">
   <div class="card-header">
     <div class="card-name">SW16BR2 “Sawbuck” Repeater</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">54.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">54.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,506 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="scorpion gt-215 gatling" data-size="2">
   <div class="card-header">
     <div class="card-name">Scorpion GT-215 Gatling</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">12.7</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">12.7</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">9,419 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="singe cannon (s2)" data-size="2">
   <div class="card-header">
@@ -473,28 +494,28 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Sledge II Mass Driver Cannon</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">525.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">3000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">525.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">3000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">9,090 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="strife mass driver cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">Strife Mass Driver Cannon</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">525.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">5000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">525.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">5000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">13,785 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">13,405 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="suckerpunch-l cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">Suckerpunch-L Cannon</div>
     <div class="card-badges"><span class="badge mfr">Joker Engineering</span><span class="badge size">S2</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">0.0</span></div><div class="stat"><span class="sl">Dist</span><span class="sv">121.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">0.0</span></div><div class="stat"><span class="sl">Dist</span><span class="sv">121.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">4,657 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">4,657 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,185 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">4,657 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">4,657 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="tarantula gt-870 mark 2 cannon" data-size="2">
   <div class="card-header">
     <div class="card-name">Tarantula GT-870 Mark 2 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">91.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">91.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,826 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="thlilye laser gatling" data-size="2">
   <div class="card-header">
@@ -508,7 +529,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Tigerstrike T-19P</div>
     <div class="card-badges"><span class="badge mfr">Kruger Intergalatic</span><span class="badge size">S2</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">22.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">22.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">12,147 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="'warlord' cannon" data-size="3">
   <div class="card-header">
@@ -522,7 +543,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">11-Series Broadsword Cannon</div>
     <div class="card-badges"><span class="badge mfr">KnightBridge Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">109.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">109.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">12,244 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="ardor-3 salvaged repeater" data-size="3">
   <div class="card-header">
@@ -536,21 +557,21 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Attrition-3 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">134.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">134.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">12,555 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-337 panther repeater" data-size="3">
   <div class="card-header">
     <div class="card-name">CF-337 Panther Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">43.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">43.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">8,550 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="dr model-xj3 repeater" data-size="3">
   <div class="card-header">
     <div class="card-name">DR Model-XJ3 Repeater</div>
     <div class="card-badges"><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">0.0</span></div><div class="stat"><span class="sl">Dist</span><span class="sv">57.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">0.0</span></div><div class="stat"><span class="sl">Dist</span><span class="sv">57.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">6,181 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">6,158 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="deadbolt iii cannon" data-size="3">
   <div class="card-header">
@@ -564,7 +585,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Dominance-3 Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">139.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">139.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">50</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">4,275 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="fl-33 cannon" data-size="3">
   <div class="card-header">
@@ -585,7 +606,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M5A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">410.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">410.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">9,869 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="m5a cannon defense division" data-size="3">
   <div class="card-header">
@@ -599,7 +620,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Mantis GT-220 Gatling</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">19.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">19.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1600</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">12,559 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="ndb-30 repeater" data-size="3">
   <div class="card-header">
@@ -620,14 +641,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Omnisky IX Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">218.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">218.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">8,355 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="predator scattergun" data-size="3">
   <div class="card-header">
     <div class="card-name">Predator Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">105.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">105.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,916 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">3,806 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="predator scattergun sharkmouth edition" data-size="3">
   <div class="card-header">
@@ -648,14 +669,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">PyroBurst Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">49.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">70</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">49.5</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">70</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,752 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="quarreler cannon" data-size="3">
   <div class="card-header">
     <div class="card-name">Quarreler Cannon</div>
     <div class="card-badges"><span class="badge mfr">Kruger Intergalatic</span><span class="badge size">S3</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">218.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">218.7</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1400 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">13,624 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="reign-3 repeater" data-size="3">
   <div class="card-header">
@@ -676,7 +697,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">SW16BR3 “Shredder” Repeater</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">81.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">81.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">6,005 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="singe cannon (s3)" data-size="3">
   <div class="card-header">
@@ -697,14 +718,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Suckerpunch-XL Cannon</div>
     <div class="card-badges"><span class="badge mfr">Joker Engineering</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">182.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">182.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1300 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">10,065 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">10,065 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">10,065 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">10,064 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">10,065 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="tarantula gt-870 mark 3 cannon" data-size="3">
   <div class="card-header">
     <div class="card-name">Tarantula GT-870 Mark 3 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Gallenson Tactical Systems</span><span class="badge size">S3</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">136.6</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">136.6</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1600 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">25,002 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="tormenter s3 repeater" data-size="3">
   <div class="card-header">
@@ -732,7 +753,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Attrition-4 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S4</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">202.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">202.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">16,740 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="attrition-4 repeater" data-size="4">
   <div class="card-header">
@@ -760,14 +781,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">C-788 Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S4</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">325.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">900 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">325.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">900 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">11,801 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-447 rhino repeater" data-size="4">
   <div class="card-header">
     <div class="card-name">CF-447 Rhino Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S4</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">65.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">65.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">10,800 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-447 rhino repeater" data-size="4">
   <div class="card-header">
@@ -795,14 +816,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M6A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S4</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">615.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">960 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">615.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">960 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">24,855 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="omnisky xii cannon" data-size="4">
   <div class="card-header">
     <div class="card-name">Omnisky XII Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S4</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">327.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1344 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">327.9</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1344 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">19,111 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="relentless l-21 gatling" data-size="4">
   <div class="card-header">
@@ -816,7 +837,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Revenant Gatling</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S4</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">63.3</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">63.3</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">51,119 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">49,712 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="revenant gatling" data-size="4">
   <div class="card-header">
@@ -830,7 +851,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Salvation Distortion Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Aegis Dynamics</span><span class="badge size">S4</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">60.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">60.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">11,937 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">11,937 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">11,937 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">11,929 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">11,937 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="tmsb-5 gatling" data-size="4">
   <div class="card-header">
@@ -844,7 +865,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">'WAR' Cannon</div>
     <div class="card-badges"><span class="badge mfr">Vanduul</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">567.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">567.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">41,130 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="'wrath' cannon" data-size="5">
   <div class="card-header">
@@ -858,7 +879,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">'WRATH' Cannon</div>
     <div class="card-badges"><span class="badge mfr">Vanduul</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">972.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">972.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">16,655 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="ad5b ballistic gatling" data-size="5">
   <div class="card-header">
@@ -872,21 +893,21 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Absolution Distortion Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Aegis Dynamics</span><span class="badge size">S5</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">90.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">90.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Aparelli</span><span class="sh-loc">New Babbage</span><span class="sh-buy">22,257 aUEC</span></div><div class="sh-row"><span class="sh-name">Center Mass</span><span class="sh-loc">New Babbage</span><span class="sh-buy">22,257 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">GrimHex</span><span class="sh-buy">22,257 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">22,242 aUEC</span></div><div class="sh-row"><span class="sh-name">Omega Pro</span><span class="sh-loc">New Babbage</span><span class="sh-buy">22,257 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="attrition-5 repeater" data-size="5">
   <div class="card-header">
     <div class="card-name">Attrition-5 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">336.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">336.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">26,370 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-557 galdereen repeater" data-size="5">
   <div class="card-header">
     <div class="card-name">CF-557 Galdereen Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">98.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">98.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">10,980 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-557 galdereen repeater" data-size="5">
   <div class="card-header">
@@ -935,7 +956,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M7A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">921.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">920 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">921.8</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">920 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">16,605 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="nv57 ballistic gatling" data-size="5">
   <div class="card-header">
@@ -949,7 +970,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Omnisky XV Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S5</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">492.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">492.2</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1288 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">12,636 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="slayer cannon" data-size="5">
   <div class="card-header">
@@ -977,14 +998,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Attrition-6 Repeater</div>
     <div class="card-badges"><span class="badge mfr">Hurston Dynamics</span><span class="badge size">S6</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">505.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">505.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapon HD Showcase</span><span class="sh-loc">Lorville</span><span class="sh-buy">51,075 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-667 mammoth repeater" data-size="6">
   <div class="card-header">
     <div class="card-name">CF-667 Mammoth Repeater</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S6</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">147.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">147.3</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1800 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">13,815 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="cf-667 mammoth repeater" data-size="6">
   <div class="card-header">
@@ -998,7 +1019,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Condemnation Distortion Scattergun</div>
     <div class="card-badges"><span class="badge mfr">Aegis Dynamics</span><span class="badge size">S6</span><span class="badge type" style="border-color:#ce93d8;color:#ce93d8">Distortion</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">130.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Dist</span><span class="sv">130.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">60</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">700 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">21,127 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">21,140 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="deadbolt vi cannon" data-size="6">
   <div class="card-header">
@@ -1012,7 +1033,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Draugar Gatling</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S6</span><span class="badge type" style="border-color:#ef9a9a;color:#ef9a9a">Ballistic</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">142.4</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">142.4</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Area 18</span><span class="sh-buy">16,761 aUEC</span></div><div class="sh-row"><span class="sh-name">Dumpers Depot</span><span class="sh-loc">Levski</span><span class="sh-buy">16,289 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="lightstrike vi cannon" data-size="6">
   <div class="card-header">
@@ -1026,7 +1047,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">M8A Cannon</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S6</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">1383.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">880 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">1383.5</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">880 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">64,278 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="energy" data-name="m8a cannon" data-size="6">
   <div class="card-header">
@@ -1054,7 +1075,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Omnisky XVIII Cannon</div>
     <div class="card-badges"><span class="badge mfr">Amon & Reese Co.</span><span class="badge size">S6</span><span class="badge type" style="border-color:#4fc3f7;color:#4fc3f7">Energy</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">738.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1232 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">738.4</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1232 m/s</span></div><div class="stat"><span class="sl">Range</span><span class="sv">30 / 50 m</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">44,801 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="ship" data-type="ballistic" data-name="revenant gatling" data-size="6">
   <div class="card-header">
@@ -1437,7 +1458,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Pyro RYT Multi-Tool</div>
     <div class="card-badges"><span class="badge mfr">Greycat Industrial</span><span class="badge size">S1</span><span class="badge type" style="border-color:#607d8b;color:#607d8b">Gadgets</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">100</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">100</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Tammany And Sons Food</span><span class="sh-loc">Lorville</span><span class="sh-buy">463 aUEC</span></div><div class="sh-row"><span class="sh-name">Tammany And Sons</span><span class="sh-loc">Lorville</span><span class="sh-buy">463 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="gadgets" data-name="pyro ryt multi-tool" data-size="1">
   <div class="card-header">
@@ -1563,7 +1584,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Arclight "Desert Shadow" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">819 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="arclight "executive edition" pistol" data-size="1">
   <div class="card-header">
@@ -1591,14 +1612,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Arclight "Midnight" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">809 aUEC</span></div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">816 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="arclight "nightstalker" pistol" data-size="1">
   <div class="card-header">
     <div class="card-name">Arclight "Nightstalker" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">734 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="arclight "stormfall" pistol" data-size="1">
   <div class="card-header">
@@ -1612,14 +1633,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Arclight "Warhawk" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">819 aUEC</span></div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">816 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="arclight pistol" data-size="1">
   <div class="card-header">
     <div class="card-name">Arclight Pistol</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">18.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">700</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">819 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="coda "ascension" pistol" data-size="1">
   <div class="card-header">
@@ -1654,7 +1675,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Coda Pistol</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">60.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">180</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">6</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">60.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">180</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">6</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">729 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="coda pistol (modified)" data-size="1">
   <div class="card-header">
@@ -1668,14 +1689,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">LH86 "Boneyard" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">553 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">651 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 "desert shadow" pistol" data-size="1">
   <div class="card-header">
     <div class="card-name">LH86 "Desert Shadow" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">651 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 "executive edition" pistol" data-size="1">
   <div class="card-header">
@@ -1696,7 +1717,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">LH86 "Nightstalker" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (3)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">553 aUEC</span></div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 "pathfinder" pistol" data-size="1">
   <div class="card-header">
@@ -1731,7 +1752,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">LH86 "Stormfall" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (3)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">553 aUEC</span></div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 "takahashi racing" pistol" data-size="1">
   <div class="card-header">
@@ -1745,14 +1766,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">LH86 "Warhawk" Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">553 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">651 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 pistol" data-size="1">
   <div class="card-header">
     <div class="card-name">LH86 Pistol</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S1</span><span class="badge type" style="border-color:#ffab91;color:#ffab91">Pistol</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">950</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">25</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">585 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">651 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">651 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="pistol" data-name="lh86 "voyager" pistol" data-size="1">
   <div class="card-header">
@@ -2053,7 +2074,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">F55 LMG</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S4</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">30.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">150</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">30.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">1200</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">150</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,565 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,854 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,854 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,854 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="fs-9 "blacklist" lmg" data-size="4">
   <div class="card-header">
@@ -2151,7 +2172,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Gallant "Boneyard" Rifle</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">21.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">900</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">21.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">900</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">4,613 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="gallant "desert shadow" rifle" data-size="2">
   <div class="card-header">
@@ -2354,7 +2375,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P4-AR "Boneyard" Rifle</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">3,609 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="p4-ar "boneyard" rifle" data-size="2">
   <div class="card-header">
@@ -2368,7 +2389,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P4-AR "Desert Shadow" Rifle</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">3,580 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="p4-ar "fortuna" rifle" data-size="2">
   <div class="card-header">
@@ -2382,14 +2403,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P4-AR "Nightstalker" Rifle</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,681 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,671 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="p4-ar "warhawk" rifle" data-size="2">
   <div class="card-header">
     <div class="card-name">P4-AR "Warhawk" Rifle</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">40.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">810</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">550 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">40</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,681 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="rifle" data-name="p4-ar rifle" data-size="2">
   <div class="card-header">
@@ -2613,7 +2634,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">S71 Rifle</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S2</span><span class="badge type" style="border-color:#90caf9;color:#90caf9">Rifle</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">100.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">500</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">100.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">500</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1200 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">30</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,578 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">3,981 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">3,981 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">3,981 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="c54 "justified" smg" data-size="2">
   <div class="card-header">
@@ -2683,7 +2704,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Custodian "Boneyard" SMG</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">2,643 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="custodian "brimstone" smg" data-size="2">
   <div class="card-header">
@@ -2711,7 +2732,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Custodian "Desert Shadow" SMG</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,367 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,236 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,634 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">2,634 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">2,634 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="custodian "executive edition" smg" data-size="2">
   <div class="card-header">
@@ -2739,7 +2760,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Custodian "Nightstalker" SMG</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">2,609 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="custodian "nightstalker" smg" data-size="2">
   <div class="card-header">
@@ -2760,14 +2781,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Custodian "Warhawk" SMG</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">2,634 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="custodian smg" data-size="2">
   <div class="card-header">
     <div class="card-name">Custodian SMG</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">13.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">600 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">60</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">2,609 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="custodian smg" data-size="2">
   <div class="card-header">
@@ -2795,7 +2816,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P8-SC "Desert Shadow" SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,266 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="p8-sc "epoque" smg" data-size="2">
   <div class="card-header">
@@ -2816,14 +2837,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P8-SC "Stormfall" SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">2,204 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="p8-sc smg" data-size="2">
   <div class="card-header">
     <div class="card-name">P8-SC SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">2,222 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="p8-sc "executive edition" smg" data-size="2">
   <div class="card-header">
@@ -2837,21 +2858,21 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">P8-SC "Midnight" SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,266 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="p8-sc "nightstalker" smg" data-size="2">
   <div class="card-header">
     <div class="card-name">P8-SC "Nightstalker" SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">2,266 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="p8-sc "warhawk" smg" data-size="2">
   <div class="card-header">
     <div class="card-name">P8-SC "Warhawk" SMG</div>
     <div class="card-badges"><span class="badge mfr">Behring</span><span class="badge size">S2</span><span class="badge type" style="border-color:#80cbc4;color:#80cbc4">SMG</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">15.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">800</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">500 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">45</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">2,204 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="smg" data-name="quartz "arccorp" energy smg" data-size="2">
   <div class="card-header">
@@ -3026,7 +3047,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Devastator "Boneyard" Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (3)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,557 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,471 aUEC</span></div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">1,732 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="devastator "brimstone" shotgun" data-size="3">
   <div class="card-header">
@@ -3040,7 +3061,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Devastator "Desert Shadow" Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">1,739 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,733 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,733 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,733 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="devastator "executive edition" shotgun" data-size="3">
   <div class="card-header">
@@ -3054,14 +3075,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Devastator "Midnight" Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">1,716 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="devastator "nightstalker" shotgun" data-size="3">
   <div class="card-header">
     <div class="card-name">Devastator "Nightstalker" Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">1,716 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="devastator "pathfinder" shotgun" data-size="3">
   <div class="card-header">
@@ -3110,7 +3131,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Devastator Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">14.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">300 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (3)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">1,739 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,557 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,471 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="prism "arccorp" laser shotgun" data-size="3">
   <div class="card-header">
@@ -3215,7 +3236,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">R97 Shotgun</div>
     <div class="card-badges"><span class="badge mfr">Gemini</span><span class="badge size">S3</span><span class="badge type" style="border-color:#bcaaa4;color:#bcaaa4">Shotgun</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">12.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">150</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">225 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">18</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">12.0</span></div><div class="stat"><span class="sl">RPM</span><span class="sv">150</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">225 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">18</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (5)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,247 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">1,177 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,387 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">1,387 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">1,387 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shotgun" data-name="ravager-212 "bright star" twin shotgun" data-size="3">
   <div class="card-header">
@@ -3299,14 +3320,14 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Scourge "Desert Shadow" Railgun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S5</span><span class="badge type" style="border-color:#607d8b;color:#607d8b">Shouldered</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">6,196 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">6,200 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shouldered" data-name="scourge "nightstalker" railgun" data-size="5">
   <div class="card-header">
     <div class="card-name">Scourge "Nightstalker" Railgun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S5</span><span class="badge type" style="border-color:#607d8b;color:#607d8b">Shouldered</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">6,196 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">6,200 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="shouldered" data-name="scourge "quite useful" railgun" data-size="5">
   <div class="card-header">
@@ -3320,7 +3341,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Scourge Railgun</div>
     <div class="card-badges"><span class="badge mfr">Apocalypse Arms</span><span class="badge size">S5</span><span class="badge type" style="border-color:#607d8b;color:#607d8b">Shouldered</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">20.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">50 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">5</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (4)</div><div class="sh-row"><span class="sh-name">Conscientious Objects</span><span class="sh-loc">Levski</span><span class="sh-buy">6,196 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Skutters Food</span><span class="sh-loc">GrimHex</span><span class="sh-buy">6,200 aUEC</span></div><div class="sh-row"><span class="sh-name">Whammers</span><span class="sh-loc">New Babbage</span><span class="sh-buy">6,200 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="sniper" data-name="a03 "canuto" sniper rifle" data-size="3">
   <div class="card-header">
@@ -3404,28 +3425,28 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Arrowhead "Midnight" Sniper Rifle</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S3</span><span class="badge type" style="border-color:#b39ddb;color:#b39ddb">Sniper</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,851 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="sniper" data-name="arrowhead "nightstalker" sniper rifle" data-size="3">
   <div class="card-header">
     <div class="card-name">Arrowhead "Nightstalker" Sniper Rifle</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S3</span><span class="badge type" style="border-color:#b39ddb;color:#b39ddb">Sniper</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,851 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="sniper" data-name="arrowhead "stormfall" sniper rifle" data-size="3">
   <div class="card-header">
     <div class="card-name">Arrowhead "Stormfall" Sniper Rifle</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S3</span><span class="badge type" style="border-color:#b39ddb;color:#b39ddb">Sniper</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Small Base B</span><span class="sh-buy">5,348 aUEC</span></div><div class="sh-row"><span class="sh-name">Live Fire Weapons</span><span class="sh-loc">Port Olisar</span><span class="sh-buy">5,397 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="sniper" data-name="arrowhead "warhawk" sniper rifle" data-size="3">
   <div class="card-header">
     <div class="card-name">Arrowhead "Warhawk" Sniper Rifle</div>
     <div class="card-badges"><span class="badge mfr">Klaus & Werner</span><span class="badge size">S3</span><span class="badge type" style="border-color:#b39ddb;color:#b39ddb">Sniper</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Energy</span><span class="sv">50.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">1000 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">16</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (1)</div><div class="sh-row"><span class="sh-name">Ship Weapons Centermass</span><span class="sh-loc">Area 18</span><span class="sh-buy">4,851 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="sniper" data-name="arrowhead sniper rifle" data-size="3">
   <div class="card-header">
@@ -3530,7 +3551,7 @@ h1{font-size:1.3rem;font-weight:600;color:#e6edf3}
     <div class="card-name">Scalpel Sniper Rifle</div>
     <div class="card-badges"><span class="badge mfr">Kastak Arms</span><span class="badge size">S3</span><span class="badge type" style="border-color:#b39ddb;color:#b39ddb">Sniper</span></div>
   </div>
-  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">335.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">875 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div>
+  <div class="stats-grid"><div class="stat"><span class="sl">Phys</span><span class="sv">335.0</span></div><div class="stat"><span class="sl">Speed</span><span class="sv">875 m/s</span></div><div class="stat"><span class="sl">Mag</span><span class="sv">12</span></div></div><div class="shop-avail"><div class="sh-hdr">Available at (2)</div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,884 aUEC</span></div><div class="sh-row"><span class="sh-name">Cubby Blast</span><span class="sh-loc">Area 18</span><span class="sh-buy">3,668 aUEC</span></div></div>
 </div>
 <div class="item-card" data-cat="fps" data-type="special" data-name="apx fire extinguisher" data-size="2">
   <div class="card-header">
