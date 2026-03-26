@@ -28,6 +28,11 @@ reports/*
 output/
 logs/
 
+# ── Explorer output (large — never commit) ────────────────────────────────────
+EXPLORER_Data/
+snapshots/
+changelogs/
+
 # ── Tools (user-installed binaries — not tracked) ────────────────────────────
 Tools/unp4k-suite/
 
