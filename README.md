@@ -4,12 +4,32 @@ CryEngine model files extracted from Star Citizen for use in Blender, videos, an
 
 ---
 
-## What's in here
+## Folder structure
 
-| Folder | Contents |
+```
+extractions/    full armor set dumps — complete meshes, materials, textures for an entire armor set
+extras/         specific pieces pulled on request — targeted extracts for individual items
+```
+
+### `extractions/`
+
+Full set exports. Everything you need for a complete armor in one place.
+
+| What | Path inside extractions/ |
 |---|---|
-| `hailstorm_export/` | Defiance Hailstorm armor — base CDS heavy armor (male + female) |
-| `extras_export/` | Slaver heavy legs + VGL Specialist Sangar 9tails helmet (male + female) |
+| Defiance Hailstorm armor (female) | `Data/Objects/Characters/Human/female_v2/armor/cds/` |
+| Defiance Hailstorm armor (male base mesh) | `Data/Objects/Characters/Human/male_v7/armor/cds/` |
+
+### `extras/`
+
+Specific pieces requested individually.
+
+| What | Path inside extras/ |
+|---|---|
+| Slaver heavy legs mesh (CDS base) | `Data/Objects/Characters/Human/male_v7/armor/cds/` |
+| Slaver heavy legs materials + textures | `Data/Objects/Characters/Human/male_v7/armor/slaver/` |
+| VGL Specialist Sangar helmet (9tails, male) | `Data/Objects/Characters/Human/male_v7/armor/vgl/` |
+| VGL Specialist Sangar helmet (female) | `Data/Objects/Characters/Human/female_v2/armor/vgl/` |
 
 ---
 
@@ -17,147 +37,129 @@ CryEngine model files extracted from Star Citizen for use in Blender, videos, an
 
 ### Step 1 — Install Noesis (free)
 
-Download from https://richwhitehouse.com/index.php?postid=45
+Download: https://richwhitehouse.com/index.php?postid=45
 
-Noesis reads CryEngine `.skin` and `.cgf` files and converts them to FBX for Blender.
-No plugin needed — Noesis handles CryEngine natively.
+Noesis reads CryEngine `.skin` and `.cgf` files and converts them to FBX.
+No extra plugin needed — CryEngine support is built in.
 
 ---
 
-### Step 2 — Convert the mesh to FBX
+### Step 2 — Convert mesh to FBX
 
 1. Open Noesis
-2. Navigate to the mesh file you want (see **Which files to use** below)
-3. Right-click → **Export**
-4. Set format to **FBX** → Export
-5. Note where the FBX was saved
+2. Navigate to the `.skin` file you want (see **Which files to use** below)
+3. Right-click → **Export** → format **FBX** → Export
 
 ---
 
 ### Step 3 — Import into Blender
 
-1. Blender → **File → Import → FBX**
-2. Import the FBX you exported from Noesis
-3. The mesh will come in without textures — apply them manually (Step 4)
+**File → Import → FBX** → select the exported FBX.
+Mesh comes in without textures — apply them in Step 4.
 
 ---
 
 ### Step 4 — Apply textures
 
-Textures are in the `textures/` subfolder alongside each mesh.
-Use the base `.dds` file for each texture type — ignore the `.dds.1` through `.dds.7` files
-(those are mip levels the game engine uses for streaming, Blender doesn't need them).
+Textures live in the `textures/` folder alongside each mesh.
+Use only the **base `.dds`** file — ignore `.dds.1` through `.dds.7` (game streaming mip levels, Blender doesn't need them).
 
-| Texture suffix | Type | Blender node |
+| Texture suffix | Type | Blender node input |
 |---|---|---|
-| `_ddna.dds` | Diffuse + normal packed | Base Color (or split channels) |
+| `_ddna.dds` | Diffuse + normal packed | Base Color |
 | `_ddn.dds` | Normal map | Normal Map node |
-| `_blend.dds` | Blend/albedo | Base Color |
-| `_wear.dds` | Wear/damage overlay | Mix with base color |
-| `_hal.dds` | Holographic/emission | Emission |
+| `_blend.dds` | Albedo / blend | Base Color |
+| `_wear.dds` | Wear / damage layer | Mix over base color |
+| `_hal.dds` | Holographic / emission | Emission |
 
-In Blender's Shader Editor: add an **Image Texture** node for each map,
-plug into the appropriate input on a **Principled BSDF**.
+In Shader Editor: **Image Texture** node → plug into **Principled BSDF**.
 
 ---
 
 ## Which files to use
 
-### Defiance Hailstorm armor — `hailstorm_export/`
+### Defiance Hailstorm — `extractions/`
+
+Use the **base LOD0** file for each piece (no `_lod` suffix — those are lower-quality distance variants):
 
 ```
-hailstorm_export/Data/Objects/Characters/Human/
-  female_v2/armor/cds/    ← female mesh + textures
-  male_v7/armor/cds/      ← (use extras_export male CDS for male version)
+extractions/Data/Objects/Characters/Human/female_v2/armor/cds/
+  f_cds_heavy_armor_01_legs.skin       ← import this in Noesis
+  f_cds_heavy_armor_01_legs.skinm      ← keep next to the .skin (Noesis needs it)
+  textures/                            ← apply base .dds files in Blender
 ```
 
-**For each piece, use the base LOD0 file** (no `_lod` suffix):
-- `f_cds_heavy_armor_01_legs.skin` — female legs mesh
-- `f_cds_heavy_armor_01_helmet.skin` — female helmet
-- etc.
-
-Ignore `_lod1` through `_lod5` — those are lower-quality distant LODs.
+Repeat for helmet, torso, arms using the same naming pattern.
 
 ---
 
-### Slaver heavy legs — `extras_export/`
+### Slaver heavy legs — `extras/`
 
-The slaver legs use the **CDS heavy base mesh** with a slaver-specific material.
-You need files from two places:
+The slaver legs reuse the CDS base mesh with slaver-specific textures.
+You need files from **two folders**:
 
-**Mesh (CDS base):**
+**1 — Mesh (CDS base):**
 ```
-extras_export/Data/Objects/Characters/Human/male_v7/armor/cds/
-  m_cds_heavy_armor_01_legs.skin          ← import this into Noesis
-  m_cds_heavy_armor_01_legs.skinm         ← keep next to the .skin (Noesis needs it)
+extras/Data/Objects/Characters/Human/male_v7/armor/cds/
+  m_cds_heavy_armor_01_legs.skin       ← import this in Noesis
+  m_cds_heavy_armor_01_legs.skinm      ← keep next to it
 ```
 
-**Material + textures (slaver skin):**
+**2 — Material + textures (slaver skin):**
 ```
-extras_export/Data/Objects/Characters/Human/male_v7/armor/slaver/
-  m_slaver_heavy_armor_legs_01_01_01.mtl  ← material definition
+extras/Data/Objects/Characters/Human/male_v7/armor/slaver/
+  m_slaver_heavy_armor_legs_01_01_01.mtl                      ← open in text editor to see texture list
   mtl_var/m_slaver_heavy_armor_legs_01_01_01/
-    m_slaver_heavy_armor_legs_01_01_13.mtl   ← color variant (the Hailstorm skin)
-  textures/                                  ← DDS textures, use the base .dds files
+    m_slaver_heavy_armor_legs_01_01_13.mtl                    ← Hailstorm color variant
+  textures/                                                   ← apply base .dds files in Blender
 ```
-
-**Workflow:**
-1. Open `m_cds_heavy_armor_01_legs.skin` in Noesis → export FBX
-2. Import FBX into Blender
-3. Open the `.mtl` file in a text editor to see which texture files it references
-4. Apply those textures from the `slaver/textures/` folder
 
 ---
 
-### VGL Specialist Sangar helmet (9tails variant) — `extras_export/`
+### VGL Specialist Sangar helmet (9tails) — `extras/`
 
 ```
-extras_export/Data/Objects/Characters/Human/male_v7/armor/vgl/
-  vgl_specialist_heavy_helmet_01_9tails_01.cdf     ← character definition (entry point)
-  m_vgl_specialist_heavy_helmet_01_prop.skin       ← rigged mesh — import this
-  m_vgl_specialist_heavy_helmet_01_prop.skinm      ← keep next to the .skin
-  m_vgl_specialist_heavy_helmet_01_prop_skeleton.chr  ← skeleton (optional for static renders)
+extras/Data/Objects/Characters/Human/male_v7/armor/vgl/
+  m_vgl_specialist_heavy_helmet_01_prop.skin     ← import this in Noesis (rigged version)
+  m_vgl_specialist_heavy_helmet_01_prop.skinm    ← keep next to it
   mtl_var/m_vgl_specialist_heavy_helmet_01_01_01/
-    m_vgl_specialist_heavy_helmet_01_01_tint.mtl   ← 9tails color variant material
-  textures/                                        ← DDS textures
+    m_vgl_specialist_heavy_helmet_01_01_tint.mtl ← 9tails color variant
+  textures/                                      ← apply base .dds files in Blender
 ```
 
-**Workflow:**
-1. Open `m_vgl_specialist_heavy_helmet_01_prop.skin` in Noesis → export FBX
-2. Import FBX into Blender
-3. Apply textures from `vgl/textures/` — use `*_ddna.dds` for diffuse, `*_ddn.dds` for normals
-
-Female version is in `female_v2/armor/vgl/` — same process with `f_vgl_specialist_heavy_helmet_01.skin`.
+Female version: same process using `female_v2/armor/vgl/f_vgl_specialist_heavy_helmet_01.skin`
 
 ---
 
 ## File type reference
 
-| Extension | What it is | Needed? |
+| Extension | What it is | Use it? |
 |---|---|---|
-| `.skin` | Rigged character mesh (Noesis input) | Yes — main mesh |
-| `.cgf` | Static prop mesh (Noesis input) | Yes — prop/detached version |
-| `.skinm` / `.cgfm` | Material sidecar — Noesis needs this next to the mesh | Yes — keep alongside |
-| `.cdf` | Character definition — links mesh + material + skeleton | Reference only |
-| `.chr` | Skeleton/rig | Optional for static renders |
-| `.mtl` | Material definition (XML) — lists which textures to use | Reference only |
-| `.dds` | Base texture (use this in Blender) | Yes |
-| `.dds.1`–`.dds.7` | Streaming mip levels (game engine only) | No — ignore |
-| `.cga` / `.cgam` | Animated geometry | Optional |
+| `.skin` | Rigged character mesh — Noesis input | Yes — main mesh file |
+| `.cgf` | Static prop mesh — Noesis input | Yes — use for non-rigged version |
+| `.skinm` / `.cgfm` | Material sidecar — must sit next to the mesh | Yes — keep alongside |
+| `.cdf` | Character definition — links mesh + skeleton + material | Reference only |
+| `.chr` | Skeleton / rig | Optional for static renders |
+| `.mtl` | Material XML — lists which textures to apply | Reference only |
+| `.dds` | Texture — use this in Blender | Yes |
+| `.dds.1` – `.dds.7` | Streaming mip levels — game engine only | No — ignore |
 
 ---
 
-## Downloading individual folders
+## Download just one folder (sparse checkout)
 
 ```bash
 git clone --branch Tech-zip --single-branch --depth 1 --filter=blob:none --sparse \
   https://github.com/saladin1980/sc_datapack.git
 cd sc_datapack
 
-# grab just the helmet
-git sparse-checkout set "extras_export/Data/Objects/Characters/Human/male_v7/armor/vgl"
+# Hailstorm female armor
+git sparse-checkout set "extractions/Data/Objects/Characters/Human/female_v2/armor/cds"
 
-# grab just the slaver legs
-git sparse-checkout set "extras_export/Data/Objects/Characters/Human/male_v7/armor/cds" \
-                        "extras_export/Data/Objects/Characters/Human/male_v7/armor/slaver"
+# Slaver legs (needs both)
+git sparse-checkout set "extras/Data/Objects/Characters/Human/male_v7/armor/cds" \
+                        "extras/Data/Objects/Characters/Human/male_v7/armor/slaver"
+
+# VGL Sangar helmet
+git sparse-checkout set "extras/Data/Objects/Characters/Human/male_v7/armor/vgl"
 ```
