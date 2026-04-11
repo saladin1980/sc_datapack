@@ -124,15 +124,30 @@ def _ensure_venv():
             [str(VENV_PYTHON), "-m", "pip", "install", "setuptools", "--quiet"],
             check=True,
         )
+        # Try GitLab archive zip first (direct HTTPS download — no git, no auth prompt).
+        # Falls back to git+https (for mirrors/proxies that support it),
+        # then PyPI as last resort (PyPI 1.0.4 has DCB parser issues with 4.7+
+        # so it will be patched below, but may still fail on newer game formats).
+        _GITLAB_ZIP = (
+            "https://gitlab.com/scmodding/frameworks/scdatatools/-/archive/master/"
+            "scdatatools-master.tar.gz"
+        )
         _no_prompt = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "echo"}
         result = subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
-             "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
-             "--no-deps", "--ignore-requires-python", "--quiet"],
-            env=_no_prompt,
+             _GITLAB_ZIP, "--no-deps", "--ignore-requires-python", "--quiet"],
         )
         if result.returncode != 0:
-            print("  GitLab unavailable, installing from PyPI ...")
+            print("  GitLab zip failed, trying git+https ...")
+            sys.stdout.flush()
+            result = subprocess.run(
+                [str(VENV_PYTHON), "-m", "pip", "install",
+                 "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
+                 "--no-deps", "--ignore-requires-python", "--quiet"],
+                env=_no_prompt,
+            )
+        if result.returncode != 0:
+            print("  git+https failed, falling back to PyPI ...")
             sys.stdout.flush()
             result = subprocess.run(
                 [str(VENV_PYTHON), "-m", "pip", "install",
