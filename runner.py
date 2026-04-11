@@ -82,10 +82,26 @@ REPORT_FILES = [
 
 # ── Venv bootstrap ────────────────────────────────────────────────────────────
 
+def _patch_game2dcb():
+    """Patch PyPI scdatatools 1.0.4 Game.dcb -> Game2.dcb if needed."""
+    _sc_init = VENV_DIR / "Lib" / "site-packages" / "scdatatools" / "sc" / "__init__.py"
+    if _sc_init.exists():
+        _txt = _sc_init.read_text(encoding="utf-8")
+        if '"Data/Game.dcb"' in _txt:
+            _sc_init.write_text(_txt.replace('"Data/Game.dcb"', '"Data/Game2.dcb"'), encoding="utf-8")
+            print("  Patched scdatatools: Game.dcb -> Game2.dcb")
+            sys.stdout.flush()
+
+
 def _ensure_venv():
     """Create Tools/venv with scdatatools if needed, then restart inside it."""
     if sys.prefix != sys.base_prefix:
         return  # already running inside a venv
+
+    # Always apply Game2.dcb patch on existing venvs before restarting —
+    # catches venvs created before this fix was added.
+    if VENV_PYTHON.exists():
+        _patch_game2dcb()
 
     if not VENV_PYTHON.exists():
         print("First run: creating virtual environment in Tools/venv/ ...")
@@ -127,16 +143,7 @@ def _ensure_venv():
             print("Check your internet connection and try again.")
             sys.exit(1)
 
-        # Patch PyPI scdatatools 1.0.4 if it still uses old Game.dcb path.
-        # SC renamed Data/Game.dcb -> Data/Game2.dcb; GitLab HEAD already has this
-        # fix but the PyPI release does not.
-        _sc_init = VENV_DIR / "Lib" / "site-packages" / "scdatatools" / "sc" / "__init__.py"
-        if _sc_init.exists():
-            _txt = _sc_init.read_text(encoding="utf-8")
-            if '"Data/Game.dcb"' in _txt:
-                _sc_init.write_text(_txt.replace('"Data/Game.dcb"', '"Data/Game2.dcb"'), encoding="utf-8")
-                print("  Patched scdatatools: Game.dcb -> Game2.dcb")
-                sys.stdout.flush()
+        _patch_game2dcb()
 
         subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
