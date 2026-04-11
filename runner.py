@@ -82,15 +82,33 @@ REPORT_FILES = [
 
 # ── Venv bootstrap ────────────────────────────────────────────────────────────
 
-def _patch_game2dcb():
-    """Patch PyPI scdatatools 1.0.4 Game.dcb -> Game2.dcb if needed."""
-    _sc_init = VENV_DIR / "Lib" / "site-packages" / "scdatatools" / "sc" / "__init__.py"
-    if _sc_init.exists():
-        _txt = _sc_init.read_text(encoding="utf-8")
-        if '"Data/Game.dcb"' in _txt:
-            _sc_init.write_text(_txt.replace('"Data/Game.dcb"', '"Data/Game2.dcb"'), encoding="utf-8")
-            print("  Patched scdatatools: Game.dcb -> Game2.dcb")
-            sys.stdout.flush()
+def _patch_scdatatools():
+    """
+    Overwrite the installed scdatatools forge/ and sc/__init__.py with the
+    patched versions bundled in patches/scdatatools/.
+
+    PyPI 1.0.4 is missing DataCore v6 support (SC 4.7+) and hardcodes
+    Game.dcb instead of Game2.dcb.  The bundled files are from the GitLab
+    HEAD commit that handles both; they are applied unconditionally so that
+    even a previously broken venv gets fixed on the next run.
+    """
+    import shutil
+    _site = VENV_DIR / "Lib" / "site-packages" / "scdatatools"
+    _patch_src = ROOT / "patches" / "scdatatools"
+    if not _site.exists() or not _patch_src.exists():
+        return
+    # Overwrite forge/ directory
+    _forge_dst = _site / "forge"
+    _forge_src = _patch_src / "forge"
+    if _forge_src.exists():
+        shutil.copytree(str(_forge_src), str(_forge_dst), dirs_exist_ok=True)
+    # Overwrite sc/__init__.py
+    _sc_src = _patch_src / "sc" / "__init__.py"
+    _sc_dst = _site / "sc" / "__init__.py"
+    if _sc_src.exists() and _sc_dst.exists():
+        shutil.copy2(str(_sc_src), str(_sc_dst))
+    print("  Applied scdatatools patches (forge + sc)")
+    sys.stdout.flush()
 
 
 def _ensure_venv():
@@ -101,7 +119,7 @@ def _ensure_venv():
     # Always apply Game2.dcb patch on existing venvs before restarting —
     # catches venvs created before this fix was added.
     if VENV_PYTHON.exists():
-        _patch_game2dcb()
+        _patch_scdatatools()
 
     if not VENV_PYTHON.exists():
         print("First run: creating virtual environment in Tools/venv/ ...")
@@ -158,7 +176,7 @@ def _ensure_venv():
             print("Check your internet connection and try again.")
             sys.exit(1)
 
-        _patch_game2dcb()
+        _patch_scdatatools()
 
         subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
