@@ -107,7 +107,12 @@ def _patch_scdatatools():
     _sc_dst = _site / "sc" / "__init__.py"
     if _sc_src.exists() and _sc_dst.exists():
         shutil.copy2(str(_sc_src), str(_sc_dst))
-    print("  Applied scdatatools patches (forge + sc)")
+    # Overwrite engine/ directory (constants.py + model_utils.py missing/changed in PyPI)
+    _engine_dst = _site / "engine"
+    _engine_src = _patch_src / "engine"
+    if _engine_src.exists():
+        shutil.copytree(str(_engine_src), str(_engine_dst), dirs_exist_ok=True)
+    print("  Applied scdatatools patches (forge + sc + engine)")
     sys.stdout.flush()
 
 
