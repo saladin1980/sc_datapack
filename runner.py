@@ -97,17 +97,31 @@ def _ensure_venv():
         print("Installing dependencies (first run only, ~1-2 min) ...")
         sys.stdout.flush()
 
-        # PyPI scdatatools 1.0.4 is broken on Python 3.12 (distutils removed,
-        # old numpy pin). Install from GitLab HEAD with --ignore-requires-python,
-        # then install all deps separately with no version pins so binary wheels
-        # are used (avoids MSVC requirement for pycryptodome etc.)
+        # scdatatools install strategy for Python 3.12:
+        #   PyPI 1.0.4 uses `from distutils.util import strtobool` (removed in 3.12)
+        #   but setuptools>=60 bundles distutils as a shim — install that first.
+        #   Use --no-deps to bypass the old numpy~=1.21.5 / pycryptodome~=3.9.0 pins
+        #   (deps installed separately below with no version constraints).
+        #   GitLab source is used as fallback if PyPI is unavailable.
+        subprocess.run(
+            [str(VENV_PYTHON), "-m", "pip", "install", "setuptools", "--quiet"],
+            check=True,
+        )
         result = subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
-             "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
-             "--no-deps", "--ignore-requires-python", "--quiet"],
+             "scdatatools", "--no-deps", "--ignore-requires-python", "--quiet"],
         )
         if result.returncode != 0:
-            print("ERROR: Failed to install scdatatools from GitLab.")
+            print("PyPI install failed, trying GitLab source ...")
+            sys.stdout.flush()
+            result = subprocess.run(
+                [str(VENV_PYTHON), "-m", "pip", "install",
+                 "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
+                 "--no-deps", "--ignore-requires-python", "--quiet"],
+                env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+            )
+        if result.returncode != 0:
+            print("ERROR: Failed to install scdatatools.")
             print("Check your internet connection and try again.")
             sys.exit(1)
 
