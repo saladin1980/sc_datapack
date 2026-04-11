@@ -4,7 +4,6 @@ import typing
 from pathlib import Path
 
 from scdatatools.p4k import P4KFile
-from scdatatools.engine.model_utils import vec3_to_vector
 
 
 if typing.TYPE_CHECKING:
@@ -74,6 +73,7 @@ def geometry_for_record(record, data_root: typing.Union[P4KFile, Path] = None, b
 
 
 def landingpad_size_for_dimensions(dcb: "DataCoreBinary", x, y, z, ground_vehicle=False):
+    from scdatatools.engine.model_utils import vec3_to_vector  # lazy — not available on PyPI
     if not hasattr(dcb, "_landing_pads"):
         lprs = []
         for lp in sorted(
