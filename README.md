@@ -7,8 +7,9 @@ CryEngine model files extracted from Star Citizen for use in Blender, videos, an
 ## Folder structure
 
 ```
-extractions/    full armor set dumps — complete meshes, materials, textures for an entire armor set
+extractions/    full character/armor dumps — body meshes, heads, complete armor sets
 extras/         specific pieces pulled on request — targeted extracts for individual items
+person_export.zip   base body + all player heads, ready to unzip and use
 ```
 
 ### `extractions/`
@@ -82,59 +83,140 @@ In Shader Editor: **Image Texture** node → plug into **Principled BSDF**.
 
 ## Which files to use
 
-### Base body mesh — `extractions/`
+### Full character (body + head + armor) — `person_export.zip`
 
-The body mesh is what armor and clothing attach to. Import it first, then import armor pieces on top — they share the same rig so they auto-align.
+> **Quickest start:** download `person_export.zip` from this branch — everything below is already inside it, ready to unzip and use.
 
-**Male:**
-```
-extractions/Data/Objects/Characters/Human/male_v7/body/
-  m_body.skin        ← import this in Noesis -> FBX -> Blender (standard build)
-  m_body.skinm       ← keep next to it (material sidecar)
-  m_body.cdf         ← reference only (links mesh + skeleton)
-  m_body_thin.skin   ← slim body type variant
-  m_body_fat.skin    ← heavy body type variant
-  m_body.mtl         ← base material (points to textures)
-  m_body_01.mtl – m_body_15.mtl  ← numbered skin tone variants
-  m_body_cau.mtl, m_body_blk.mtl, m_body_brwn.mtl, ...  ← named skin tone variants
-  textures/
-    m_body_ddna.dds         ← normal map (use Normal Map node in Blender)
-    m_body_diff.dds         ← default skin diffuse
-    m_body_01_diff.dds – m_body_15_diff.dds  ← numbered skin tone diffuse maps
-    m_body_fat_diff.dds, m_body_fat_ddna.dds ← heavy body type textures
-```
-
-**Female:**
-```
-extractions/Data/Objects/Characters/Human/female_v2/body/
-  f_body.skin        ← import this in Noesis
-  f_body.skinm
-  f_body.cdf
-  textures/
-    f_body_ddna.dds
-    f_body_diff.dds
-    f_body_01_diff.dds – f_body_14_diff.dds  ← skin tone variants
-```
+The body, head, and armor are all separate `.skin` files in Star Citizen but they share the same armature. Import them all into the same Blender scene and they snap together automatically — no manual positioning needed.
 
 ---
 
-### Player heads (character creator) — `extractions/`
+#### Step 1 — Get the files
 
-These are the actual heads players choose in the character creator. 15 male, 14 female, each with their own textures.
+Either:
+- Download `person_export.zip` from this branch and extract it, **or**
+- Use the files directly from `extractions/Data/Objects/Characters/Human/`
+
+---
+
+#### Step 2 — Convert body to FBX in Noesis
+
+Open Noesis, navigate to the body `.skin` file, right-click → **Export** → format **FBX** → Export.
+
+| Body type | File |
+|---|---|
+| Male standard | `…/male_v7/body/m_body.skin` |
+| Male slim | `…/male_v7/body/m_body_thin.skin` |
+| Male heavy | `…/male_v7/body/m_body_fat.skin` |
+| Female | `…/female_v2/body/f_body.skin` |
+
+Keep the `.skinm` file next to each `.skin` — Noesis needs it to read materials.
+
+---
+
+#### Step 3 — Convert a head to FBX in Noesis
+
+Pick any archetype — these are the same heads from the in-game character creator:
 
 ```
-extractions/Data/Objects/Characters/Human/heads/male/pu/archetypes/
-  male_archetype_v001/
-    male_archetype_v001_t1_head.skin    ← import in Noesis
-    male_archetype_v001_t1_head.skinm
-    textures/                           ← head-specific skin + normal maps
-  male_archetype_v002/ ... male_archetype_v015/
-
-extractions/Data/Objects/Characters/Human/heads/female/pu/archetypes/
-  female_archetype_v001/ ... female_archetype_v014/
+…/heads/male/pu/archetypes/
+  male_archetype_v001/male_archetype_v001_t1_head.skin   ← v001 through v015
+…/heads/female/pu/archetypes/
+  female_archetype_v001/female_archetype_v001_t1_head.skin  ← v001 through v014
 ```
 
-**Note on heads:** In SC the head attaches at the neck — it's a separate mesh from the body. Import both `m_body.skin` and the head `.skin` into the same Blender scene and they should align automatically (same rig origin).
+Export to FBX the same way as the body.
+
+---
+
+#### Step 4 — Import into Blender
+
+1. **File → Import → FBX** → import the body FBX
+2. **File → Import → FBX** → import the head FBX into the **same scene**
+
+The head sits at the neck automatically — both use the same root armature.
+
+---
+
+#### Step 5 — Apply skin textures to the body
+
+Textures are in `body/textures/`. The numbered files match the character creator skin tone slots.
+
+In **Shader Editor**, select the body mesh and connect:
+
+| Node | File | Socket |
+|---|---|---|
+| Image Texture | `m_body_01_diff.dds` (pick any tone 01–15) | Base Color |
+| Image Texture → Normal Map node | `m_body_ddna.dds` | Normal |
+
+Named skin tone files if you prefer:
+
+| `.mtl` / texture | Tone |
+|---|---|
+| `m_body_cau` / `*_cau_diff.dds` | Caucasian light |
+| `m_body_cau_yllw` / `*_cau_yllw_diff.dds` | Caucasian warm |
+| `m_body_brwn` / `*_brwn_diff.dds` | Brown |
+| `m_body_blk` / `*_blk_diff.dds` | Dark |
+
+Female uses the same pattern — `f_body_01_diff.dds` through `f_body_14_diff.dds`.
+
+---
+
+#### Step 6 — Apply skin textures to the head
+
+Each head folder has its own `textures/` subfolder:
+
+```
+…/male_archetype_v001/textures/
+  male_archetype_v001_t1_head_*_diff.dds   ← Base Color
+  male_archetype_v001_t1_head_*_ddna.dds   ← Normal map
+```
+
+Same Shader Editor setup as the body.
+
+---
+
+#### Step 7 — Add armor on top
+
+Import any armor `.skin` from this repo the same way (Noesis → FBX → Blender). Because all SC character meshes share the same armature, every armor piece drops straight onto the body with zero repositioning.
+
+---
+
+#### What's inside person_export.zip
+
+```
+person_export/Data/Objects/Characters/Human/
+  male_v7/body/
+    m_body.skin + .skinm          standard male body
+    m_body_thin.skin + .skinm     slim variant
+    m_body_fat.skin + .skinm      heavy variant
+    m_body.cdf                    character def (reference only)
+    m_body.mtl + m_body_*.mtl     material files — one per skin tone
+    textures/
+      m_body_diff.dds             default diffuse
+      m_body_01_diff.dds – m_body_15_diff.dds    numbered skin tones
+      m_body_ddna.dds             normal map
+      m_body_fat_diff.dds + _fat_ddna.dds         heavy body textures
+
+  female_v2/body/
+    f_body.skin + .skinm
+    f_body.cdf
+    f_body.mtl + f_body_*.mtl
+    textures/
+      f_body_diff.dds
+      f_body_01_diff.dds – f_body_14_diff.dds
+      f_body_ddna.dds
+
+  heads/male/pu/archetypes/
+    male_archetype_v001/ – male_archetype_v015/
+      <name>_t1_head.skin + .skinm
+      textures/
+
+  heads/female/pu/archetypes/
+    female_archetype_v001/ – female_archetype_v014/
+      <name>_t1_head.skin + .skinm
+      textures/
+```
 
 ---
 
