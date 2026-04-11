@@ -52,7 +52,7 @@ python runner.py
 ```
 
 That's it. Dependencies are installed automatically on first run (~1-2 min).
-Reports land in `reports\` when done (~12 min first run, ~5 min cached).
+Reports land in `reports\` when done (~12 min first run on NVMe, longer on SATA SSD/HDD, significantly longer on portable/USB drives — ~5 min cached regardless of drive speed).
 
 **Only requirement:** Python 3.12+ — [python.org](https://www.python.org/downloads/)
 
