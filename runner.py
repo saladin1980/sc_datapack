@@ -102,11 +102,11 @@ def _patch_scdatatools():
     _forge_src = _patch_src / "forge"
     if _forge_src.exists():
         shutil.copytree(str(_forge_src), str(_forge_dst), dirs_exist_ok=True)
-    # Overwrite sc/__init__.py
-    _sc_src = _patch_src / "sc" / "__init__.py"
-    _sc_dst = _site / "sc" / "__init__.py"
-    if _sc_src.exists() and _sc_dst.exists():
-        shutil.copy2(str(_sc_src), str(_sc_dst))
+    # Overwrite sc/ directory (component_manager + __init__ missing/changed in PyPI)
+    _sc_dst = _site / "sc"
+    _sc_src = _patch_src / "sc"
+    if _sc_src.exists():
+        shutil.copytree(str(_sc_src), str(_sc_dst), dirs_exist_ok=True)
     # Overwrite engine/ directory (constants.py + model_utils.py missing/changed in PyPI)
     _engine_dst = _site / "engine"
     _engine_src = _patch_src / "engine"
