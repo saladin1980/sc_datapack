@@ -38,13 +38,14 @@ cd sc_datapack
 
 **Step 2 — Point it at your game files (no copying needed):**
 
-Copy `.env.example` to `.env`, then open it and set your path:
+> If you installed Star Citizen to the default location (`C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\`) you can **skip this step entirely** — the pipeline finds `Data.p4k` automatically.
+
+If you installed to a custom path, copy `.env.example` to `.env` and set:
 ```
-SC_P4K_PATH=C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\Data.p4k
+SC_P4K_PATH=D:\StarCitizen\LIVE\Data.p4k
 ```
 
-> Data.p4k is ~150 GB. Do **not** copy it — just point the pipeline at your existing
-> Star Citizen install. The default LIVE path is auto-detected if not set.
+> Data.p4k is ~150 GB. Do **not** copy it — just point the pipeline at your existing install.
 
 **Step 3 — Run:**
 ```
