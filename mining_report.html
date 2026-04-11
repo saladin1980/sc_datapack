@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SC Mining Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#13141A;color:#CCCCCC;font-family:'Outfit',sans-serif;font-size:14px;display:flex;flex-direction:column;min-height:100vh}
+.site-bar{background:linear-gradient(to right,#1A1C26 0%,#15171D 100%);border-bottom:1px solid #3A3F56;height:52px;padding:0 32px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;flex-shrink:0}
+.site-logo{font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#FFFFFF;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.site-logo::before{content:'';display:block;width:8px;height:8px;background:#532CD8;border-radius:2px;transform:rotate(45deg)}
+.site-nav{display:flex;gap:2px;margin-left:24px;flex:1}
+.site-nav a{color:#7A7A8A;text-decoration:none;font-size:12px;font-weight:500;padding:5px 12px;border-radius:6px;transition:all .15s;white-space:nowrap}
+.site-nav a:hover{color:#FFFFFF;background:rgba(255,255,255,.06)}
+.site-nav a.cur{color:#FFFFFF;background:#532CD8}
+.site-ver{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#4A4A5A;font-family:'Geist Mono',monospace;flex-shrink:0}
+.page-header{background:#15171D;border-bottom:1px solid #3A3F56;padding:22px 40px 18px;flex-shrink:0}
+.page-header h1{font-size:20px;font-weight:700;color:#FFFFFF;letter-spacing:-.01em}
+.page-header .sub{color:#7A7A8A;font-size:13px;margin-top:4px}
+.tabs{display:flex;border-bottom:1px solid #3A3F56;background:#15171D;padding:0 40px;overflow-x:auto;flex-shrink:0}
+.tab{padding:11px 18px;cursor:pointer;color:#7A7A8A;font-size:13px;font-weight:500;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;user-select:none}
+.tab:hover{color:#FFFFFF}
+.tab.active{color:#FFFFFF;border-bottom-color:#532CD8}
+.container{max-width:1300px;margin:0 auto;padding:24px 40px;flex:1}
+.panel{display:none}.panel.active{display:block}
+.card-table{background:linear-gradient(168deg,#232634 0%,#191B25 77%);outline:0.5px solid #14141A;box-shadow:inset 0px 0.5px 0px #2B2E3B;border:1px solid #3A3F56;border-radius:10px;overflow:hidden;margin-bottom:16px}
+.section-head{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A7A8A;padding:14px 16px 10px;border-bottom:1px solid #3A3F56}
+table{width:100%;border-collapse:collapse}
+table th{background:rgba(21,23,29,.9);color:#7A7A8A;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-bottom:1px solid #3A3F56;text-align:left}
+table td{padding:10px 14px;border-bottom:1px solid #252D3E;vertical-align:top}
+table tr:last-child td{border-bottom:none}
+table tr:hover td{background:rgba(35,38,52,.6)}
+</style>
+</head>
+<body>
+<div class="site-bar">
+  <div class="site-logo">Saladins Information</div>
+  <nav class="site-nav">
+    <a href="crafting_report.html">Crafting</a>
+    <a href="mining_report.html" class="cur">Mining</a>
+    <a href="loot_report.html">Loot Tables</a>
+    <a href="crafting_calculator.html">Calculator</a>
+  </nav>
+  <div class="site-ver">SC 4.7.0-live.11592622</div>
+</div>
+<div class="page-header">
+  <h1>Mining Report</h1>
+  <div class="sub">44 mineable elements &bull; Rock compositions &bull; Location guide</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('elements',this)">Elements (44)</div>
+  <div class="tab" onclick="showTab('compositions',this)">Rock Compositions</div>
+  <div class="tab" onclick="showTab('locations',this)">Locations by Body</div>
+</div>
+<div class="container">
+  <div id="elements" class="panel active">
+    <div class="card-table">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th>Element</th>
+          <th>Type</th>
+          <th>Rarity</th>
+          <th>Resistance</th>
+          <th>Instability</th>
+          <th>Explosion</th>
+          <th>Opt Window (mid/thin)</th>
+          <th>Locations</th>
+        </tr></thead>
+        <tbody>
+    <tr>
+      <td><strong>Aphorite</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">0.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">All Moons/Planets/Caves</span></td>
+    </tr>
+    <tr>
+      <td><strong>Carinite</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">300</td>
+      <td style="color:#e8a838">0.5x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 10.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Carinitepure</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">300</td>
+      <td style="color:#e8a838">0.5x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 10.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Dolivine</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.1</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">0.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">All Moons/Planets/Caves</span></td>
+    </tr>
+    <tr>
+      <td><strong>Flowstone</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">-1.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">-1000.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">1.00 / 0.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Hadanite</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">200</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">All Moons/Planets/Caves</span></td>
+    </tr>
+    <tr>
+      <td><strong>Jaclium</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">100</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 3.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Janalite</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.3</td>
+      <td style="color:#f85149">300</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.30 / 10.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Daymar, Hurston, Ita, Magda Sand Caves, Wala</span></td>
+    </tr>
+    <tr>
+      <td><strong>Sadaryx</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">200</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">QV Breaker Stations (Nyx)</span></td>
+    </tr>
+    <tr>
+      <td><strong>Saldynium</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">100</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 5.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Template</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / -1.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Vlklimpet</strong></td>
+      <td><span style="background:#7ecfb322;color:#7ecfb3;padding:2px 6px;border-radius:6px;font-size:11px">FPS</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">-1.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">0.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 5.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Agricium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">350</td>
+      <td style="color:#e8a838">4.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 2.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">ARC-L3, Cellin, CRU-L5, Daymar, MIC-L4, Pyro Asteroid Clusters, Terminus, Vuur, Yela</span></td>
+    </tr>
+    <tr>
+      <td><strong>Aluminium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.4</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">-36.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / -0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Aberdeen, ARC-L1, ARC-L2, Arial, CRU-L3, Glaciem Ring, HUR-L1, HUR-L2, HUR-L4, HUR-L5, Ita, Keeger Belt, Magda, MIC-L1, MIC-L2, MIC-L5, Pyro Asteroid Clusters</span></td>
+    </tr>
+    <tr>
+      <td><strong>Aslarite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">700</td>
+      <td style="color:#e8a838">240.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.60</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, ARC-L5, CRU-L4, Fuego, Ita, Magda, MIC-L4, Pyro Asteroid Clusters, Vuur</span></td>
+    </tr>
+    <tr>
+      <td><strong>Beryl</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#8B6FE822;color:#8B6FE8;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Rare</span></td>
+      <td style="color:#f5a742">0.65</td>
+      <td style="color:#f85149">350</td>
+      <td style="color:#e8a838">20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.30 / 1.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, ARC-L3, CRU-L5, MIC-L4, Pyro Asteroid Clusters, Wala</span></td>
+    </tr>
+    <tr>
+      <td><strong>Bexalite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#8B6FE822;color:#8B6FE8;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Rare</span></td>
+      <td style="color:#f5a742">0.6</td>
+      <td style="color:#f85149">600</td>
+      <td style="color:#e8a838">100.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.40</td>
+      <td><span style="color:#7A7A8A;font-size:12px">CRU-L1, CRU-L2, Fairo, Fuego, Glaciem Ring, HUR-L3, Keeger Belt, Pyro Asteroid Clusters, Vuur</span></td>
+    </tr>
+    <tr>
+      <td><strong>Borase</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#8B6FE822;color:#8B6FE8;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Rare</span></td>
+      <td style="color:#f5a742">0.3</td>
+      <td style="color:#f85149">40</td>
+      <td style="color:#e8a838">120.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.30 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Adir, Bloom, Fuego, HUR-L1, HUR-L4, HUR-L5, Pyro Asteroid Clusters, Pyro IV</span></td>
+    </tr>
+    <tr>
+      <td><strong>Copper</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.7</td>
+      <td style="color:#f85149">50</td>
+      <td style="color:#e8a838">-20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / -0.90</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Akiro Cluster, ARC-L3, ARC-L5, Clio, CRU-L1, CRU-L2, CRU-L4, CRU-L5, Euterpe, Lyria, MIC-L3, MIC-L4, Pyro Asteroid Clusters, Pyro I, Pyro IV, Terminus, Wala, Yela Ring</span></td>
+    </tr>
+    <tr>
+      <td><strong>Corundum</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.1</td>
+      <td style="color:#f85149">50</td>
+      <td style="color:#e8a838">-36.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aberdeen, ARC-L1, ARC-L2, ARC-L4, Arial, CRU-L3, Hurston, HUR-L1, HUR-L2, HUR-L4, HUR-L5, MIC-L1, MIC-L2, MIC-L5, Pyro Asteroid Clusters</span></td>
+    </tr>
+    <tr>
+      <td><strong>Diamond</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">-0.069</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">8.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.25</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Gold</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#8B6FE822;color:#8B6FE8;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Rare</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">550</td>
+      <td style="color:#e8a838">100.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 2.10</td>
+      <td><span style="color:#7A7A8A;font-size:12px">ARC-L5, CRU-L4, Fairo, Ignis, MIC-L3, Pyro Asteroid Clusters, Terminus, Vatra</span></td>
+    </tr>
+    <tr>
+      <td><strong>Hephaestanite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.3</td>
+      <td style="color:#f85149">400</td>
+      <td style="color:#e8a838">120.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Arial, ARC-L1, ARC-L2, ARC-L4, Calliope, CRU-L3, Fuego, HUR-L1, HUR-L2, HUR-L4, HUR-L5, MIC-L1, microTech, MIC-L2, MIC-L5, Monox, Pyro Asteroid Clusters, Vuur</span></td>
+    </tr>
+    <tr>
+      <td><strong>Ice</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.5</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">-20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Akiro Cluster, ARC-L3, ARC-L5, Calliope, Clio, Euterpe, Glaciem Ring, HUR-L3, Keeger Belt, microTech, MIC-L3, MIC-L4, Pyro Asteroid Clusters, Yela Ring</span></td>
+    </tr>
+    <tr>
+      <td><strong>Iron</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.4</td>
+      <td style="color:#f85149">50</td>
+      <td style="color:#e8a838">20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / -0.90</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Adir, Akiro Cluster, ARC-L3, ARC-L5, Bloom, Calliope, CRU-L1, CRU-L2, CRU-L4, CRU-L5, Fairo, Fuego, Glaciem Ring, HUR-L3, Keeger Belt, Lyria, Magda, microTech, MIC-L3, MIC-L4, Monox, Pyro Asteroid Clusters, Pyro I, Pyro IV, Vatra, Vuur, Wala, Yela Ring</span></td>
+    </tr>
+    <tr>
+      <td><strong>Laranite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">400</td>
+      <td style="color:#e8a838">200.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">HUR-L1, HUR-L4, HUR-L5, Lyria, Pyro IV, Wala</span></td>
+    </tr>
+    <tr>
+      <td><strong>Lindinium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#a371f722;color:#a371f7;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Epic</span></td>
+      <td style="color:#f5a742">0.95</td>
+      <td style="color:#f85149">1000</td>
+      <td style="color:#e8a838">260.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 0.23</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Glaciem Ring, Keeger Belt</span></td>
+    </tr>
+    <tr>
+      <td><strong>Ouratite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#a371f722;color:#a371f7;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Epic</span></td>
+      <td style="color:#f5a742">0.6</td>
+      <td style="color:#f85149">600</td>
+      <td style="color:#e8a838">240.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.60</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aberdeen, Arial, Hurston, Yela Ring</span></td>
+    </tr>
+    <tr>
+      <td><strong>Quantainium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#f0c04022;color:#f0c040;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Legendary</span></td>
+      <td style="color:#f5a742">0.95</td>
+      <td style="color:#f85149">1000</td>
+      <td style="color:#e8a838">260.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 2.30</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Found in All Stanton Deposits (Rare)</span></td>
+    </tr>
+    <tr>
+      <td><strong>Quartz</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.7</td>
+      <td style="color:#f85149">50</td>
+      <td style="color:#e8a838">-20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Bloom, Cellin, Daymar, Pyro Asteroid Clusters, Yela</span></td>
+    </tr>
+    <tr>
+      <td><strong>Riccite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#a371f722;color:#a371f7;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Epic</span></td>
+      <td style="color:#f5a742">0.95</td>
+      <td style="color:#f85149">850</td>
+      <td style="color:#e8a838">260.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 2.30</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Adir, Akiro Cluster, Bloom, Ignis, Pyro Asteroid Clusters, Terminus, Vatra</span></td>
+    </tr>
+    <tr>
+      <td><strong>Savrilium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#f0c04022;color:#f0c040;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Legendary</span></td>
+      <td style="color:#f5a742">0.95</td>
+      <td style="color:#f85149">1000</td>
+      <td style="color:#e8a838">260.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 2.30</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Glaciem Ring, Keeger Belt, QV Breaker Stations (Nyx)</span></td>
+    </tr>
+    <tr>
+      <td><strong>Sileron</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#f0c04022;color:#f0c040;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Legendary</span></td>
+      <td style="color:#f5a742">0.6</td>
+      <td style="color:#f85149">870</td>
+      <td style="color:#e8a838">260.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 0.60</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Silicon</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.2</td>
+      <td style="color:#f85149">50</td>
+      <td style="color:#e8a838">80.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.30 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Akiro Cluster, Cellin, Daymar, Fairo, Ignis, Pyro Asteroid Clusters, Vatra, Yela</span></td>
+    </tr>
+    <tr>
+      <td><strong>Taranite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#8B6FE822;color:#8B6FE8;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Rare</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">700</td>
+      <td style="color:#e8a838">240.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.60</td>
+      <td><span style="color:#7A7A8A;font-size:12px">ARC-L1, ARC-L2, ARC-L4, Cellin, Clio, Euterpe, HUR-L2, Pyro Asteroid Clusters, Yela</span></td>
+    </tr>
+    <tr>
+      <td><strong>Tin</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.2</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">-36.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 0.50</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Arial, Hurston, Ignis, Ita, Monox, Pyro Asteroid Clusters, Pyro I</span></td>
+    </tr>
+    <tr>
+      <td><strong>Titanium</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.1</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">20.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / -0.70</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Aaron Halo, Aberdeen, CRU-L1, CRU-L2, HUR-L3, Magda, Pyro Asteroid Clusters, Terminus, Yela Ring</span></td>
+    </tr>
+    <tr>
+      <td><strong>Torite</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">0.25</td>
+      <td style="color:#f85149">550</td>
+      <td style="color:#e8a838">100.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.50 / 2.10</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Akiro Cluster, CRU-L3, Glaciem Ring, Keeger Belt, MIC-L1, MIC-L2, MIC-L5, Pyro Asteroid Clusters, QV Breaker Stations (Nyx)</span></td>
+    </tr>
+    <tr>
+      <td><strong>Tungsten</strong></td>
+      <td><span style="background:#9b77cf22;color:#9b77cf;padding:2px 6px;border-radius:6px;font-size:11px">Ship</span></td>
+      <td><span style="background:#7A7A8A22;color:#7A7A8A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Common</span></td>
+      <td style="color:#f5a742">-0.4</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">80.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.30 / -0.70</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Adir, ARC-L1, ARC-L2, ARC-L4, Fairo, HUR-L2, Pyro Asteroid Clusters</span></td>
+    </tr>
+    <tr>
+      <td><strong>Beradom</strong></td>
+      <td><span style="background:#e8a83822;color:#e8a838;padding:2px 6px;border-radius:6px;font-size:11px">Vehicle</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">0.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 0.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Carinite</strong></td>
+      <td><span style="background:#e8a83822;color:#e8a838;padding:2px 6px;border-radius:6px;font-size:11px">Vehicle</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.5</td>
+      <td style="color:#f85149">300</td>
+      <td style="color:#e8a838">0.5x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.40 / 10.00</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr>
+    <tr>
+      <td><strong>Feynmaline</strong></td>
+      <td><span style="background:#e8a83822;color:#e8a838;padding:2px 6px;border-radius:6px;font-size:11px">Vehicle</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.0</td>
+      <td style="color:#f85149">200</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Pyro IV</span></td>
+    </tr>
+    <tr>
+      <td><strong>Glacosite</strong></td>
+      <td><span style="background:#e8a83822;color:#e8a838;padding:2px 6px;border-radius:6px;font-size:11px">Vehicle</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">0.1</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">0.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.60 / 0.00</td>
+      <td><span style="color:#7A7A8A;font-size:12px">Monox</span></td>
+    </tr>
+    <tr>
+      <td><strong>Template</strong></td>
+      <td><span style="background:#e8a83822;color:#e8a838;padding:2px 6px;border-radius:6px;font-size:11px">Vehicle</span></td>
+      <td><span style="background:#4A4A5A22;color:#4A4A5A;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Unknown</span></td>
+      <td style="color:#f5a742">1.0</td>
+      <td style="color:#f85149">0</td>
+      <td style="color:#e8a838">1.0x</td>
+      <td style="color:#7A7A8A;font-size:11px">0.70 / 0.10</td>
+      <td><span style="color:#4A4A5A">—</span></td>
+    </tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="compositions" class="panel">
+    
+    <div class="card-table" style="margin-bottom:24px">
+      <div class="section-head" style="color:#9b77cf">Asteroid (Ship)</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="width:180px">Rock Name</th>
+          <th style="width:60px">Min Dist</th>
+          <th>Composition</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td><strong>Agricium (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Aluminum (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Aslarite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Beryl (Raw)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Bexalite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Borase (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Copper (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Corundum (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Gold (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Hephaestanite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Iron (Ore)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Iron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Iron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Laranite (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Lindinium (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Lindinium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Lindinium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Ouratite</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Ouratite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Ouratite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Quantainium (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Quantainium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Quantainium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Quartz (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Raw Ice</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Ice: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Ice: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Raw Silicon</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Riccite (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Riccite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Riccite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Savrilium (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Savrilium (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Torite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Stileron</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Sileron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Sileron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Taranite (Raw)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Tin (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Titanium (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Torite (Ore)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Torite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Torite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Tungsten (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="card-table" style="margin-bottom:24px">
+      <div class="section-head" style="color:#54c87a">Surface (Ship)</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="width:180px">Rock Name</th>
+          <th style="width:60px">Min Dist</th>
+          <th>Composition</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td><strong>Agricium (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Aluminum (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Aslarite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Beryl (Raw)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Bexalite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Borase (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Copper (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Corundum (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Corundum: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Aluminium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Gold (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Borase: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Bexalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Hephaestanite (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Iron (Ore)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Iron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Iron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Laranite (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Lindinium (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Lindinium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Lindinium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Ouratite</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Ouratite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Ouratite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Quantainium (Raw)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Quantainium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Quantainium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Beryl: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Quartz (Raw)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Quartz: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Raw Ice</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Ice: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Ice: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Raw Silicon</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Silicon: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Hephaestanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Riccite (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Riccite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Riccite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Savrilium (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Savrilium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Gold: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Stileron</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Sileron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Sileron: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Taranite (Raw)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Taranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Tin (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Tin: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Copper: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Titanium (Ore)</strong></td>
+          <td style="color:#7A7A8A">4</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Titanium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Agricium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div><div style="margin:2px 0">Aslarite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:4px"></div></div>2.0–5.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Torite (Ore)</strong></td>
+          <td style="color:#7A7A8A">2</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Torite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Torite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:81px"></div></div>43.2–93.2%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Tungsten (Ore)</strong></td>
+          <td style="color:#7A7A8A">3</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:5px"></div></div>2.8–6.8%</div><div style="margin:2px 0">Tungsten: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:73px"></div></div>39.2–83.2%</div><div style="margin:2px 0">Laranite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:9px"></div></div>5.0–10.0%</div></div></td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="card-table" style="margin-bottom:24px">
+      <div class="section-head" style="color:#7ecfb3">FPS Deposit</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="width:180px">Rock Name</th>
+          <th style="width:60px">Min Dist</th>
+          <th>Composition</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td><strong>Aphorite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Aphorite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Aphorite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Vlklimpet: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:120px"></div></div>100.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Calcified Coolant</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Flowstone: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Carinite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Carinite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Carinite (Pure)</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Carinitepure: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Dolivine</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Dolivine: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Hadanite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Hadanite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Jaclium (Ore)</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Jaclium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Janalite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Janalite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Sadaryx</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Sadaryx: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Saldynium (Ore)</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Saldynium: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="card-table" style="margin-bottom:24px">
+      <div class="section-head" style="color:#e8a838">Vehicle Deposit</div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="width:180px">Rock Name</th>
+          <th style="width:60px">Min Dist</th>
+          <th>Composition</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td><strong>Beradom</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Beradom: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Carinite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Carinite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Feynmaline</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Feynmaline: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr>
+        <tr>
+          <td><strong>Glacosite</strong></td>
+          <td style="color:#7A7A8A">1</td>
+          <td><div style="font-size:12px"><div style="margin:2px 0">Glacosite: <div style="display:inline-block;background:#3A3F56;border-radius:3px;width:80px;height:8px;vertical-align:middle;margin:0 6px"><div style="background:#8B6FE8;height:8px;border-radius:3px;width:90px"></div></div>50.0–100.0%</div></div></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="locations" class="panel">
+    <div class="card-table">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th>Body</th>
+          <th>Ship Mineables</th>
+          <th>Hand Mineables</th>
+        </tr></thead>
+        <tbody>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON1</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Aluminum, Tin, Ouratite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON1A</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Aluminum, Tin, Hephaestanite, Corundum, Ouratite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON1B</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Aluminum, Titanium, Ouratite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON1C</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Aluminum, Titanium, Aslarite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON1D</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Alumium, Tin, Aslarite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON2A</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Quartz, Agricium, Tarantite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON2B</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Quartz, Agricium, Silicon, Quantainium, Titanium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite, Janalite (Caves only)</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON2C</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Quartz, Agricium, Tarantite, Silicon, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Hadanite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON3A</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Iron, Copper, Laranite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON3B</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Iron, Laranite, Beryl, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON4</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Iron, Ice, Hephaestanite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON4A</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Iron, Ice, Hephaestanite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON4B</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Ice, Copper, Taranite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#FFFFFF">STANTON4C</strong></td>
+      <td style="color:#9b77cf;font-size:12px">Ice, Copper, Taranite, Quantainium</td>
+      <td style="color:#7ecfb3;font-size:12px">Aphorite, Dolivine, Janalite</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

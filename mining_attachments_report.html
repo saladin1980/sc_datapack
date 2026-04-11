@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SC Mining Attachments — 4.7.0-live.11592622</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;min-height:100vh}
+body{background:#13141A;color:#CCCCCC;font-family:'Outfit',sans-serif;font-size:14px;display:flex;flex-direction:column}
+
+/* Nav bar */
+.site-bar{background:linear-gradient(to right,#1A1C26 0%,#15171D 100%);border-bottom:1px solid #3A3F56;height:52px;padding:0 32px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;flex-shrink:0}
+.site-logo{font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#FFFFFF;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.site-logo::before{content:'';display:block;width:8px;height:8px;background:#532CD8;border-radius:2px;transform:rotate(45deg)}
+.site-nav{display:flex;gap:2px;margin-left:24px;flex:1}
+.site-nav a{color:#7A7A8A;text-decoration:none;font-size:12px;font-weight:500;padding:5px 12px;border-radius:6px;transition:all .15s;white-space:nowrap}
+.site-nav a:hover{color:#FFFFFF;background:rgba(255,255,255,.06)}
+.site-nav a.cur{color:#FFFFFF;background:#532CD8}
+.site-ver{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#4A4A5A;font-family:'Geist Mono',monospace;flex-shrink:0}
+
+/* Page header */
+.page-header{background:#15171D;border-bottom:1px solid #3A3F56;padding:22px 40px 18px;flex-shrink:0}
+.page-header h1{font-size:20px;font-weight:700;color:#FFFFFF;letter-spacing:-.01em}
+.page-header .sub{color:#7A7A8A;font-size:13px;margin-top:4px}
+.summary-pills{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.pill{background:#232634;border:1px solid #3A3F56;border-radius:8px;padding:10px 18px;display:flex;flex-direction:column;gap:2px}
+.pill .num{font-size:22px;font-weight:700;color:#FFFFFF}
+.pill .lbl{font-size:11px;color:#7A7A8A;text-transform:uppercase;letter-spacing:.05em}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid #3A3F56;background:#15171D;padding:0 40px;overflow-x:auto;flex-shrink:0}
+.tab{padding:11px 20px;cursor:pointer;color:#7A7A8A;font-size:13px;font-weight:500;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;user-select:none}
+.tab:hover{color:#FFFFFF}
+.tab.active{color:#FFFFFF;border-bottom-color:#532CD8}
+
+/* Layout */
+.container{max-width:1300px;width:100%;margin:0 auto;padding:28px 40px;flex:1}
+.panel{display:none}.panel.active{display:block}
+
+/* Size groups */
+.size-group{margin-bottom:28px}
+.size-header{border-left:3px solid #532CD8;padding:6px 0 6px 14px;margin-bottom:14px}
+
+/* Sub-sections (active/passive) */
+.sub-section{margin-bottom:32px}
+.sub-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:15px;font-weight:600;color:#e6edf3}
+.sub-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0d1117;flex-shrink:0}
+.sub-icon.act{background:#e8a838}
+.sub-icon.pas{background:#58a6ff}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:linear-gradient(168deg,#232634 0%,#191B25 77%);border:1px solid #3A3F56;border-radius:10px;padding:14px 16px;transition:border-color .15s}
+.card:hover{border-color:#58a6ff40}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.card-title{font-size:14px;font-weight:600;color:#e6edf3;line-height:1.3}
+.card-badges{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+
+/* Stat row */
+.stat-row{display:flex;flex-wrap:wrap;gap:6px}
+.stat-chip{background:#0d1117;border:1px solid #2b2e3b;border-radius:6px;padding:4px 8px;display:flex;flex-direction:column;gap:1px;min-width:80px}
+.stat-label{font-size:10px;color:#7A7A8A;text-transform:uppercase;letter-spacing:.04em;font-family:'Geist Mono',monospace}
+.stat-val{font-size:13px;font-weight:700;font-family:'Geist Mono',monospace}
+
+/* Badges */
+.size-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;font-family:'Geist Mono',monospace}
+.mfr-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:10px;background:#232634;border:1px solid #3A3F56;color:#7A7A8A}
+.charge-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;background:#3a2e0f;color:#d29922;font-family:'Geist Mono',monospace}
+
+/* Notes */
+.note-box{background:#1a1c26;border:1px solid #3A3F56;border-radius:8px;padding:10px 14px;font-size:12px;color:#7A7A8A;margin-bottom:14px;line-height:1.6}
+.gadget-warning{margin-top:8px;font-size:11px;color:#d29922;font-style:italic}
+
+.dim{color:#7A7A8A;font-weight:400;font-size:13px}
+
+/* Legend */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;font-size:12px}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+
+footer{text-align:center;padding:24px;color:#484f58;font-size:12px;border-top:1px solid #21262d;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="site-bar">
+  <div class="site-logo">Saladins Information</div>
+  <nav class="site-nav">
+    <a href="crafting_report.html">Crafting</a>
+    <a href="mining_report.html">Mining</a>
+    <a href="mining_attachments_report.html" class="cur">Mining Gear</a>
+    <a href="loot_report.html">Loot Tables</a>
+    <a href="crafting_calculator.html">Calculator</a>
+  </nav>
+  <div class="site-ver">SC 4.7.0-live.11592622</div>
+</div>
+
+<div class="page-header">
+  <h1>Mining Attachments</h1>
+  <div class="sub">Ship mining lasers, mining modules, and FPS mining gadgets — full stats from DataCore</div>
+  <div class="summary-pills">
+    <div class="pill"><div class="num">16</div><div class="lbl">Mining Lasers</div></div>
+    <div class="pill"><div class="num">8</div><div class="lbl">Active Modules</div></div>
+    <div class="pill"><div class="num">18</div><div class="lbl">Passive Modules</div></div>
+    <div class="pill"><div class="num">6</div><div class="lbl">FPS Gadgets</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('lasers',this)">Mining Lasers (16)</div>
+  <div class="tab" onclick="showTab('modules',this)">Mining Modules (26)</div>
+  <div class="tab" onclick="showTab('gadgets',this)">FPS Gadgets (6)</div>
+</div>
+
+<div class="container">
+  <!-- LASERS -->
+  <div id="tab_lasers" class="panel active">
+    <div class="legend">
+      <span class="dim">Stats are % modifiers relative to the base laser head.</span>
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Positive modifier</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div> Negative modifier</div>
+    </div>
+    <div class="size-group"><div class="size-header" style="border-left-color:#7d8590"><span style="color:#7d8590;font-weight:700;font-size:15px">Size 0</span> <span class="dim">(4 lasers)</span></div><div class="card-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Arbor MHV Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Greycat</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">S0</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Lawson Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">S0</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#7d8590">0%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">S0 Helix</div>
+            <div class="card-badges"><span class="mfr-badge">Thermyte</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">S0</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+20%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#f85149">-40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">S00 Hofstede</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">S0</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+20%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+40%</span></div></div>
+        </div></div></div><div class="size-group"><div class="size-header" style="border-left-color:#58a6ff"><span style="color:#58a6ff;font-weight:700;font-size:15px">Size 1</span> <span class="dim">(6 lasers)</span></div><div class="card-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Arbor MH1 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Greycat</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-35%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Helix I Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Thermyte</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#f85149">-40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Hofstede-S1 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+20%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+60%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Impact I Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Thermyte</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#f85149">-40%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+20%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Klein-S1 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+35%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+20%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Lancet MH1 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Greycat</span><span class="size-badge" style="border-color:#58a6ff;color:#58a6ff">S1</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#f85149">-60%</span></div></div>
+        </div></div></div><div class="size-group"><div class="size-header" style="border-left-color:#a371f7"><span style="color:#a371f7;font-weight:700;font-size:15px">Size 2</span> <span class="dim">(6 lasers)</span></div><div class="card-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Arbor MH2 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Greycat</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-35%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Helix II Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Thermyte</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#f85149">-40%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Hofstede-S2 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+20%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+60%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Impact II Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Thermyte</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#f85149">-40%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+20%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Klein-S2 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Shubin</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+35%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#3fb950">+20%</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Lancet MH2 Mining Laser</div>
+            <div class="card-badges"><span class="mfr-badge">Greycat</span><span class="size-badge" style="border-color:#a371f7;color:#a371f7">S2</span></div>
+          </div>
+          <div class="stat-row"><div class="stat-chip"><span class="stat-label">Filter</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Chg Rate</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Chg Window</span><span class="stat-val" style="color:#f85149">-60%</span></div></div>
+        </div></div></div>
+  </div>
+
+  <!-- MODULES -->
+  <div id="tab_modules" class="panel">
+    <div class="legend">
+      <span class="dim">Active module charges: number of uses &bull; duration each activation.</span>
+    </div>
+    
+<div class="sub-section">
+  <div class="sub-header"><span class="sub-icon act">ACT</span> Active Modules <span class="dim">(8)</span></div>
+  <div class="note-box">Active modules are single-use consumables with limited charges. Activate during mining to apply effects for a fixed duration.</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Brandt Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span><span class="charge-pill">5x &bull; 60s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Shatter Damage</span><span class="stat-val" style="color:#f85149">-30%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">135%</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#3fb950">+15%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Forel Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span><span class="charge-pill">6x &bull; 60s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#3fb950">150%</span></div><div class="stat-chip"><span class="stat-label">Catastrophic Charge Rate</span><span class="stat-val" style="color:#f85149">-60%</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#3fb950">+15%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Lifeline Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="charge-pill">3x &bull; 15s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-20</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">-15%</span></div><div class="stat-chip"><span class="stat-label">Catastrophic Charge Rate</span><span class="stat-val" style="color:#3fb950">+60%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Optimum Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="charge-pill">5x &bull; 60s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Catastrophic Charge Rate</span><span class="stat-val" style="color:#f85149">-80%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Rime Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="charge-pill">10x &bull; 20s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">-25%</span></div><div class="stat-chip"><span class="stat-label">Shatter Damage</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Stampede Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span><span class="charge-pill">6x &bull; 30s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-10</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">135%</span></div><div class="stat-chip"><span class="stat-label">Shatter Damage</span><span class="stat-val" style="color:#f85149">-10%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Surge Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span><span class="charge-pill">7x &bull; 15s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">150%</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">-15%</span></div><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#3fb950">+10%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Torpid Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="charge-pill">5x &bull; 60s</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#3fb950">+60%</span></div><div class="stat-chip"><span class="stat-label">Catastrophic Charge Rate</span><span class="stat-val" style="color:#f85149">-60%</span></div><div class="stat-chip"><span class="stat-label">Shatter Damage</span><span class="stat-val" style="color:#3fb950">+40%</span></div></div>
+    </div></div>
+</div>
+<div class="sub-section">
+  <div class="sub-header"><span class="sub-icon pas">PAS</span> Passive Modules <span class="dim">(18)</span></div>
+  <div class="note-box">Passive modules apply their modifiers permanently while attached to the mining head.</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">FLTR Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-20%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">FLTR-L Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-23%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">90%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">FLTR-XL Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-24%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">95%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Focus II Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+37%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#f85149">90%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Focus III Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#f85149">95%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Focus Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Rieger Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">115%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-10%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Rieger-C2 Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">120%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-3%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Rieger-C3 Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Mining Laser Power</span><span class="stat-val" style="color:#3fb950">125%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-1%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Torrent II Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#3fb950">+35%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-3%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Torrent III Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#3fb950">+40%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-1%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Torrent Module</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-10%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Vaux Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#3fb950">115%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#f85149">-20%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Vaux-C2 Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#3fb950">120%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#f85149">-15%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Vaux-C3 Module</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#3fb950">125%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Rate</span><span class="stat-val" style="color:#f85149">-5%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">XTR Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+15%</span></div><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-5%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">85%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">XTR-L Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+22%</span></div><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-5.7%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">90%</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">XTR-XL Module</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+25%</span></div><div class="stat-chip"><span class="stat-label">Inert Material Level</span><span class="stat-val" style="color:#f85149">-6%</span></div><div class="stat-chip"><span class="stat-label">Extraction Laser Power</span><span class="stat-val" style="color:#f85149">95%</span></div></div>
+    </div></div>
+</div>
+  </div>
+
+  <!-- GADGETS -->
+  <div id="tab_gadgets" class="panel">
+    <div class="note-box">
+      <strong style="color:#f5a742">FPS Mining Gadgets</strong> — Placed directly on a rock deposit before mining. Stats shown are from in-game descriptions. Only one gadget may be active per deposit safely.
+    </div>
+    <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">BoreMax</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-70%</span></div><div class="stat-chip"><span class="stat-label">Cluster Modifier</span><span class="stat-val" style="color:#f85149">30%</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">10%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Okunis</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+50%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Rate</span><span class="stat-val" style="color:#3fb950">+100%</span></div><div class="stat-chip"><span class="stat-label">Cluster Modifier</span><span class="stat-val" style="color:#f85149">-20%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">OptiMax</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">-30%</span></div><div class="stat-chip"><span class="stat-label">Cluster Modifier</span><span class="stat-val" style="color:#3fb950">+60%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-30%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sabir</div>
+        <div class="card-badges"><span class="mfr-badge">Shubin Interstellar</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+50%</span></div><div class="stat-chip"><span class="stat-label">Resistance</span><span class="stat-val" style="color:#f85149">-50%</span></div><div class="stat-chip"><span class="stat-label">Instability</span><span class="stat-val" style="color:#3fb950">+15%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Stalwart</div>
+        <div class="card-badges"><span class="mfr-badge">Thermyte Concern</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-35%</span></div><div class="stat-chip"><span class="stat-label">Cluster Modifier</span><span class="stat-val" style="color:#3fb950">+30%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Rate</span><span class="stat-val" style="color:#3fb950">+50%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#f85149">-30%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Waveshift</div>
+        <div class="card-badges"><span class="mfr-badge">Greycat Industrial</span><span class="size-badge" style="border-color:#7d8590;color:#7d8590">FPS</span></div>
+      </div>
+      <div class="stat-row"><div class="stat-chip"><span class="stat-label">Laser Instability</span><span class="stat-val" style="color:#f85149">-35%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Size</span><span class="stat-val" style="color:#3fb950">+100%</span></div><div class="stat-chip"><span class="stat-label">Optimal Charge Window Rate</span><span class="stat-val" style="color:#f85149">-30%</span></div></div>
+      <div class="gadget-warning">Warning: Using more than one gadget per deposit can cause a catastrophic explosion.</div>
+    </div></div>
+  </div>
+</div>
+
+<footer>Generated from DataCore snapshot &bull; SC DataPack Explorer &bull; 4.7.0-live.11592622</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab_' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
