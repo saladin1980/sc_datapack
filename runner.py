@@ -98,32 +98,45 @@ def _ensure_venv():
         sys.stdout.flush()
 
         # scdatatools install strategy for Python 3.12:
-        #   PyPI 1.0.4 uses `from distutils.util import strtobool` (removed in 3.12)
-        #   but setuptools>=60 bundles distutils as a shim — install that first.
-        #   Use --no-deps to bypass the old numpy~=1.21.5 / pycryptodome~=3.9.0 pins
-        #   (deps installed separately below with no version constraints).
-        #   GitLab source is used as fallback if PyPI is unavailable.
+        #   PyPI 1.0.4 hardcodes "Data/Game.dcb" (SC now uses Game2.dcb) and uses
+        #   `from distutils.util import strtobool` (removed in 3.12).
+        #   GitLab HEAD has both fixes — try it first with auth prompts suppressed
+        #   so it fails fast on machines without GitLab access.
+        #   If GitLab is unavailable, install PyPI + patch Game.dcb -> Game2.dcb.
+        #   setuptools is installed first to provide the distutils shim for PyPI path.
         subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install", "setuptools", "--quiet"],
             check=True,
         )
+        _no_prompt = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "echo"}
         result = subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
-             "scdatatools", "--no-deps", "--ignore-requires-python", "--quiet"],
+             "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
+             "--no-deps", "--ignore-requires-python", "--quiet"],
+            env=_no_prompt,
         )
         if result.returncode != 0:
-            print("PyPI install failed, trying GitLab source ...")
+            print("  GitLab unavailable, installing from PyPI ...")
             sys.stdout.flush()
             result = subprocess.run(
                 [str(VENV_PYTHON), "-m", "pip", "install",
-                 "git+https://gitlab.com/scmodding/frameworks/scdatatools.git",
-                 "--no-deps", "--ignore-requires-python", "--quiet"],
-                env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+                 "scdatatools", "--no-deps", "--ignore-requires-python", "--quiet"],
             )
         if result.returncode != 0:
             print("ERROR: Failed to install scdatatools.")
             print("Check your internet connection and try again.")
             sys.exit(1)
+
+        # Patch PyPI scdatatools 1.0.4 if it still uses old Game.dcb path.
+        # SC renamed Data/Game.dcb -> Data/Game2.dcb; GitLab HEAD already has this
+        # fix but the PyPI release does not.
+        _sc_init = VENV_DIR / "Lib" / "site-packages" / "scdatatools" / "sc" / "__init__.py"
+        if _sc_init.exists():
+            _txt = _sc_init.read_text(encoding="utf-8")
+            if '"Data/Game.dcb"' in _txt:
+                _sc_init.write_text(_txt.replace('"Data/Game.dcb"', '"Data/Game2.dcb"'), encoding="utf-8")
+                print("  Patched scdatatools: Game.dcb -> Game2.dcb")
+                sys.stdout.flush()
 
         subprocess.run(
             [str(VENV_PYTHON), "-m", "pip", "install",
