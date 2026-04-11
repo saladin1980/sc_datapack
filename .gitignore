@@ -31,8 +31,11 @@ logs/
 # ── Tools (user-installed binaries — not tracked) ────────────────────────────
 Tools/unp4k-suite/
 
-# ── Generated report HTML (belongs on gh-pages branch, not main) ──────────────
+# ── Generated report HTML / output (belongs on gh-pages branch, not main) ─────
+HTML/
 *_preview.html
+*.log
+*.zip
 
 # ── Scratch / one-off diagnostic scripts ─────────────────────────────────────
 check_*.ps1

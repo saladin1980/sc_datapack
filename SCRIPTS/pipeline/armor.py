@@ -517,21 +517,24 @@ def generate_html(items, shop_lookup=None):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SC Armor Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {{
-    --bg:     #0d0f14;
-    --card:   #161922;
-    --border: #2a2f3d;
-    --text:   #e8ecf0;
-    --muted:  #8892a4;
-    --accent: #5b9cf6;
-    --green:  #27ae60;
-    --orange: #e67e22;
-    --red:    #c0392b;
-    --blue:   #3498db;
+    --bg:     #13141A;
+    --card:   #1C1F2E;
+    --border: #3A3F56;
+    --text:   #FFFFFF;
+    --muted:  #888888;
+    --accent: #532CD8;
+    --green:  #4ade9a;
+    --orange: #f5a742;
+    --red:    #ef4444;
+    --blue:   #8B6FE8;
   }}
   * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{ background:var(--bg); color:var(--text); font:14px/1.5 "Inter","Segoe UI",sans-serif; }}
+  body {{ background:var(--bg); color:var(--text); font:14px/1.5 'Outfit',sans-serif; }}
   h1 {{ font-size:1.6rem; font-weight:700; letter-spacing:-.02em; }}
   header {{ padding:20px 24px 12px; border-bottom:1px solid var(--border); }}
   header .sub {{ color:var(--muted); font-size:.85rem; margin-top:4px; }}
@@ -567,7 +570,7 @@ def generate_html(items, shop_lookup=None):
            color:#fff; white-space:nowrap; align-self:flex-start; }}
   .card-meta {{ font-size:.75rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px;
                 align-items:center; }}
-  .stat-chip {{ background:#1e2535; border:1px solid var(--border); border-radius:4px;
+  .stat-chip {{ background:#252D3E; border:1px solid var(--border); border-radius:4px;
                 font-size:.7rem; padding:1px 6px; color:var(--muted); }}
   .card-body {{ padding:10px 14px 12px; display:flex; flex-direction:column; gap:10px; }}
   .stat-section {{ display:flex; flex-direction:column; gap:4px; }}
@@ -576,7 +579,7 @@ def generate_html(items, shop_lookup=None):
   /* Damage bars */
   .bar-row {{ display:grid; grid-template-columns:44px 1fr 38px; align-items:center; gap:6px; }}
   .bar-lbl {{ font-size:.72rem; color:var(--muted); text-align:right; }}
-  .bar-bg {{ background:#1e2535; border-radius:3px; height:7px; overflow:hidden; }}
+  .bar-bg {{ background:#252D3E; border-radius:3px; height:7px; overflow:hidden; }}
   .bar-fill {{ height:100%; border-radius:3px; transition:width .3s; }}
   .bar-val {{ font-size:.72rem; font-weight:600; color:var(--text); text-align:right; }}
   /* KV grid */

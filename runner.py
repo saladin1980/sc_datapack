@@ -17,12 +17,20 @@ Caching rules:
   - Use --force to rebuild reports even if HTML files are present
   - Use --only  to run a single report regardless of HTML existence
 
+Crash recovery / resume:
+  If the pipeline crashes mid-run (e.g. after extraction but before reports),
+  just re-run with no flags: python runner.py
+  Extraction is skipped (version already matches), and only the missing
+  HTML reports are built. Nothing is ever re-done unnecessarily.
+
 Optional flags:
   python runner.py --skip-extract      # skip extraction, run reports only
   python runner.py --force             # rebuild all reports even if they exist
   python runner.py --only ships        # run just one report (always runs it)
                                        # ships / components / armor / weapons / vehicles / items / shops
+                                       # mining / mining gear / crafting / crafting calc / loot tables
 """
+import os
 import sys
 import time
 import subprocess
@@ -40,25 +48,35 @@ VENV_PYTHON = VENV_DIR / "Scripts" / "python.exe"  # Windows
 # Pipeline steps — (name, script, is_extract, output_html)
 # output_html: filename written to REPORTS_DIR, or None for extraction
 STEPS = [
-    ("Extraction",  SCRIPTS / "pipeline" / "extractor.py",    True,  None),
-    ("Shops",       SCRIPTS / "pipeline" / "shops.py",         False, "shops.html"),
-    ("Ships",       SCRIPTS / "pipeline" / "ships.py",         False, "ships_preview.html"),
-    ("Components",  SCRIPTS / "pipeline" / "components.py",   False, "components_preview.html"),
-    ("Armor",       SCRIPTS / "pipeline" / "armor.py",         False, "armor_preview.html"),
-    ("Weapons",     SCRIPTS / "pipeline" / "weapons.py",       False, "weapons_preview.html"),
-    ("Vehicles",    SCRIPTS / "pipeline" / "groundvehicles.py",False, "groundvehicles.html"),
-    ("Items",       SCRIPTS / "pipeline" / "items.py",         False, "items_preview.html"),
+    ("Extraction",       SCRIPTS  / "pipeline" / "extractor.py",               True,  None),
+    ("Shops",            SCRIPTS  / "pipeline" / "shops.py",                    False, "shops.html"),
+    ("Ships",            SCRIPTS  / "pipeline" / "ships.py",                    False, "ships_preview.html"),
+    ("Components",       SCRIPTS  / "pipeline" / "components.py",               False, "components_preview.html"),
+    ("Armor",            SCRIPTS  / "pipeline" / "armor.py",                    False, "armor_preview.html"),
+    ("Weapons",          SCRIPTS  / "pipeline" / "weapons.py",                  False, "weapons_preview.html"),
+    ("Vehicles",         SCRIPTS  / "pipeline" / "groundvehicles.py",           False, "groundvehicles.html"),
+    ("Items",            SCRIPTS  / "pipeline" / "items.py",                    False, "items_preview.html"),
+    ("Mining",           SCRIPTS  / "pipeline" / "mining_report.py",             False, "mining_report.html"),
+    ("Mining Gear",      SCRIPTS  / "pipeline" / "mining_attachments_report.py", False, "mining_attachments_report.html"),
+    ("Crafting",         SCRIPTS  / "pipeline" / "crafting_report.py",           False, "crafting_report.html"),
+    ("Crafting Calc",    SCRIPTS  / "pipeline" / "crafting_calculator.py",       False, "crafting_calculator.html"),
+    ("Loot Tables",      SCRIPTS  / "pipeline" / "loot_report.py",               False, "loot_report.html"),
 ]
 
 # Report metadata — used by index.html generator
 REPORT_FILES = [
-    ("ships_preview.html",      "Ships",           "257 ships — full loadout, ports resolved, insurance times"),
-    ("components_preview.html", "Components",      "1,791 equippable ship components by type"),
-    ("armor_preview.html",      "Armor",           "2,208 player armor pieces — resistances, storage, signatures"),
-    ("weapons_preview.html",    "Weapons",         "166 ship + 333 FPS weapons + 102 attachments"),
-    ("groundvehicles.html",     "Ground Vehicles", "27 player ground vehicles — specs, dimensions, insurance"),
-    ("items_preview.html",      "Items",           "501 consumables, food, melee, throwables, tools + chips"),
-    ("shops.html",              "Shops",           "6,300+ shop inventory entries — what sells where and at what price"),
+    ("ships_preview.html",              "Ships",            "257 ships — full loadout, ports resolved, insurance times"),
+    ("components_preview.html",         "Components",       "1,791 equippable ship components by type"),
+    ("armor_preview.html",              "Armor",            "2,208 player armor pieces — resistances, storage, signatures"),
+    ("weapons_preview.html",            "Weapons",          "166 ship + 333 FPS weapons + 102 attachments"),
+    ("groundvehicles.html",             "Ground Vehicles",  "27 player ground vehicles — specs, dimensions, insurance"),
+    ("items_preview.html",              "Items",            "501 consumables, food, melee, throwables, tools + chips"),
+    ("shops.html",                      "Shops",            "6,300+ shop inventory entries — what sells where and at what price"),
+    ("mining_report.html",              "Mining",           "Mineable elements, rock compositions, FPS minables"),
+    ("mining_attachments_report.html",  "Mining Gear",      "Ship mining lasers, active/passive modules, FPS gadgets"),
+    ("crafting_report.html",            "Crafting",         "Crafting blueprints — item families, parts, variants, stat modifiers"),
+    ("crafting_calculator.html",        "Crafting Calc",    "Interactive calculator — enter mineral inventory, see craftable items"),
+    ("loot_report.html",                "Loot Tables",      "Loot tables by location type with archetype slot breakdown"),
 ]
 
 
@@ -139,7 +157,9 @@ def _banner(text):
 def _run_step(name, script):
     _banner(name)
     t = time.time()
-    result = subprocess.run([sys.executable, str(script)], cwd=str(ROOT))
+    # Pass SC_DATA_BASE so EXPLORER reports use Data_Extraction/ instead of EXPLORER_Data/
+    env = {**os.environ, "SC_DATA_BASE": str(OUTPUT_DIR)}
+    result = subprocess.run([sys.executable, str(script)], cwd=str(ROOT), env=env)
     elapsed = time.time() - t
     if result.returncode != 0:
         print(f"\nFAILED: {name} exited with code {result.returncode}")

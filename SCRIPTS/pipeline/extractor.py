@@ -16,7 +16,10 @@ Two data sources are used (a third is planned but not yet implemented):
                       -> records/commodityconfiguration/    - commodity damage configs
                       -> records/commoditytypedatabase/     - commodity type index
                       -> records/resourcetypedatabase/      - resource type index
-       (~24,672 records, ~10-15 min total)
+                      -> records/crafting/                  - crafting blueprints + recipes
+                      -> records/lootgeneration/            - loot tables by location type
+                      -> records/mining/                    - mineable elements + rock configs
+       (~26,000 records, ~10-15 min total)
 
 Skips extraction if Data_Extraction/.version already matches current version.
 """
@@ -59,6 +62,10 @@ RECORD_PREFIXES = [
     "libs/foundry/records/commodityconfiguration/",
     "libs/foundry/records/commoditytypedatabase/",
     "libs/foundry/records/resourcetypedatabase/",
+    # EXPLORER reports — crafting, loot, mining
+    "libs/foundry/records/crafting/",
+    "libs/foundry/records/lootgeneration/",
+    "libs/foundry/records/mining/",
 ]
 
 

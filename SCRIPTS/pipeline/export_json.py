@@ -4,13 +4,17 @@ export_json.py -- Shared JSON export utility for the SC DataPack pipeline.
 Each report script calls write_json() after building its data list.
 
 Output directory: reports/JSON/
-  ships.json           -- 257 ships with loadout and insurance
-  components.json      -- 1,791 equippable ship components
-  armor.json           -- 2,208 player armor pieces
+  ships.json           -- ships with loadout and insurance
+  components.json      -- equippable ship components
+  armor.json           -- player armor pieces
   weapons.json         -- ship + FPS weapons + attachments
-  ground_vehicles.json -- 27 ground vehicles
-  items.json           -- 501 consumables, food, melee, tools, etc.
-  shops.json           -- 6,317 shop inventory entries (flat join table: shop x item)
+  ground_vehicles.json -- ground vehicles
+  items.json           -- consumables, food, melee, tools, etc.
+  shops.json           -- shop inventory entries (flat join table: shop x item)
+  mining.json          -- elements, rock compositions, planet mineables (multi-section)
+  mining_gear.json     -- ship mining lasers, active/passive modules, FPS gadgets
+  crafting.json        -- crafting blueprints with materials + stat modifier ranges
+  loot_tables.json     -- loot tables by location category with resolved archetypes
 
 Schema envelope (all files):
   {

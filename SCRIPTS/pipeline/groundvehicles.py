@@ -378,17 +378,20 @@ def generate_html(vehicles):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SC Ground Vehicles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {{
-    --bg:     #0d0f14;
-    --card:   #161922;
-    --border: #2a2f3d;
-    --text:   #e8ecf0;
-    --muted:  #8892a4;
-    --accent: #5b9cf6;
+    --bg:     #13141A;
+    --card:   #1C1F2E;
+    --border: #3A3F56;
+    --text:   #FFFFFF;
+    --muted:  #888888;
+    --accent: #532CD8;
   }}
   * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{ background:var(--bg); color:var(--text); font:14px/1.5 "Inter","Segoe UI",sans-serif; }}
+  body {{ background:var(--bg); color:var(--text); font:14px/1.5 'Outfit',sans-serif; }}
   h1 {{ font-size:1.6rem; font-weight:700; letter-spacing:-.02em; }}
   header {{ padding:20px 24px 12px; border-bottom:1px solid var(--border); }}
   header .sub {{ color:var(--muted); font-size:.85rem; margin-top:4px; }}

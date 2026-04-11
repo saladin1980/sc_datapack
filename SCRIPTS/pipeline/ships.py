@@ -1006,65 +1006,68 @@ def generate_html(ships, shop_lookup=None):
 <head>
 <meta charset="UTF-8">
 <title>SC DataPack - Ships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * {{ box-sizing:border-box; margin:0; padding:0; }}
-body {{ background:#0d1117; color:#c9d1d9; font-family:'Segoe UI',sans-serif; font-size:13px; line-height:1.5; padding:24px; }}
-h1  {{ color:#58a6ff; margin-bottom:4px; font-size:22px; }}
-.subtitle {{ color:#8b949e; margin-bottom:14px; font-size:12px; }}
+body {{ background:#13141A; color:#CCCCCC; font-family:'Outfit',sans-serif; font-size:13px; line-height:1.5; padding:24px; }}
+h1  {{ color:#8B6FE8; margin-bottom:4px; font-size:22px; }}
+.subtitle {{ color:#888888; margin-bottom:14px; font-size:12px; }}
 /* ── Manufacturer tabs ── */
 .mfr-bar {{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }}
-.tab {{ background:#161b22; border:1px solid #30363d; border-radius:20px; padding:3px 10px;
-        color:#8b949e; font-size:11px; cursor:pointer; transition:all 0.15s; }}
-.tab:hover {{ border-color:#8b949e; color:#c9d1d9; }}
-.tab.active {{ background:#1f6feb; border-color:#388bfd; color:#fff; }}
+.tab {{ background:#1C1F2E; border:1px solid #3A3F56; border-radius:20px; padding:3px 10px;
+        color:#888888; font-size:11px; cursor:pointer; transition:all 0.15s; }}
+.tab:hover {{ border-color:#888888; color:#CCCCCC; }}
+.tab.active {{ background:#4B25C8; border-color:#532CD8; color:#fff; }}
 .tc {{ opacity:0.7; font-size:10px; }}
 /* ── Search ── */
 .search-row {{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }}
-#ship-search {{ background:#161b22; border:1px solid #30363d; border-radius:6px;
-                padding:5px 10px; color:#c9d1d9; font-size:12px; width:280px; }}
-#ship-search:focus {{ outline:none; border-color:#388bfd; }}
-.result-count {{ color:#8b949e; font-size:11px; }}
+#ship-search {{ background:#1C1F2E; border:1px solid #3A3F56; border-radius:6px;
+                padding:5px 10px; color:#CCCCCC; font-size:12px; width:280px; }}
+#ship-search:focus {{ outline:none; border-color:#532CD8; }}
+.result-count {{ color:#888888; font-size:11px; }}
 /* ── Ship cards ── */
-.ship-card {{ background:#161b22; border:1px solid #30363d; border-radius:8px; margin-bottom:8px; overflow:hidden; }}
+.ship-card {{ background:#1C1F2E; border:1px solid #3A3F56; border-radius:8px; margin-bottom:8px; overflow:hidden; }}
 .ship-header {{ padding:12px 18px; cursor:pointer; display:flex; align-items:center; gap:16px; user-select:none; transition:background 0.15s; }}
-.ship-header:hover {{ background:#1c2128; }}
-.ship-name {{ font-size:15px; font-weight:600; color:#e6edf3; flex:0 0 auto; min-width:240px; }}
-.ship-meta  {{ color:#8b949e; font-size:12px; flex:1; }}
-.arrow {{ color:#8b949e; font-size:10px; transition:transform 0.2s; }}
+.ship-header:hover {{ background:#252D3E; }}
+.ship-name {{ font-size:15px; font-weight:600; color:#FFFFFF; flex:0 0 auto; min-width:240px; }}
+.ship-meta  {{ color:#888888; font-size:12px; flex:1; }}
+.arrow {{ color:#888888; font-size:10px; transition:transform 0.2s; }}
 .arrow.open {{ transform:rotate(90deg); }}
 .ship-body {{ padding:0 18px 18px; }}
 .hidden {{ display:none; }}
-.stats-grid {{ display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; padding:10px; background:#0d1117; border-radius:6px; }}
+.stats-grid {{ display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; padding:10px; background:#13141A; border-radius:6px; }}
 .stat,.stat2 {{ display:flex; flex-direction:column; min-width:120px; }}
-.stat  .label {{ font-size:10px; color:#8b949e; text-transform:uppercase; letter-spacing:0.5px; }}
-.stat2 .label {{ font-size:10px; color:#3fb950; text-transform:uppercase; letter-spacing:0.5px; }}
-.stat  .val   {{ font-size:12px; color:#e6edf3; word-break:break-all; }}
-.stat2 .val   {{ font-size:12px; color:#7ee787; word-break:break-all; }}
-h4 {{ color:#8b949e; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin:14px 0 6px; }}
+.stat  .label {{ font-size:10px; color:#888888; text-transform:uppercase; letter-spacing:0.5px; }}
+.stat2 .label {{ font-size:10px; color:#4ade9a; text-transform:uppercase; letter-spacing:0.5px; }}
+.stat  .val   {{ font-size:12px; color:#FFFFFF; word-break:break-all; }}
+.stat2 .val   {{ font-size:12px; color:#86efb4; word-break:break-all; }}
+h4 {{ color:#888888; font-size:11px; text-transform:uppercase; letter-spacing:1px; margin:14px 0 6px; }}
 .dtable {{ width:100%; border-collapse:collapse; font-size:12px; }}
-.dtable th {{ background:#0d1117; color:#8b949e; text-align:left; padding:5px 8px; font-weight:500; border-bottom:1px solid #30363d; }}
-.dtable td {{ padding:4px 8px; border-bottom:1px solid #21262d; vertical-align:middle; }}
+.dtable th {{ background:#13141A; color:#888888; text-align:left; padding:5px 8px; font-weight:500; border-bottom:1px solid #3A3F56; }}
+.dtable td {{ padding:4px 8px; border-bottom:1px solid #2A2F42; vertical-align:middle; }}
 .dtable tr:last-child td {{ border-bottom:none; }}
-.dtable tr:hover td {{ background:#1c2128; }}
-code {{ background:#1c2128; border:1px solid #30363d; border-radius:3px; padding:1px 4px; font-size:11px; font-family:Consolas,monospace; color:#79c0ff; }}
+.dtable tr:hover td {{ background:#252D3E; }}
+code {{ background:#252D3E; border:1px solid #3A3F56; border-radius:3px; padding:1px 4px; font-size:11px; font-family:'Geist Mono',monospace; color:#A389F0; }}
 code.missile  {{ color:#ffa657; }}
 code.turret   {{ color:#d2a8ff; }}
-code.sec-shield  {{ color:#58a6ff; }}
-code.sec-power   {{ color:#e3b341; }}
-code.sec-cooler  {{ color:#79c0ff; }}
+code.sec-shield  {{ color:#8B6FE8; }}
+code.sec-power   {{ color:#f5a742; }}
+code.sec-cooler  {{ color:#A389F0; }}
 code.sec-quantum {{ color:#bc8cff; }}
-code.sec-fuel    {{ color:#7ee787; }}
-code.sec-other   {{ color:#8b949e; }}
-.port {{ color:#6e7681; font-size:11px; font-family:Consolas,monospace; }}
-.item-name {{ display:block; color:#e6edf3; font-weight:600; font-size:12px; line-height:1.3; }}
+code.sec-fuel    {{ color:#86efb4; }}
+code.sec-other   {{ color:#888888; }}
+.port {{ color:#5A5A6A; font-size:11px; font-family:'Geist Mono',monospace; }}
+.item-name {{ display:block; color:#FFFFFF; font-weight:600; font-size:12px; line-height:1.3; }}
 .comp-name code {{ display:block; margin-top:1px; }}
 .dmg  {{ color:#f85149; }}
-.muted {{ color:#484f58; font-size:11px; margin-top:8px; }}
+.muted {{ color:#4A4A5A; font-size:11px; margin-top:8px; }}
 .file-ref {{ margin-top:6px; }}
-.badge {{ display:inline-flex; background:#21262d; border:1px solid #30363d; border-radius:4px;
+.badge {{ display:inline-flex; background:#2A2F42; border:1px solid #3A3F56; border-radius:4px;
           padding:1px 0; font-size:11px; vertical-align:middle; margin:1px 2px 1px 0; }}
-.badge .bl {{ padding:0 4px; color:#8b949e; border-right:1px solid #30363d; }}
-.badge .bv {{ padding:0 5px; color:#e6edf3; }}
+.badge .bl {{ padding:0 4px; color:#888888; border-right:1px solid #3A3F56; }}
+.badge .bv {{ padding:0 5px; color:#FFFFFF; }}
 .cat-badge {{ display:inline-block; border-radius:3px; padding:1px 6px; font-size:11px; font-weight:600; }}
 .cat-missile {{ background:#332500; color:#ffa657; border:1px solid #5a3a00; }}
 .cat-turret  {{ background:#2d1f52; color:#d2a8ff; border:1px solid #4a3080; }}

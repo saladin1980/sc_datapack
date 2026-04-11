@@ -309,90 +309,93 @@ def generate_html(components, shop_lookup=None):
 <head>
 <meta charset="UTF-8">
 <title>SC DataPack - Component Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * {{ box-sizing:border-box; margin:0; padding:0; }}
-body {{ background:#0d1117; color:#c9d1d9; font-family:'Segoe UI',sans-serif; font-size:13px; line-height:1.5; padding:20px 24px; }}
-h1   {{ color:#58a6ff; font-size:22px; margin-bottom:2px; }}
-.subtitle {{ color:#8b949e; font-size:12px; margin-bottom:16px; }}
+body {{ background:#13141A; color:#CCCCCC; font-family:'Outfit',sans-serif; font-size:13px; line-height:1.5; padding:20px 24px; }}
+h1   {{ color:#8B6FE8; font-size:22px; margin-bottom:2px; }}
+.subtitle {{ color:#888888; font-size:12px; margin-bottom:16px; }}
 
 /* ── Search ── */
 .search-bar {{ display:flex; gap:10px; align-items:center; margin-bottom:14px; }}
-#search {{ background:#161b22; border:1px solid #30363d; border-radius:6px; color:#e6edf3;
+#search {{ background:#1C1F2E; border:1px solid #3A3F56; border-radius:6px; color:#FFFFFF;
            padding:6px 12px; font-size:13px; width:320px; outline:none; }}
-#search:focus {{ border-color:#58a6ff; }}
-#search-count {{ color:#8b949e; font-size:12px; }}
+#search:focus {{ border-color:#8B6FE8; }}
+#search-count {{ color:#888888; font-size:12px; }}
 
 /* ── Tabs ── */
 .tabs {{ display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px; }}
-.tab {{ background:#161b22; border:1px solid #30363d; border-radius:20px; padding:3px 10px;
-        color:#8b949e; font-size:11px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }}
-.tab:hover {{ background:#1c2128; color:#c9d1d9; }}
-.tab.active {{ background:#1f3d5a; border-color:#58a6ff; color:#58a6ff; }}
-.tab-count {{ background:#21262d; border-radius:10px; padding:0 5px; font-size:10px;
-              color:#8b949e; margin-left:3px; }}
+.tab {{ background:#1C1F2E; border:1px solid #3A3F56; border-radius:20px; padding:3px 10px;
+        color:#888888; font-size:11px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }}
+.tab:hover {{ background:#252D3E; color:#CCCCCC; }}
+.tab.active {{ background:#1f3d5a; border-color:#8B6FE8; color:#8B6FE8; }}
+.tab-count {{ background:#2A2F42; border-radius:10px; padding:0 5px; font-size:10px;
+              color:#888888; margin-left:3px; }}
 
 /* ── Sections ── */
 .cat-section {{ margin-bottom:28px; }}
 .cat-section.hidden {{ display:none; }}
-.sec-head {{ color:#8b949e; font-size:11px; text-transform:uppercase; letter-spacing:1px;
-             margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid #21262d; }}
-.sec-count {{ background:#21262d; border-radius:10px; padding:1px 7px; font-size:10px;
-              color:#6e7681; margin-left:6px; vertical-align:middle; }}
+.sec-head {{ color:#888888; font-size:11px; text-transform:uppercase; letter-spacing:1px;
+             margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid #2A2F42; }}
+.sec-count {{ background:#2A2F42; border-radius:10px; padding:1px 7px; font-size:10px;
+              color:#5A5A6A; margin-left:6px; vertical-align:middle; }}
 
 /* ── Table ── */
 .comp-table {{ width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed; }}
-.comp-table th {{ background:#0d1117; color:#8b949e; text-align:left; padding:5px 8px;
-                  font-weight:500; border-bottom:1px solid #30363d; white-space:nowrap; }}
-.comp-table td {{ padding:4px 8px; border-bottom:1px solid #21262d; vertical-align:middle; }}
+.comp-table th {{ background:#13141A; color:#888888; text-align:left; padding:5px 8px;
+                  font-weight:500; border-bottom:1px solid #3A3F56; white-space:nowrap; }}
+.comp-table td {{ padding:4px 8px; border-bottom:1px solid #2A2F42; vertical-align:middle; }}
 .comp-table tr:last-child td {{ border-bottom:none; }}
-.comp-table tr:hover td {{ background:#1c2128; }}
+.comp-table tr:hover td {{ background:#252D3E; }}
 .comp-table tr.row-hidden {{ display:none; }}
 .th-sort {{ cursor:pointer; user-select:none; }}
-.th-sort:hover {{ color:#e6edf3; }}
+.th-sort:hover {{ color:#FFFFFF; }}
 
 /* Column widths */
 .td-name  {{ width:32%; }}
-.td-mfr   {{ width:8%; color:#8b949e; }}
+.td-mfr   {{ width:8%; color:#888888; }}
 .td-sg    {{ width:7%; }}
-.td-sub   {{ width:10%; color:#8b949e; font-size:11px; }}
+.td-sub   {{ width:10%; color:#888888; font-size:11px; }}
 .td-stats {{ width:43%; }}
 .td-center {{ text-align:center; }}
 
 /* ── Name / code ── */
-.item-name {{ display:block; color:#e6edf3; font-weight:600; font-size:12px; line-height:1.3; }}
-code.cls {{ display:block; background:#1c2128; border:1px solid #30363d; border-radius:3px;
-            padding:1px 4px; font-size:10px; font-family:Consolas,monospace;
+.item-name {{ display:block; color:#FFFFFF; font-weight:600; font-size:12px; line-height:1.3; }}
+code.cls {{ display:block; background:#252D3E; border:1px solid #3A3F56; border-radius:3px;
+            padding:1px 4px; font-size:10px; font-family:'Geist Mono',monospace;
             margin-top:1px; word-break:break-all; }}
-code.cls-shield   {{ color:#58a6ff; }}
-code.cls-power    {{ color:#e3b341; }}
-code.cls-cooler   {{ color:#79c0ff; }}
+code.cls-shield   {{ color:#8B6FE8; }}
+code.cls-power    {{ color:#f5a742; }}
+code.cls-cooler   {{ color:#A389F0; }}
 code.cls-quantum  {{ color:#bc8cff; }}
-code.cls-fuel     {{ color:#7ee787; }}
+code.cls-fuel     {{ color:#86efb4; }}
 code.cls-qfuel    {{ color:#56d364; }}
-code.cls-intake   {{ color:#7ee787; }}
+code.cls-intake   {{ color:#86efb4; }}
 code.cls-thruster {{ color:#ffa198; }}
 code.cls-radar    {{ color:#a5d6ff; }}
 code.cls-weapon   {{ color:#ff7b72; }}
 code.cls-turret   {{ color:#d2a8ff; }}
 code.cls-missile  {{ color:#ffa657; }}
-code.cls-mining   {{ color:#e3b341; }}
+code.cls-mining   {{ color:#f5a742; }}
 code.cls-salvage  {{ color:#f0883e; }}
-code.cls-util     {{ color:#8b949e; }}
-code.cls-cm       {{ color:#58a6ff; }}
-code.cls-misc     {{ color:#8b949e; }}
+code.cls-util     {{ color:#888888; }}
+code.cls-cm       {{ color:#8B6FE8; }}
+code.cls-misc     {{ color:#888888; }}
 code.cls-qi       {{ color:#bc8cff; }}
-code.cls-other    {{ color:#8b949e; }}
-code.cls-armor    {{ color:#c9d1d9; }}
-code.cls-storage  {{ color:#7ee787; }}
-code.cls-emp      {{ color:#e3b341; }}
+code.cls-other    {{ color:#888888; }}
+code.cls-armor    {{ color:#CCCCCC; }}
+code.cls-storage  {{ color:#86efb4; }}
+code.cls-emp      {{ color:#f5a742; }}
 code.cls-qtc      {{ color:#bc8cff; }}
 
 /* ── Badges ── */
-.badge {{ display:inline-flex; background:#21262d; border:1px solid #30363d; border-radius:4px;
+.badge {{ display:inline-flex; background:#2A2F42; border:1px solid #3A3F56; border-radius:4px;
           padding:1px 0; font-size:11px; vertical-align:middle; margin:1px 2px 1px 0; }}
-.badge .bl {{ padding:0 4px; color:#8b949e; border-right:1px solid #30363d; }}
-.badge .bv {{ padding:0 5px; color:#e6edf3; }}
-.muted {{ color:#484f58; }}
+.badge .bl {{ padding:0 4px; color:#888888; border-right:1px solid #3A3F56; }}
+.badge .bv {{ padding:0 5px; color:#FFFFFF; }}
+.muted {{ color:#4A4A5A; }}
 {SHOP_CSS}
 </style>
 </head>

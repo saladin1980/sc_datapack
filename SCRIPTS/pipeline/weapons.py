@@ -604,58 +604,61 @@ def generate_html(weapons, shop_lookup=None):
 <head>
 <meta charset="utf-8">
 <title>SC Weapons Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
-body{{background:#0d1117;color:#c9d1d9;font-family:system-ui,sans-serif;font-size:13px}}
-a{{color:#58a6ff;text-decoration:none}}
-h1{{font-size:1.3rem;font-weight:600;color:#e6edf3}}
+body{{background:#13141A;color:#CCCCCC;font-family:system-ui,sans-serif;font-size:13px}}
+a{{color:#8B6FE8;text-decoration:none}}
+h1{{font-size:1.3rem;font-weight:600;color:#FFFFFF}}
 
 /* Layout */
-.page-header{{background:#161b22;border-bottom:1px solid #30363d;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}}
+.page-header{{background:#1C1F2E;border-bottom:1px solid #3A3F56;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}}
 .page-header h1{{flex:1}}
-.count-badge{{background:#21262d;border:1px solid #30363d;border-radius:12px;padding:2px 10px;font-size:11px;color:#8b949e}}
+.count-badge{{background:#2A2F42;border:1px solid #3A3F56;border-radius:12px;padding:2px 10px;font-size:11px;color:#888888}}
 
-.main-tabs{{display:flex;gap:6px;padding:14px 20px 0;border-bottom:1px solid #30363d;background:#161b22}}
-.main-tab{{background:none;border:none;border-bottom:2px solid transparent;padding:8px 16px;color:#8b949e;cursor:pointer;font-size:13px;transition:color .15s,border-color .15s}}
-.main-tab:hover{{color:#c9d1d9}}
-.main-tab.active{{color:#58a6ff;border-bottom-color:#58a6ff}}
+.main-tabs{{display:flex;gap:6px;padding:14px 20px 0;border-bottom:1px solid #3A3F56;background:#1C1F2E}}
+.main-tab{{background:none;border:none;border-bottom:2px solid transparent;padding:8px 16px;color:#888888;cursor:pointer;font-size:13px;transition:color .15s,border-color .15s}}
+.main-tab:hover{{color:#CCCCCC}}
+.main-tab.active{{color:#8B6FE8;border-bottom-color:#8B6FE8}}
 
 .section{{display:none;padding:16px 20px}}
 .section.active{{display:block}}
 
 .filter-bar{{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}}
-.filter-label{{color:#8b949e;font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}}
+.filter-label{{color:#888888;font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}}
 .tab-row{{display:flex;flex-wrap:wrap;gap:4px;flex:1}}
-.filter-tab{{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:3px 10px;color:#8b949e;cursor:pointer;font-size:11px;transition:all .15s}}
-.filter-tab:hover{{border-color:#58a6ff;color:#c9d1d9}}
-.filter-tab.active{{background:#1f6feb;border-color:#388bfd;color:#fff}}
+.filter-tab{{background:#2A2F42;border:1px solid #3A3F56;border-radius:4px;padding:3px 10px;color:#888888;cursor:pointer;font-size:11px;transition:all .15s}}
+.filter-tab:hover{{border-color:#8B6FE8;color:#CCCCCC}}
+.filter-tab.active{{background:#4B25C8;border-color:#532CD8;color:#fff}}
 
-#search-ship,#search-fps,#search-att{{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:4px 10px;color:#c9d1d9;font-size:12px;width:200px;outline:none}}
-#search-ship:focus,#search-fps:focus,#search-att:focus{{border-color:#58a6ff}}
+#search-ship,#search-fps,#search-att{{background:#2A2F42;border:1px solid #3A3F56;border-radius:4px;padding:4px 10px;color:#CCCCCC;font-size:12px;width:200px;outline:none}}
+#search-ship:focus,#search-fps:focus,#search-att:focus{{border-color:#8B6FE8}}
 
-.vis-count{{color:#8b949e;font-size:11px;white-space:nowrap}}
+.vis-count{{color:#888888;font-size:11px;white-space:nowrap}}
 
 /* Cards */
 .card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}}
-.item-card{{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px;transition:border-color .15s}}
-.item-card:hover{{border-color:#58a6ff}}
+.item-card{{background:#1C1F2E;border:1px solid #3A3F56;border-radius:6px;padding:12px;transition:border-color .15s}}
+.item-card:hover{{border-color:#8B6FE8}}
 .card-header{{margin-bottom:8px}}
-.card-name{{font-weight:600;color:#e6edf3;font-size:13px;margin-bottom:5px;line-height:1.3}}
+.card-name{{font-weight:600;color:#FFFFFF;font-size:13px;margin-bottom:5px;line-height:1.3}}
 .card-badges{{display:flex;flex-wrap:wrap;gap:4px}}
 .badge{{border-radius:3px;padding:1px 6px;font-size:10px;font-weight:500}}
-.badge.mfr{{background:#21262d;color:#8b949e;border:1px solid #30363d}}
-.badge.size{{background:#21262d;color:#79c0ff;border:1px solid #1f6feb}}
+.badge.mfr{{background:#2A2F42;color:#888888;border:1px solid #3A3F56}}
+.badge.size{{background:#2A2F42;color:#A389F0;border:1px solid #4B25C8}}
 .badge.type{{background:transparent;border:1px solid;font-size:10px}}
 
 /* Stats */
 .stats-grid{{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:6px}}
 .stat{{display:flex;flex-direction:column;min-width:60px}}
-.sl{{color:#8b949e;font-size:10px;text-transform:uppercase;letter-spacing:.04em}}
-.sv{{color:#e6edf3;font-size:12px;font-weight:500;margin-top:1px}}
+.sl{{color:#888888;font-size:10px;text-transform:uppercase;letter-spacing:.04em}}
+.sv{{color:#FFFFFF;font-size:12px;font-weight:500;margin-top:1px}}
 
 /* Slot badges */
-.slots-row{{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid #21262d}}
-.slot-badge{{background:#21262d;border:1px solid #30363d;border-radius:3px;padding:1px 6px;font-size:10px;color:#8b949e}}
+.slots-row{{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid #2A2F42}}
+.slot-badge{{background:#2A2F42;border:1px solid #3A3F56;border-radius:3px;padding:1px 6px;font-size:10px;color:#888888}}
 {SHOP_CSS}
 </style>
 </head>

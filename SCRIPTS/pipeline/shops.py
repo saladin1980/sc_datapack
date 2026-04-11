@@ -308,9 +308,12 @@ def _build_html(rows: list) -> str:
 <head>
 <meta charset="UTF-8">
 <title>SC DataPack — Shop Inventories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-body {{ background: #1a1a1a; color: #e0e0e0; font: 14px/1.4 'Segoe UI', sans-serif; }}
+body {{ background: #1a1a1a; color: #e0e0e0; font: 14px/1.4 'Outfit', sans-serif; }}
 header {{ background: #111; border-bottom: 1px solid #333; padding: 14px 20px; position: sticky; top: 0; z-index: 10; }}
 header h1 {{ font-size: 1.2rem; color: #c8b08a; display: inline; }}
 header .sub {{ color: #888; font-size: .85rem; margin-left 8px; }}
